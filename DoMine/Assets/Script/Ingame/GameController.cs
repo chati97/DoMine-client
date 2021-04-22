@@ -6,7 +6,7 @@ namespace DoMine
 {
     public class GameController : MonoBehaviour
     {
-        [SerializeField] Transform player;
+        [SerializeField] GameObject player = null;
         // Start is called before the first frame update
         void Start()
         {

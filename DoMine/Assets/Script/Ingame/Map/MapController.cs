@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace DoMine
 {
@@ -8,16 +9,25 @@ namespace DoMine
     {
         int[,] mapArray = new int[100,100];
         GameObject[,] mapObject = new GameObject[100, 100];
-        [SerializeField] GameObject breakable;
-        [SerializeField] GameObject unbreakable;
-        [SerializeField] Transform wallParent;
+        [SerializeField] GameObject Player = null;
+        [SerializeField] GameObject breakable = null;
+        [SerializeField] GameObject unbreakable = null;
+        [SerializeField] Transform wallParent = null;
+        [SerializeField] GameObject indicator = null;
 
         private void Start()
         {
             CreateMap(MakeMapArr() ,ref mapObject);
         }
 
+        private void Update()
+        {
+            FindWall(mapObject);
+        }
 
+        //MakeMapArr 맵 배열을 생성하는 함수 나중엔 서버에서 생성할것or호스트가 생성
+        //현재 함수는 중간 공간을 제외한 모든 공간에 부술수있는벽을 채우고 맨끝은 부서지지 않는 벽으로 채움
+        //추후에 변수값을 받아서 원하는 크기로 맵을 만들게 할 예정
         public int[,] MakeMapArr()
         {
             int[,] mapArray = new int[100, 100];
@@ -42,6 +52,8 @@ namespace DoMine
             return mapArray;
         }
 
+
+        // CreateMap 맵 정보를 받아 최초 맵생성 생성하는 정보만 있음
         public void CreateMap(int[,] mapArray, ref GameObject[,] mapObject)
         {
             for(int i = 0; i<100; i++)
@@ -62,6 +74,11 @@ namespace DoMine
                 }
             }
         }
+
+
+        //UpdateMap 추후구현 게임 중간 중간 맵 상태를 업데이트함
+        //다른플레이어가 중간에 벽을 파괴 생성할때도 벽을 파괴하는 신호를 날리고 받는 함수도 있을거지만
+        //중간에 통신오류로 플레이어간 꼬일거를 예측해서 전체적으로 한번 로딩하는 함수
         public void UpdateMap(int[,] mapArray, ref GameObject[,] mapObject)
         {
             foreach (int type in mapArray)
@@ -79,7 +96,44 @@ namespace DoMine
 
             }
         }
-        
+
+
+        //DestroyWall 부술수있는 벽을 부술때 호출되는 함수
+        public void DestroyWall(ref int[,] mapArray, GameObject wall , int x, int y)
+        {
+            if(mapArray[x,y] == 1)
+            {
+                Destroy(wall);
+                mapArray[x, y] = 0;
+            }
+        }
+
+
+        //FindWall 가장 가까운 부술수 있는 벽을 표시
+        public void FindWall(GameObject[,] mapObject)
+        {
+            float _nearistDistance = 10000;
+            float _sampleDistance;
+            Vector2 _nearistVector = new Vector2(0, 0);
+            for(int i = 0; i < 100; i++)
+            {
+                for (int j = 0; j < 100; j++)
+                {
+                    if (mapObject[i, j] != null)
+                    {
+                        _sampleDistance = Vector2.Distance(Player.transform.position, mapObject[i, j].transform.position);
+                        if (_nearistDistance > _sampleDistance)
+                        {
+                            _nearistDistance = _sampleDistance;
+                            _nearistVector = mapObject[i, j].transform.position;
+                        }
+                    }
+                    
+                }
+   
+            }
+            indicator.transform.position = _nearistVector;
+        }
     }
 }
 
