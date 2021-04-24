@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace DoMine
 {
-    public class PlayerMove : MonoBehaviour
+    public class PlayerControl : MonoBehaviour
     {
         [SerializeField] Rigidbody2D player = null;
         public float power;

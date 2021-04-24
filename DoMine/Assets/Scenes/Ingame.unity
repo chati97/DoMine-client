@@ -241,6 +241,7 @@ GameObject:
   - component: {fileID: 809592804}
   - component: {fileID: 809592803}
   - component: {fileID: 809592805}
+  - component: {fileID: 809592806}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -294,6 +295,26 @@ MonoBehaviour:
     type: 3}
   wallParent: {fileID: 681968454}
   indicator: {fileID: 242872182}
+  nearestWall: {fileID: 0}
+  nearestWallX: -1
+  nearestWallY: -1
+--- !u!114 &809592806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 809592802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74404cfb46a56e54aa422421e8847f38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1625805911}
+  power: 50
+  xspeed: 0
+  yspeed: 0
+  mapCtrl: {fileID: 809592805}
 --- !u!1 &1049241107
 GameObject:
   m_ObjectHideFlags: 0
@@ -391,7 +412,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Target: {fileID: 1625805913}
-  follow_speed: 15
   lookOffset: {x: 0, y: 0, z: -10}
 --- !u!1 &1063068764
 GameObject:
@@ -90659,7 +90679,6 @@ GameObject:
   - component: {fileID: 1625805913}
   - component: {fileID: 1625805912}
   - component: {fileID: 1625805911}
-  - component: {fileID: 1625805914}
   - component: {fileID: 1625805915}
   m_Layer: 0
   m_Name: Player
@@ -90752,21 +90771,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1625805914
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1625805910}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74404cfb46a56e54aa422421e8847f38, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  power: 50
-  xspeed: 0
-  yspeed: 0
 --- !u!61 &1625805915
 BoxCollider2D:
   m_ObjectHideFlags: 0
