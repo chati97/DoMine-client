@@ -121,7 +121,7 @@ namespace DoMine
             float _nearestDistance = 10000;
             float _sampleDistance;
             Vector2 _nearestVector = new Vector2(0, 0);
-            for(int i = 0; i < 100; i++)
+            for (int i = 0; i < 100; i++)
             {
                 for (int j = 0; j < 100; j++)
                 {
@@ -137,11 +137,19 @@ namespace DoMine
                             nearestWallY = j;
                         }
                     }
-                    
+
                 }
-   
+
             }
-            indicator.transform.position = _nearestVector;
+            if (Vector2.Distance(_nearestVector, Player.transform.position) < 0.8)
+            {
+                indicator.gameObject.SetActive(true);
+                indicator.transform.position = _nearestVector;
+            }
+            else
+            {
+                indicator.gameObject.SetActive(false);
+            }
         }
     }
 }
