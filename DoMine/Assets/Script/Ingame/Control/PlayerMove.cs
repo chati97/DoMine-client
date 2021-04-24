@@ -7,22 +7,20 @@ namespace DoMine
 {
     public class PlayerMove : MonoBehaviour
     {
-        private Rigidbody2D player;
+        [SerializeField] Rigidbody2D player = null;
         public float power;
         public float xspeed, yspeed;
+        public MapController mapCtrl;
 
         // Start is called before the first frame update
         void Start()
         {
-            player = GetComponent<Rigidbody2D>();
+
         }
 
         // Update is called once per frame
         void FixedUpdate()
         {
-            //float _inputX = Input.GetAxisRaw("Horizontal");
-            //float _inputY = Input.GetAxisRaw("Vertical");
-            //transform.Translate(new Vector2(_inputX,_inputY)*Time.deltaTime*moveSpeed);
             if(Input.GetKey(KeyCode.LeftArrow) == true)
             {
                 player.AddForce(Vector2.left * power);
@@ -41,6 +39,14 @@ namespace DoMine
             }
             xspeed = player.velocity.x;
             yspeed = player.velocity.y;
+
+            if(Input.GetKey(KeyCode.A) == true)
+            {
+                if(Vector2.Distance(player.position, mapCtrl.nearestWall.transform.position) < 0.8)
+                {
+                    mapCtrl.DestroyWall(mapCtrl.nearestWallX, mapCtrl.nearestWallY);
+                }
+            }
 
         }
     }

@@ -14,10 +14,13 @@ namespace DoMine
         [SerializeField] GameObject unbreakable = null;
         [SerializeField] Transform wallParent = null;
         [SerializeField] GameObject indicator = null;
+        public GameObject nearestWall = null;
+        public int nearestWallX = -1;
+        public int nearestWallY = -1;
 
         private void Start()
         {
-            CreateMap(MakeMapArr() ,ref mapObject);
+            CreateMap(mapArray = MakeMapArr() ,ref mapObject);
         }
 
         private void Update()
@@ -99,22 +102,25 @@ namespace DoMine
 
 
         //DestroyWall 부술수있는 벽을 부술때 호출되는 함수
-        public void DestroyWall(ref int[,] mapArray, GameObject wall , int x, int y)
+        public void DestroyWall(int x, int y)
         {
-            if(mapArray[x,y] == 1)
+            Debug.Log(mapArray[x, y]);
+            if (mapArray[x,y] == 1)
             {
-                Destroy(wall);
+                Destroy(mapObject[x, y]);
                 mapArray[x, y] = 0;
+                Debug.Log(nearestWallX + "," + nearestWallY);
             }
+            
         }
 
 
         //FindWall 가장 가까운 부술수 있는 벽을 표시
         public void FindWall(GameObject[,] mapObject)
         {
-            float _nearistDistance = 10000;
+            float _nearestDistance = 10000;
             float _sampleDistance;
-            Vector2 _nearistVector = new Vector2(0, 0);
+            Vector2 _nearestVector = new Vector2(0, 0);
             for(int i = 0; i < 100; i++)
             {
                 for (int j = 0; j < 100; j++)
@@ -122,17 +128,20 @@ namespace DoMine
                     if (mapObject[i, j] != null)
                     {
                         _sampleDistance = Vector2.Distance(Player.transform.position, mapObject[i, j].transform.position);
-                        if (_nearistDistance > _sampleDistance)
+                        if (_nearestDistance > _sampleDistance)
                         {
-                            _nearistDistance = _sampleDistance;
-                            _nearistVector = mapObject[i, j].transform.position;
+                            _nearestDistance = _sampleDistance;
+                            _nearestVector = mapObject[i, j].transform.position;
+                            nearestWall = mapObject[i, j];
+                            nearestWallX = i;
+                            nearestWallY = j;
                         }
                     }
                     
                 }
    
             }
-            indicator.transform.position = _nearistVector;
+            indicator.transform.position = _nearestVector;
         }
     }
 }
