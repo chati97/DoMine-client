@@ -17,6 +17,7 @@ namespace DoMine
         public GameObject nearestWall = null;
         public int nearestWallX = -1;
         public int nearestWallY = -1;
+        int mapSize = 100;
 
         private void Start()
         {
@@ -33,25 +34,25 @@ namespace DoMine
         //추후에 변수값을 받아서 원하는 크기로 맵을 만들게 할 예정
         public int[,] MakeMapArr()
         {
-            int[,] mapArray = new int[100, 100];
-            for(int i = 0; i<100; i++)
+            int[,] mapArray = new int[mapSize, mapSize];
+            for(int i = 0; i< mapSize; i++)
             {
                 mapArray[0, i] = 2;
-                mapArray[99, i] = 2;
+                mapArray[mapSize-1, i] = 2;
                 mapArray[i, 0] = 2;
-                mapArray[i, 99] = 2;
+                mapArray[i, mapSize-1] = 2;
             }
-            for(int i = 1; i<99; i++)
+            for(int i = 1; i< mapSize-1; i++)
             {
-                for(int j = 1; j < 99; j++)
+                for(int j = 1; j < mapSize-1; j++)
                 {
                     mapArray[i, j] = 1; //나머지는 부서지는벽으로설정
                 }
             }
-            mapArray[49, 49] = 0;
-            mapArray[49, 50] = 0;
-            mapArray[50, 49] = 0;
-            mapArray[50, 50] = 0;
+            mapArray[mapSize / 2 - 1, mapSize / 2 - 1] = 0;
+            mapArray[mapSize / 2 - 1, mapSize / 2] = 0;
+            mapArray[mapSize / 2, mapSize / 2 - 1] = 0;
+            mapArray[mapSize / 2, mapSize / 2] = 0;
             return mapArray;
         }
 
@@ -59,9 +60,9 @@ namespace DoMine
         // CreateMap 맵 정보를 받아 최초 맵생성 생성하는 정보만 있음
         public void CreateMap(int[,] mapArray, ref GameObject[,] mapObject)
         {
-            for(int i = 0; i<100; i++)
+            for(int i = 0; i< mapSize; i++)
             {
-                for(int j = 0; j<100; j++)
+                for(int j = 0; j< mapSize; j++)
                 {
                     switch(mapArray[i,j])
                     {
@@ -121,9 +122,9 @@ namespace DoMine
             float _nearestDistance = 10000;
             float _sampleDistance;
             Vector2 _nearestVector = new Vector2(0, 0);
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < mapSize; i++)
             {
-                for (int j = 0; j < 100; j++)
+                for (int j = 0; j < mapSize; j++)
                 {
                     if (mapObject[i, j] != null)
                     {
