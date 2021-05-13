@@ -16,6 +16,8 @@ namespace Com.MyCompany.MyGame
         {
             SceneManager.LoadScene(0);
         }
+
+        
         #endregion
 
         #region Public Methods
@@ -34,7 +36,7 @@ namespace Com.MyCompany.MyGame
                 Debug.LogError("Photon Network : Trying to Load a level but we are not the Master Client");
             }
             Debug.LogFormat("Photon Network : Loading Level : {0}", PhotonNetwork.CurrentRoom.PlayerCount);
-            PhotonNetwork.LoadLevel("Romo for" + PhotonNetwork.CurrentRoom.PlayerCount);
+            PhotonNetwork.LoadLevel("Inagme");
         }
 
         #endregion
@@ -73,5 +75,7 @@ namespace Com.MyCompany.MyGame
 
 
         #endregion
+
+
     }
 }
