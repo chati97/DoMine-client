@@ -47,7 +47,6 @@ namespace DoMine
                     mapCtrl.DestroyWall(mapCtrl.nearestWallX, mapCtrl.nearestWallY);
                 }
             }
-
         }
     }
 }

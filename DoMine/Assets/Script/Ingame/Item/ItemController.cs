@@ -16,6 +16,20 @@ namespace DoMine
         {
 
         }
+
+        public void Init(Player player)
+        {
+            player.inventory.gold = false;
+        }
+
+        public void GetItem(Player player, int item)
+        {
+            switch (item)
+            {
+                case 0: player.inventory.gold = true;
+                break;
+            }
+        }
     }
 }
 

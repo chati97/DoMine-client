@@ -1,24 +1,18 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
 namespace DoMine
-{ 
-    public class Player : MonoBehaviour
+{
+    [Serializable]
+    public class Player
     {
-   
-        // Start is called before the first frame update
-        void Start()
-        {
-        
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
-    }
+        public Inventory inventory;
+        public int x_location;
+        public int y_location;
+        public bool sabotage;
+    }        
 }
 

@@ -7,6 +7,6 @@ namespace DoMine
     [Serializable]
     public class Inventory
     {
-        bool Gold;
+        public bool gold;
     }
 }
