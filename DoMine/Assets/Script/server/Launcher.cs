@@ -20,7 +20,7 @@ namespace Com.MyCompany.MyGame
         /// </summary>
         string gameVersion = "1";
 
-        bool isConnectiong;
+        
         #endregion
 
 
@@ -66,7 +66,7 @@ namespace Com.MyCompany.MyGame
         /// </summary>
         public void Connect()
         {
-            isConnectiong = true;
+            
             progressLabel.SetActive(true);
             controlPanel.SetActive(false);
             // we check if we are connected or not, we join if we are , else we initiate the connection to the server.
@@ -91,11 +91,7 @@ namespace Com.MyCompany.MyGame
 
         public override void OnConnectedToMaster()
         {
-            Debug.Log("PUN Basics Tutorial/Launcher: OnConnectedToMaster() was called by PUN");
-            if(isConnectiong)
-            {
-                PhotonNetwork.JoinRandomRoom();
-            }
+            PhotonNetwork.JoinRandomRoom();
         }
 
 
@@ -113,17 +109,9 @@ namespace Com.MyCompany.MyGame
         }
         public override void OnJoinedRoom()
         {
+            
             Debug.Log("PUN Basics Tutorial/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.");
-            if(PhotonNetwork.CurrentRoom.PlayerCount == 1)
-            {
-                Debug.Log("We load the 'Ingame'");
-                PhotonNetwork.LoadLevel("Ingame");
-            }
-            if(PhotonNetwork.CurrentRoom.PlayerCount == 1)
-            {
-                Debug.Log("We load the 'ingame'");
-                PhotonNetwork.LoadLevel("Ingame");
-            }
+          
         }
         #endregion
 
