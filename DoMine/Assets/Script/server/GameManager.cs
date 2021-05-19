@@ -24,7 +24,7 @@ namespace Com.MyCompany.MyGame
             PhotonNetwork.LeaveRoom();
         }
         #endregion
-        /*
+        
         #region Private Methods
 
         void LoadArena()
@@ -74,13 +74,5 @@ namespace Com.MyCompany.MyGame
 
 
         #endregion
-<<<<<<< HEAD
-<<<<<<< HEAD
-         */
-
-=======
->>>>>>> parent of aec7074 (server(개선))
-=======
->>>>>>> parent of aec7074 (server(개선))
     }
 }
