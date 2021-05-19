@@ -16,8 +16,6 @@ namespace Com.MyCompany.MyGame
         {
             SceneManager.LoadScene(0);
         }
-
-        
         #endregion
 
         #region Public Methods
@@ -36,7 +34,7 @@ namespace Com.MyCompany.MyGame
                 Debug.LogError("Photon Network : Trying to Load a level but we are not the Master Client");
             }
             Debug.LogFormat("Photon Network : Loading Level : {0}", PhotonNetwork.CurrentRoom.PlayerCount);
-            PhotonNetwork.LoadLevel("Inagme");
+            PhotonNetwork.LoadLevel("Romo for" + PhotonNetwork.CurrentRoom.PlayerCount);
         }
        
         #endregion
@@ -76,7 +74,10 @@ namespace Com.MyCompany.MyGame
 
 
         #endregion
+<<<<<<< HEAD
          */
 
+=======
+>>>>>>> parent of aec7074 (server(개선))
     }
 }

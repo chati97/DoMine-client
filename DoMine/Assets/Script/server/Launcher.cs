@@ -111,7 +111,15 @@ namespace Com.MyCompany.MyGame
         {
             
             Debug.Log("PUN Basics Tutorial/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.");
+<<<<<<< HEAD
           
+=======
+            if(PhotonNetwork.CurrentRoom.PlayerCount == 1)
+            {
+                Debug.Log("We load the 'room for 1 '");
+                PhotonNetwork.LoadLevel("Room for 1");
+            }
+>>>>>>> parent of aec7074 (server(개선))
         }
         #endregion
 
