@@ -11,6 +11,8 @@ namespace DoMine
         public float power;
         public float xspeed, yspeed;
         public MapController mapCtrl;
+        public ItemController itemCtrl;
+        public GameController gameCtrl;
 
         // Start is called before the first frame update
         void Start()
@@ -46,6 +48,17 @@ namespace DoMine
                 if(Vector2.Distance(player.position, mapCtrl.nearestWall.transform.position) < 0.8)
                 {
                     mapCtrl.DestroyWall(mapCtrl.nearestWallX, mapCtrl.nearestWallY);
+                }
+            }
+
+            if (Input.GetKey(KeyCode.S) == true)
+            {
+                if(itemCtrl.nearestItem != null)
+                {
+                    if (Vector2.Distance(player.position, itemCtrl.nearestItem.item.transform.position) < 0.8)
+                    {
+                        itemCtrl.GetItem(gameCtrl.playerInfo, itemCtrl.nearestItem);
+                    }
                 }
             }
         }
