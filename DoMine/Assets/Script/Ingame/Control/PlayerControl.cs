@@ -40,6 +40,7 @@ namespace DoMine
             xspeed = player.velocity.x;
             yspeed = player.velocity.y;
 
+
             if(Input.GetKey(KeyCode.A) == true)
             {
                 if(Vector2.Distance(player.position, mapCtrl.nearestWall.transform.position) < 0.8)

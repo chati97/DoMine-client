@@ -8,7 +8,8 @@ namespace DoMine
     {
         [SerializeField] GameObject player = null;
         [SerializeField] ItemController itemcontroller = null;
-        Player playerInfo;
+        Player playerInfo = new Player();
+        public bool gold = true;
         // Start is called before the first frame update
         void Start()
         {
@@ -19,7 +20,7 @@ namespace DoMine
         // Update is called once per frame
         void Update()
         {
-
+            gold = playerInfo.inventory.gold;
         }
     }
 }

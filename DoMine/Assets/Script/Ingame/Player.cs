@@ -9,7 +9,7 @@ namespace DoMine
     [Serializable]
     public class Player
     {
-        public Inventory inventory;
+        public Inventory inventory = new Inventory();
         public int x_location;
         public int y_location;
         public bool sabotage;

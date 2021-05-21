@@ -5,6 +5,10 @@ namespace DoMine
 {
     public class ItemController : MonoBehaviour
     {
+        List<Item> item = new List<Item>();
+        [SerializeField] GameObject gold = null;
+        int listIndex;
+        public Item nearestItem = null;
         // Start is called before the first frame update
         void Start()
         {
@@ -22,13 +26,20 @@ namespace DoMine
             player.inventory.gold = false;
         }
 
-        public void GetItem(Player player, int item)
+        public void GetItem(Player player, Item item)
         {
-            switch (item)
+            switch (item.itemCode)
             {
                 case 0: player.inventory.gold = true;
+                    
                 break;
             }
+        }
+        
+        // instantiate로 만들고 list에 삽입
+        public void createItem(GameObject target, int x, int y)
+        {
+            return;
         }
     }
 }

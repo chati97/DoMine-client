@@ -242,6 +242,7 @@ GameObject:
   - component: {fileID: 809592803}
   - component: {fileID: 809592805}
   - component: {fileID: 809592806}
+  - component: {fileID: 809592807}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -262,6 +263,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1625805910}
+  itemcontroller: {fileID: 809592807}
+  gold: 1
 --- !u!4 &809592804
 Transform:
   m_ObjectHideFlags: 0
@@ -315,6 +318,20 @@ MonoBehaviour:
   xspeed: 0
   yspeed: 0
   mapCtrl: {fileID: 809592805}
+--- !u!114 &809592807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 809592802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9abfae7568b3a44291248f1cdddf337, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gold: {fileID: 0}
+  nearestItem: {fileID: 0}
 --- !u!1 &1049241107
 GameObject:
   m_ObjectHideFlags: 0
