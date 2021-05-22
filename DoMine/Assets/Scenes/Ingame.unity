@@ -91036,6 +91036,37 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 8549921774586530219, guid: 444c82214835241c7ad5946d9b019941,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8549921774586530219, guid: 444c82214835241c7ad5946d9b019941,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8549921774586530219, guid: 444c82214835241c7ad5946d9b019941,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8549921774586530219, guid: 444c82214835241c7ad5946d9b019941,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 5904139920356269206, guid: fa3e686ad7aa241819a4905ff9efa354,
+        type: 3}
+    - target: {fileID: 8549921774586530219, guid: 444c82214835241c7ad5946d9b019941,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: CountPlayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 8549921774586530219, guid: 444c82214835241c7ad5946d9b019941,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 444c82214835241c7ad5946d9b019941, type: 3}
 --- !u!1001 &7700935264629392286

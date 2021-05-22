@@ -19,8 +19,8 @@ namespace Com.MyCompany.MyGame
         /// This client's version number. Users are separated from each other by gameVersion (which allows you to make breaking changes).
         /// </summary>
         string gameVersion = "1";
-
-        bool isConnectiong;
+        int counting = 0;
+        bool isConnecting;
         #endregion
 
 
@@ -66,7 +66,7 @@ namespace Com.MyCompany.MyGame
         /// </summary>
         public void Connect()
         {
-            isConnectiong = true;
+            isConnecting = true;
             progressLabel.SetActive(true);
             controlPanel.SetActive(false);
             // we check if we are connected or not, we join if we are , else we initiate the connection to the server.
@@ -82,7 +82,14 @@ namespace Com.MyCompany.MyGame
                 PhotonNetwork.ConnectUsingSettings();
             }
         }
-
+        public void Counting()
+        {
+            if(isConnecting == true)
+            {
+                counting++;
+                Debug.LogFormat("Player Count is ", PhotonNetwork.CurrentRoom.PlayerCount);
+            }
+        }
 
         #endregion
 
@@ -92,7 +99,7 @@ namespace Com.MyCompany.MyGame
         public override void OnConnectedToMaster()
         {
             Debug.Log("PUN Basics Tutorial/Launcher: OnConnectedToMaster() was called by PUN");
-            if(isConnectiong)
+            if(isConnecting)
             {
                 PhotonNetwork.JoinRandomRoom();
             }
