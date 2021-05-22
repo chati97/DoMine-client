@@ -26,7 +26,9 @@ namespace Com.MyCompany.MyGame
         public void CountPlayer()
         {
             Debug.LogFormat("Now Player Count is {0}", PhotonNetwork.CurrentRoom.PlayerCount);
-            Debug.LogFormat("Player Name : " + PhotonNetwork.NickName);
+            Debug.LogFormat("Player Name : " + PhotonNetwork.PlayerList.GetValue(0));
+            Debug.LogFormat("Player Name : " + PhotonNetwork.PlayerList.GetValue(1));
+            Debug.LogFormat("Player Name : " + PhotonNetwork.PlayerList.GetValue(2));
         }
 
         #endregion
@@ -75,7 +77,6 @@ namespace Com.MyCompany.MyGame
                 LoadArena();
             }
         }
-
 
 
         #endregion

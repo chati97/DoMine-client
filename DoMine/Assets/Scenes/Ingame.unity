@@ -464,6 +464,7 @@ MonoBehaviour:
   xspeed: 0
   yspeed: 0
   breakCool: 0
+  breakCoolBase: 0
   mapCtrl: {fileID: 809592805}
   itemCtrl: {fileID: 809592807}
   gameCtrl: {fileID: 809592803}
@@ -91164,12 +91165,12 @@ PrefabInstance:
     - target: {fileID: 6305255281925887918, guid: 444c82214835241c7ad5946d9b019941,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -880
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6305255281925887918, guid: 444c82214835241c7ad5946d9b019941,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -525
+      value: -50
       objectReference: {fileID: 0}
     - target: {fileID: 6305255281925887918, guid: 444c82214835241c7ad5946d9b019941,
         type: 3}
@@ -91241,6 +91242,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8549921774586530219, guid: 444c82214835241c7ad5946d9b019941,
+        type: 3}
+      propertyPath: m_Colors.m_ColorMultiplier
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 444c82214835241c7ad5946d9b019941, type: 3}

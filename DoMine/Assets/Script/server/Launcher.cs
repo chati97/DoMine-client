@@ -114,7 +114,7 @@ namespace Com.MyCompany.MyGame
         {
             Debug.Log("PUN Basics Tutorial/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.");
 
-            if(PhotonNetwork.CurrentRoom.PlayerCount >= 1)
+            if(PhotonNetwork.CurrentRoom.PlayerCount != 0)
             {
                 Debug.Log("We load the 'Ingame'");
                 PhotonNetwork.LoadLevel("Ingame");
