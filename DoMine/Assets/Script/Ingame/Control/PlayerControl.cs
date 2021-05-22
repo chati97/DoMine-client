@@ -11,6 +11,7 @@ namespace DoMine
         public float power;
         public float xspeed, yspeed;
         public float breakCool;
+        public float breakCoolBase;
         public MapController mapCtrl;
         public ItemController itemCtrl;
         public GameController gameCtrl;
@@ -59,7 +60,7 @@ namespace DoMine
                     if (Vector2.Distance(player.position, mapCtrl.nearestWall.transform.position) < 0.8)
                     {
                         mapCtrl.DestroyWall(mapCtrl.nearestWallX, mapCtrl.nearestWallY);
-                        breakCool = 1;
+                        breakCool = breakCoolBase;
                     }
                 }
                 else
@@ -73,7 +74,7 @@ namespace DoMine
             {
                 if(itemCtrl.nearestItem != null)
                 {
-                    if (Vector2.Distance(player.position, itemCtrl.nearestItem.item.transform.position) < 0.8)
+                    if (Vector2.Distance(player.position, itemCtrl.nearestItem.item.transform.position) < 0.5)
                     {
                         itemCtrl.GetItem(gameCtrl.playerInfo, itemCtrl.nearestItem);
                     }

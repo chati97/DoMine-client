@@ -410,6 +410,7 @@ MonoBehaviour:
     y_location: 0
     sabotage: 0
   gold: 1
+  time: 0
 --- !u!4 &809592804
 Transform:
   m_ObjectHideFlags: 0
@@ -459,7 +460,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1625805911}
-  power: 20
+  power: 10
   xspeed: 0
   yspeed: 0
   breakCool: 0

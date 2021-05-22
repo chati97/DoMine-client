@@ -87,7 +87,7 @@ namespace DoMine
                     nearestItem = item;
                 }
             }
-            if (Vector2.Distance(_nearestVector, player.transform.position) < 0.8)
+            if (Vector2.Distance(_nearestVector, player.transform.position) < 0.5)
             {
                 mapIndicator.gameObject.SetActive(true);
                 mapIndicator.transform.position = _nearestVector;

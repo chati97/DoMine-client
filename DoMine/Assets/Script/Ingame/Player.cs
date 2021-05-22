@@ -10,8 +10,8 @@ namespace DoMine
     public class Player
     {
         public Inventory inventory = new Inventory();
-        public int x_location;
-        public int y_location;
+        public float x_location;
+        public float y_location;
         public bool sabotage;
     }        
 }
