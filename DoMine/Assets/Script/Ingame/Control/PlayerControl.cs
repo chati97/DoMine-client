@@ -10,6 +10,7 @@ namespace DoMine
         [SerializeField] Rigidbody2D player = null;
         public float power;
         public float xspeed, yspeed;
+        public float breakCool;
         public MapController mapCtrl;
         public ItemController itemCtrl;
         public GameController gameCtrl;
@@ -23,6 +24,14 @@ namespace DoMine
         // Update is called once per frame
         void FixedUpdate()
         {
+            if(breakCool > 0)
+            {
+                breakCool -= Time.deltaTime;
+            }
+            if(breakCool < 0)
+            {
+                breakCool = 0;
+            }
             if(Input.GetKey(KeyCode.LeftArrow) == true)
             {
                 player.AddForce(Vector2.left * power);
@@ -45,10 +54,19 @@ namespace DoMine
 
             if(Input.GetKey(KeyCode.A) == true)
             {
-                if(Vector2.Distance(player.position, mapCtrl.nearestWall.transform.position) < 0.8)
+                if(breakCool == 0)
                 {
-                    mapCtrl.DestroyWall(mapCtrl.nearestWallX, mapCtrl.nearestWallY);
+                    if (Vector2.Distance(player.position, mapCtrl.nearestWall.transform.position) < 0.8)
+                    {
+                        mapCtrl.DestroyWall(mapCtrl.nearestWallX, mapCtrl.nearestWallY);
+                        breakCool = 1;
+                    }
                 }
+                else
+                {
+                    Debug.Log("in Breaking-Cooltime");
+                }
+                
             }
 
             if (Input.GetKey(KeyCode.S) == true)

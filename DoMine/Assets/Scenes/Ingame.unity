@@ -459,9 +459,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1625805911}
-  power: 50
+  power: 20
   xspeed: 0
   yspeed: 0
+  breakCool: 0
   mapCtrl: {fileID: 809592805}
   itemCtrl: {fileID: 809592807}
   gameCtrl: {fileID: 809592803}

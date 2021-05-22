@@ -40,7 +40,7 @@ namespace DoMine
                         player.inventory.gold = true;
                     else
                     {
-                        Debug.Log("Already havin gold");
+                        Debug.Log("Already having gold");
                         return;
                     }
                     break;

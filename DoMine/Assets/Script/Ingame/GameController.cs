@@ -15,7 +15,7 @@ namespace DoMine
         {
             player.transform.position = new Vector2(50, 50);
             itemcontroller.Init(playerInfo);
-            itemcontroller.CreateItem(50, 50, 0);
+            itemcontroller.CreateItem(50, 98, 0);
             itemcontroller.CreateItem(49, 49, 0);
         }
 
