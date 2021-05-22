@@ -19,7 +19,6 @@ namespace Com.MyCompany.MyGame
         /// This client's version number. Users are separated from each other by gameVersion (which allows you to make breaking changes).
         /// </summary>
         string gameVersion = "1";
-        int counting = 0;
         bool isConnecting;
         #endregion
 
@@ -82,14 +81,7 @@ namespace Com.MyCompany.MyGame
                 PhotonNetwork.ConnectUsingSettings();
             }
         }
-        public void Counting()
-        {
-            if(isConnecting == true)
-            {
-                counting++;
-                Debug.LogFormat("Player Count is ", PhotonNetwork.CurrentRoom.PlayerCount);
-            }
-        }
+
 
         #endregion
 
@@ -122,7 +114,7 @@ namespace Com.MyCompany.MyGame
         {
             Debug.Log("PUN Basics Tutorial/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.");
 
-            if(PhotonNetwork.CurrentRoom.PlayerCount == 1)
+            if(PhotonNetwork.CurrentRoom.PlayerCount >= 1)
             {
                 Debug.Log("We load the 'Ingame'");
                 PhotonNetwork.LoadLevel("Ingame");
