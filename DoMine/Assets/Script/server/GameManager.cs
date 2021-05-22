@@ -26,7 +26,9 @@ namespace Com.MyCompany.MyGame
         public void CountPlayer()
         {
             Debug.LogFormat("Now Player Count is {0}", PhotonNetwork.CurrentRoom.PlayerCount);
+            Debug.LogFormat("Player Name : " + PhotonNetwork.NickName);
         }
+
         #endregion
 
         #region Private Methods
