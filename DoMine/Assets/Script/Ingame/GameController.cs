@@ -20,7 +20,6 @@ namespace DoMine
             itemcontroller.Init(playerInfo);
             itemcontroller.CreateItem(50, 98, 0);
             itemcontroller.CreateItem(49, 49, 0);
-            MovePlayer(player, new Vector2(50, 50));
         }
 
 
@@ -34,10 +33,6 @@ namespace DoMine
                 time -= Time.deltaTime;
         }
 
-        public void MovePlayer(GameObject player, Vector2 location)
-        {
-            player.transform.position = location;
-        }
 
     }
 }
