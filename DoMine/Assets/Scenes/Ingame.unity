@@ -459,12 +459,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74404cfb46a56e54aa422421e8847f38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1625805911}
+  player: {fileID: 1625805910}
+  playerRB: {fileID: 1625805911}
   power: 10
   xspeed: 0
   yspeed: 0
   breakCool: 0
-  breakCoolBase: 0
+  returnCool: 0
   mapCtrl: {fileID: 809592805}
   itemCtrl: {fileID: 809592807}
   gameCtrl: {fileID: 809592803}
@@ -91165,12 +91166,12 @@ PrefabInstance:
     - target: {fileID: 6305255281925887918, guid: 444c82214835241c7ad5946d9b019941,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 880
       objectReference: {fileID: 0}
     - target: {fileID: 6305255281925887918, guid: 444c82214835241c7ad5946d9b019941,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: -495
       objectReference: {fileID: 0}
     - target: {fileID: 6305255281925887918, guid: 444c82214835241c7ad5946d9b019941,
         type: 3}
@@ -91320,12 +91321,12 @@ PrefabInstance:
     - target: {fileID: 8478695217293076331, guid: 5194cb85a846f45cfb0882a51096982e,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 880
       objectReference: {fileID: 0}
     - target: {fileID: 8478695217293076331, guid: 5194cb85a846f45cfb0882a51096982e,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -100
+      value: -525
       objectReference: {fileID: 0}
     - target: {fileID: 8478695217293076331, guid: 5194cb85a846f45cfb0882a51096982e,
         type: 3}
