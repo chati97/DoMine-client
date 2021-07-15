@@ -27,7 +27,7 @@ namespace DoMine
         // Start is called before the first frame update
         void Start()
         {
-
+            MovePlayer(player, new Vector2(50, 50));
         }
 
         // Update is called once per frame
