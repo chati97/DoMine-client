@@ -7,16 +7,19 @@ using UnityEditor;
 namespace DoMine
 {
     [Serializable]
-    public class Item : MonoBehaviour
+    public class Item
     {
-        public GameObject item;
+        public GameObject item = new GameObject();    
         public int itemCode;
-        public int index;
         public int x_location;
         public int y_location;
-        void Update()
-        {
-        }
 
+        public Item(GameObject _item, int _itemCode, int _x_location, int _y_location)
+        {
+            item = _item;
+            itemCode = _itemCode;
+            x_location = _x_location;
+            y_location = _y_location;
+        }
     }
 }

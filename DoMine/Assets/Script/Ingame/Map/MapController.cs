@@ -9,11 +9,11 @@ namespace DoMine
     {
         int[,] mapArray = new int[100,100];
         GameObject[,] mapObject = new GameObject[100, 100];
-        [SerializeField] GameObject Player = null;
+        [SerializeField] GameObject player = null;
         [SerializeField] GameObject breakable = null;
         [SerializeField] GameObject unbreakable = null;
         [SerializeField] Transform wallParent = null;
-        [SerializeField] GameObject indicator = null;
+        [SerializeField] GameObject wallIndicator = null;
         public GameObject nearestWall = null;
         public int nearestWallX = -1;
         public int nearestWallY = -1;
@@ -128,7 +128,7 @@ namespace DoMine
                 {
                     if (mapObject[i, j] != null)
                     {
-                        _sampleDistance = Vector2.Distance(Player.transform.position, mapObject[i, j].transform.position);
+                        _sampleDistance = Vector2.Distance(player.transform.position, mapObject[i, j].transform.position);
                         if (_nearestDistance > _sampleDistance)
                         {
                             _nearestDistance = _sampleDistance;
@@ -142,14 +142,14 @@ namespace DoMine
                 }
 
             }
-            if (Vector2.Distance(_nearestVector, Player.transform.position) < 0.8)
+            if (Vector2.Distance(_nearestVector, player.transform.position) < 0.8)
             {
-                indicator.gameObject.SetActive(true);
-                indicator.transform.position = _nearestVector;
+                wallIndicator.gameObject.SetActive(true);
+                wallIndicator.transform.position = _nearestVector;
             }
             else
             {
-                indicator.gameObject.SetActive(false);
+                wallIndicator.gameObject.SetActive(false);
             }
         }
     }
