@@ -1,27 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
+using System.Collections;
 using Photon.Bolt;
 
-namespace Photon.Bolt
+[BoltGlobalBehaviour]
+public class NetworkCallbacks : Photon.Bolt.GlobalEventListener
 {
-    public class ServerManager : GlobalEventListener
+    public void SceneLoadLocalDone(string map)
     {
-        public static ServerManager NM;
-        private void Awake() => NM = this;
+    // randomize a position
+        var pos = new Vector3(UnityEngine.Random.Range(-16, 16), 0, UnityEngine.Random.Range(-16, 16));
 
-
-        public List<BoltEntity> players = new List<BoltEntity>();
-        public BoltEntity myPlayer;
-
-        public GameObject SpawnPrefab;
-
-
-        public override void SceneLoadLocalDone(string scene, IProtocolToken token)
-        {
-            var spawnPos = new Vector2(Random.Range(50, 52), 50);
-            myPlayer = BoltNetwork.Instantiate(SpawnPrefab, spawnPos, Quaternion.identity);
-        }
-
+    // instantiate cube
+        BoltNetwork.Instantiate(BoltPrefabs.Player, pos, Quaternion.identity);
     }
 }
