@@ -12,10 +12,9 @@
           "ReplicationMode": 1,
           "Priority": 1,
           "PropertyType": {
-            "$type": "Photon.Bolt.Compiler.PropertyTypeTransform, bolt.compiler",
-            "PositionSelection": 6,
-            "RotationSelection": 6,
-            "PositionCompression": [
+            "$type": "Photon.Bolt.Compiler.PropertyTypeVector, bolt.compiler",
+            "Selection": 14,
+            "Compression": [
               {
                 "MinValue": -1024,
                 "MaxValue": 1024,
@@ -43,39 +42,7 @@
                 "Shift": 1024.0,
                 "BitsRequired": 18
               }
-            ],
-            "RotationCompression": [
-              {
-                "MaxValue": 360,
-                "Accuracy": 0.01,
-                "Pack": 100.0,
-                "Read": 0.01,
-                "BitsRequired": 16
-              },
-              {
-                "MaxValue": 360,
-                "Accuracy": 0.01,
-                "Pack": 100.0,
-                "Read": 0.01,
-                "BitsRequired": 16
-              },
-              {
-                "MaxValue": 360,
-                "Accuracy": 0.01,
-                "Pack": 100.0,
-                "Read": 0.01,
-                "BitsRequired": 16
-              }
-            ],
-            "RotationCompressionQuaternion": {
-              "MinValue": -1,
-              "MaxValue": 1,
-              "Accuracy": 0.01,
-              "Pack": 100.0,
-              "Read": 0.01,
-              "Shift": 1.0,
-              "BitsRequired": 8
-            }
+            ]
           },
           "AssetSettings": {
             "$type": "Photon.Bolt.Compiler.PropertyStateSettings, bolt.compiler",
