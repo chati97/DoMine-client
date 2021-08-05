@@ -1,20 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Bolt;
 
 
 namespace DoMine
 {
-    public class PlayerControl : MonoBehaviour
+    public class PlayerControl : EntityBehaviour<IPlayerState>
     {
         [SerializeField] GameObject player = null;
-        [SerializeField] Rigidbody2D playerRB = null;
+        //[SerializeField] Rigidbody2D playerRB = null;
         public float power;
         public float xspeed, yspeed;
         public float breakCool;
-        float breakCoolBase = 1;
+        //float breakCoolBase = 1;
         public float returnCool;
-        float returnCoolBase = 1;
+        //float returnCoolBase = 1;
         public MapController mapCtrl;
         public ItemController itemCtrl;
         public GameController gameCtrl;
@@ -24,12 +25,45 @@ namespace DoMine
             player.transform.position = location;
         }
 
+        public override void Attached()
+        {
+            state.SetTransforms(state.Location, transform);
+        }
+
         // Start is called before the first frame update
         void Start()
         {
             MovePlayer(player, new Vector2(50, 50));
         }
 
+        public override void SimulateOwner()
+        {
+            var speed = 4f;
+            var movement = Vector3.zero;
+
+            if (Input.GetKey(KeyCode.LeftArrow) == true)
+            {
+                movement.x -= 1f;
+            }
+            if (Input.GetKey(KeyCode.RightArrow) == true)
+            {
+                movement.x += 1f;
+            }
+            if (Input.GetKey(KeyCode.UpArrow) == true)
+            {
+                movement.y += 1f;
+            }
+            if (Input.GetKey(KeyCode.DownArrow) == true)
+            {
+                movement.y -= 1f;
+            }
+            
+            if (movement != Vector3.zero)
+            {
+                transform.position = transform.position + (movement.normalized * speed * BoltNetwork.FrameDeltaTime);
+            }
+        }
+        /*
         // Update is called once per frame
         void FixedUpdate()
         {
@@ -109,7 +143,7 @@ namespace DoMine
                     }
                 }
             }
-        }
+        }*/
     }
 }
 

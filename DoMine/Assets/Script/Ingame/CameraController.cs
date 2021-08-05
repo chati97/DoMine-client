@@ -1,23 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Bolt;
 
 namespace DoMine
 {
-    public class CameraController : MonoBehaviour
+    public class CameraController : EntityBehaviour<IPlayerState>
     {
-        public Transform Target;             // 따라다닐 타겟 오브젝트
-        public Vector3 lookOffset = new Vector3(0,0,-10);            // 고정시킬 카메라의 z축의 값
+        public Camera entityCamera;                                    // 프리팹에 장착된 개인 카메라
 
-        void Start()
+        public override void Attached()
         {
-
-        }
-        void Update()
-        {
-            transform.position = Target.position + lookOffset;
-            transform.LookAt(Target.transform);
-            
+            if(entity.IsOwner)
+            {
+                entityCamera.gameObject.SetActive(true);
+            }
         }
     }
 }

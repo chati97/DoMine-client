@@ -390,7 +390,6 @@ GameObject:
   - component: {fileID: 809592804}
   - component: {fileID: 809592803}
   - component: {fileID: 809592805}
-  - component: {fileID: 809592806}
   - component: {fileID: 809592807}
   - component: {fileID: 809592808}
   m_Layer: 0
@@ -456,28 +455,6 @@ MonoBehaviour:
   nearestWall: {fileID: 0}
   nearestWallX: -1
   nearestWallY: -1
---- !u!114 &809592806
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 809592802}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74404cfb46a56e54aa422421e8847f38, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 1625805910}
-  playerRB: {fileID: 1625805911}
-  power: 10
-  xspeed: 0
-  yspeed: 0
-  breakCool: 0
-  returnCool: 0
-  mapCtrl: {fileID: 809592805}
-  itemCtrl: {fileID: 809592807}
-  gameCtrl: {fileID: 809592803}
 --- !u!114 &809592807
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -525,8 +502,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1049241110}
   - component: {fileID: 1049241109}
-  - component: {fileID: 1049241108}
-  - component: {fileID: 1049241111}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -534,14 +509,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &1049241108
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1049241107}
-  m_Enabled: 1
 --- !u!20 &1049241109
 Camera:
   m_ObjectHideFlags: 0
@@ -599,20 +566,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1049241111
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1049241107}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47afbaa9e4ec63c4fa21e4e55a9933ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Target: {fileID: 1625805913}
-  lookOffset: {x: 0, y: 0, z: -10}
 --- !u!1 &1063068764
 GameObject:
   m_ObjectHideFlags: 0

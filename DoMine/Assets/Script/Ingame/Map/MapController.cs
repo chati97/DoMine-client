@@ -69,7 +69,7 @@ namespace DoMine
                         case 0:
                             break;
                         case 1:
-                            mapObject[i, j] = Instantiate(breakable, new Vector2(i, j), Quaternion.identity, wallParent);
+                            //mapObject[i, j] = Instantiate(breakable, new Vector2(i, j), Quaternion.identity, wallParent);
                             break;
                         case 2:
                             mapObject[i, j] = Instantiate(unbreakable, new Vector2(i, j), Quaternion.identity, wallParent);
