@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Photon.Bolt;
 
 namespace DoMine
 {
     public class MapController : MonoBehaviour
     {
         int[,] mapArray = new int[100,100];
-        GameObject[,] mapObject = new GameObject[100, 100];
+        public GameObject[,] mapObject = new GameObject[100, 100];
         [SerializeField] GameObject player = null;
         [SerializeField] GameObject breakable = null;
         [SerializeField] GameObject unbreakable = null;
@@ -18,10 +19,15 @@ namespace DoMine
         public int nearestWallX = -1;
         public int nearestWallY = -1;
         int mapSize = 100;
-
+        public int isHost = 0;
         private void Start()
         {
-            CreateMap(mapArray = MakeMapArr() ,ref mapObject);
+            if(BoltNetwork.IsServer)
+            {
+                CreateMap(mapArray = MakeMapArr(), ref mapObject);
+                Debug.Log("Creation");
+            }
+            
         }
 
         private void Update()
