@@ -8,7 +8,7 @@ namespace DoMine
 {
     public class MapController : MonoBehaviour
     {
-        int[,] mapArray = new int[100,100];
+        public int[,] mapArray = new int[100,100];
         public GameObject[,] mapObject = new GameObject[100, 100];
         [SerializeField] GameObject player = null;
         [SerializeField] GameObject breakable = null;
@@ -22,11 +22,7 @@ namespace DoMine
         public int isHost = 0;
         private void Start()
         {
-            if(BoltNetwork.IsServer)
-            {
-                CreateMap(mapArray = MakeMapArr(), ref mapObject);
-                Debug.Log("Creation");
-            }
+            
             
         }
 

@@ -458,6 +458,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f96234228303949c082e2216091e8ed9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MC: {fileID: 809592805}
   players: []
   myPlayer: {fileID: 0}
   SpawnPrefab: {fileID: 9087986202235492200, guid: 45bea264105a54207b7bf88a9c582b7a,
