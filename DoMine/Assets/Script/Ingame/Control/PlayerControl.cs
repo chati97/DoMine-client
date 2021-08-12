@@ -9,13 +9,12 @@ namespace DoMine
     public class PlayerControl : EntityBehaviour<IPlayerState>
     {
         [SerializeField] GameObject player = null;
-        //[SerializeField] Rigidbody2D playerRB = null;
         public float power;
         public float xspeed, yspeed;
         public float breakCool;
-        //float breakCoolBase = 1;
+        float breakCoolBase = 1;
         public float returnCool;
-        //float returnCoolBase = 1;
+        float returnCoolBase = 1;
         public MapController mapCtrl;
         public ItemController itemCtrl;
         public GameController gameCtrl;
@@ -28,12 +27,30 @@ namespace DoMine
         public override void Attached()
         {
             state.SetTransforms(state.Location, transform);
+
+            if (breakCool > 0)
+            {
+                breakCool -= Time.deltaTime;
+            }
+            if (breakCool < 0)
+            {
+                breakCool = 0;
+            }
+            if (returnCool > 0)
+            {
+                returnCool -= Time.deltaTime;
+            }
+            if (returnCool < 0)
+            {
+                returnCool = 0;
+            }
         }
 
         // Start is called before the first frame update
         void Start()
         {
             MovePlayer(player, new Vector2(50, 50));
+            mapCtrl = GameObject.Find("GameController").GetComponent<MapController>();
         }
 
         public override void SimulateOwner()
@@ -61,6 +78,37 @@ namespace DoMine
             if (movement != Vector3.zero)
             {
                 transform.position = transform.position + (movement.normalized * speed * BoltNetwork.FrameDeltaTime);
+            }
+
+            if (Input.GetKey(KeyCode.R) == true)
+            {
+                if (returnCool == 0)
+                {
+                    MovePlayer(player, new Vector2(50, 50));
+                    returnCool = returnCoolBase;
+                }
+                else
+                {
+                    Debug.Log("in Return-Cooltime");
+                }
+
+            }
+
+            if (Input.GetKey(KeyCode.A) == true)
+            {
+                if (breakCool == 0)
+                {
+                    if (Vector2.Distance(player.transform.position, mapCtrl.nearestWall.transform.position) < 0.8)
+                    {
+                        mapCtrl.DestroyWall(mapCtrl.nearestWallX, mapCtrl.nearestWallY);
+                        breakCool = breakCoolBase;
+                    }
+                }
+                else
+                {
+                    Debug.Log("in Breaking-Cooltime");
+                }
+
             }
         }
         /*
@@ -102,36 +150,7 @@ namespace DoMine
             xspeed = playerRB.velocity.x;
             yspeed = playerRB.velocity.y;
 
-            if(Input.GetKey(KeyCode.R) == true)
-            {
-                if (returnCool == 0)
-                {
-                    MovePlayer(player, new Vector2(50, 50));
-                    returnCool = returnCoolBase;
-                }
-                else
-                {
-                    Debug.Log("in Return-Cooltime");
-                }
-
-            }
-
-            if (Input.GetKey(KeyCode.A) == true)
-            {
-                if(breakCool == 0)
-                {
-                    if (Vector2.Distance(player.transform.position, mapCtrl.nearestWall.transform.position) < 0.8)
-                    {
-                        mapCtrl.DestroyWall(mapCtrl.nearestWallX, mapCtrl.nearestWallY);
-                        breakCool = breakCoolBase;
-                    }
-                }
-                else
-                {
-                    Debug.Log("in Breaking-Cooltime");
-                }
-                
-            }
+            
 
             if (Input.GetKey(KeyCode.S) == true)
             {

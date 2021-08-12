@@ -10,7 +10,7 @@ namespace DoMine
     {
         public int[] mapArray = new int[10000];
         public GameObject[] mapObject = new GameObject[10000];
-        [SerializeField] GameObject player = null;
+        public GameObject player = null;
         [SerializeField] GameObject breakable = null;
         [SerializeField] GameObject unbreakable = null;
         [SerializeField] Transform wallParent = null;
@@ -22,8 +22,7 @@ namespace DoMine
         public int isHost = 0;
         private void Start()
         {
-            
-            
+
         }
 
         private void Update()
@@ -105,17 +104,17 @@ namespace DoMine
 
 
         //DestroyWall 부술수있는 벽을 부술때 호출되는 함수
-        /*public void DestroyWall(int x, int y)
+        public void DestroyWall(int x, int y)
         {
-            Debug.Log(mapArray[x, y]);
-            if (mapArray[x,y] == 1)
+            Debug.Log(mapArray[x * 100 + y]);
+            if (mapArray[x * 100 + y] == 1)
             {
-                Destroy(mapObject[x, y]);
-                mapArray[x, y] = 0;
+                Destroy(mapObject[x * 100 + y]);
+                mapArray[x * 100 + y] = 0;
                 Debug.Log(nearestWallX + "," + nearestWallY);
             }
             
-        }*/
+        }
 
 
         //FindWall 가장 가까운 부술수 있는 벽을 표시
