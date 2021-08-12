@@ -8,8 +8,8 @@ namespace DoMine
 {
     public class MapController : MonoBehaviour
     {
-        public int[,] mapArray = new int[100,100];
-        public GameObject[,] mapObject = new GameObject[100, 100];
+        public int[] mapArray = new int[10000];
+        public GameObject[] mapObject = new GameObject[10000];
         [SerializeField] GameObject player = null;
         [SerializeField] GameObject breakable = null;
         [SerializeField] GameObject unbreakable = null;
@@ -34,50 +34,49 @@ namespace DoMine
         //MakeMapArr 맵 배열을 생성하는 함수 나중엔 서버에서 생성할것or호스트가 생성
         //현재 함수는 중간 공간을 제외한 모든 공간에 부술수있는벽을 채우고 맨끝은 부서지지 않는 벽으로 채움
         //추후에 변수값을 받아서 원하는 크기로 맵을 만들게 할 예정
-        public int[,] MakeMapArr()
+        public int[] MakeMapArr()
         {
-            int[,] mapArray = new int[mapSize, mapSize];
+            int[] mapArray = new int[mapSize * mapSize];
             for(int i = 0; i< mapSize; i++)
             {
-                mapArray[0, i] = 2;
-                mapArray[mapSize-1, i] = 2;
-                mapArray[i, 0] = 2;
-                mapArray[i, mapSize-1] = 2;
+                mapArray[i] = 2;
+                mapArray[(mapSize-1)*100 + i] = 2;
+                mapArray[i*100] = 2;
+                mapArray[i*100 + (mapSize-1)] = 2;
             }
             for(int i = 1; i< mapSize-1; i++)
             {
                 for(int j = 1; j < mapSize-1; j++)
                 {
-                    mapArray[i, j] = 1; //나머지는 부서지는벽으로설정
+                    mapArray[i*100 + j] = 1; //나머지는 부서지는벽으로설정
                 }
             }
-            mapArray[mapSize / 2 - 1, mapSize / 2 - 1] = 0;
-            mapArray[mapSize / 2 - 1, mapSize / 2] = 0;
-            mapArray[mapSize / 2, mapSize / 2 - 1] = 0;
-            mapArray[mapSize / 2, mapSize / 2] = 0;
+            mapArray[(mapSize / 2 - 1)*100 + mapSize / 2 - 1] = 0;
+            mapArray[(mapSize / 2 - 1)* 100 + mapSize / 2] = 0;
+            mapArray[(mapSize / 2)* 100 + mapSize / 2 - 1] = 0;
+            mapArray[(mapSize / 2)* 100 + mapSize / 2] = 0;
             return mapArray;
         }
 
 
         // CreateMap 맵 정보를 받아 최초 맵생성 생성하는 정보만 있음
-        public void CreateMap(int[,] mapArray, ref GameObject[,] mapObject)
+        public void CreateMap(int[] mapArray, ref GameObject[] mapObject)
         {
             for(int i = 0; i< mapSize; i++)
             {
                 for(int j = 0; j< mapSize; j++)
                 {
-                    switch(mapArray[i,j])
+                    switch(mapArray[i*100 + j])
                     {
                         case 0:
                             break;
                         case 1:
-                            mapObject[i, j] = BoltNetwork.Instantiate(BoltPrefabs.Wall2, new Vector2(i, j), Quaternion.identity);
+                            mapObject[i * 100 + j] = BoltNetwork.Instantiate(BoltPrefabs.Wall2, new Vector2(i, j), Quaternion.identity);
                             break;
                         case 2:
-                            mapObject[i, j] = BoltNetwork.Instantiate(BoltPrefabs.Wall, new Vector2(i, j), Quaternion.identity);
+                            mapObject[i * 100 + j] = BoltNetwork.Instantiate(BoltPrefabs.Wall, new Vector2(i, j), Quaternion.identity);
                             break;
                     }
-                    BoltNetwork.Instantiate(BoltPrefabs.Player, new Vector2(i, j), Quaternion.identity, );
                 }
             }
         }
@@ -106,7 +105,7 @@ namespace DoMine
 
 
         //DestroyWall 부술수있는 벽을 부술때 호출되는 함수
-        public void DestroyWall(int x, int y)
+        /*public void DestroyWall(int x, int y)
         {
             Debug.Log(mapArray[x, y]);
             if (mapArray[x,y] == 1)
@@ -116,11 +115,11 @@ namespace DoMine
                 Debug.Log(nearestWallX + "," + nearestWallY);
             }
             
-        }
+        }*/
 
 
         //FindWall 가장 가까운 부술수 있는 벽을 표시
-        public void FindWall(GameObject[,] mapObject)
+        public void FindWall(GameObject[] mapObject)
         {
             float _nearestDistance = 10000;
             float _sampleDistance;
@@ -129,14 +128,14 @@ namespace DoMine
             {
                 for (int j = 0; j < mapSize; j++)
                 {
-                    if (mapObject[i, j] != null)
+                    if (mapObject[i * 100 + j] != null)
                     {
-                        _sampleDistance = Vector2.Distance(player.transform.position, mapObject[i, j].transform.position);
+                        _sampleDistance = Vector2.Distance(player.transform.position, mapObject[i * 100 + j].transform.position);
                         if (_nearestDistance > _sampleDistance)
                         {
                             _nearestDistance = _sampleDistance;
-                            _nearestVector = mapObject[i, j].transform.position;
-                            nearestWall = mapObject[i, j];
+                            _nearestVector = mapObject[i * 100 + j].transform.position;
+                            nearestWall = mapObject[i * 100 + j];
                             nearestWallX = i;
                             nearestWallY = j;
                         }

@@ -51,15 +51,15 @@ MonoBehaviour:
   debugBuildMode: 1
   debugStartMapName: 
   debugPlayAsServer: 0
-  showDebugInfo: 0
+  showDebugInfo: 1
   overrideTimeScale: 1
   debugEditorMode: 1
   consoleToggleKey: 9
-  consoleVisibleByDefault: 0
+  consoleVisibleByDefault: 1
   compilationWarnLevel: 4
   editorSkin: 4
   scopeModeHideWarningInGui: 0
-  showBoltEntityHints: 0
+  showBoltEntityHints: 1
   serializeProjectAsText: 0
   photonAppId: 591fb46b-4e85-4862-951a-4bfcd099fb99
   photonUsePunch: 0
@@ -73,4 +73,4 @@ MonoBehaviour:
   RoomCreateTimeout: 10
   RoomJoinTimeout: 10
   enableClientMetrics: 0
-  enableSourceProvider: 0
+  enableSourceProvider: 1
