@@ -71,12 +71,13 @@ namespace DoMine
                         case 0:
                             break;
                         case 1:
-                            //mapObject[i, j] = Instantiate(breakable, new Vector2(i, j), Quaternion.identity, wallParent);
+                            mapObject[i, j] = BoltNetwork.Instantiate(BoltPrefabs.Wall2, new Vector2(i, j), Quaternion.identity);
                             break;
                         case 2:
-                            mapObject[i, j] = Instantiate(unbreakable, new Vector2(i, j), Quaternion.identity, wallParent);
+                            mapObject[i, j] = BoltNetwork.Instantiate(BoltPrefabs.Wall, new Vector2(i, j), Quaternion.identity);
                             break;
                     }
+                    BoltNetwork.Instantiate(BoltPrefabs.Player, new Vector2(i, j), Quaternion.identity, );
                 }
             }
         }
