@@ -440,7 +440,7 @@ GameObject:
   - component: {fileID: 809592807}
   - component: {fileID: 809592808}
   - component: {fileID: 809592805}
-  - component: {fileID: 809592806}
+  - component: {fileID: 809592809}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -460,16 +460,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dbb0e638b9529a4bb2ea4c3d5c54ead, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 9087986202235492200, guid: 45bea264105a54207b7bf88a9c582b7a, type: 3}
-  itemcontroller: {fileID: 809592807}
+  IC: {fileID: 809592807}
   MC: {fileID: 809592805}
   timeLeft: {fileID: 197455785}
-  playerInfo:
-    x_location: 0
-    y_location: 0
-    sabotage: 0
-  gold: 1
-  time: 0
+  GSC: {fileID: 809592809}
 --- !u!4 &809592804
 Transform:
   m_ObjectHideFlags: 0
@@ -10509,35 +10503,6 @@ MonoBehaviour:
   nearestWallX: -1
   nearestWallY: -1
   isHost: 0
---- !u!114 &809592806
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 809592802}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 155943207, guid: 5b00bf8b25851d440940a40ec23344f4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _sceneGuid: 
-  _serializerGuid: da008e0e-062b-4f6e-a942-7b2f62b744ee
-  _prefabId: 0
-  _updateRate: 1
-  _autoFreezeProxyFrames: 0
-  _clientPredicted: 1
-  _allowInstantiateOnClient: 1
-  _persistThroughSceneLoads: 0
-  _sceneObjectDestroyOnDetach: 1
-  _sceneObjectAutoAttach: 1
-  _alwaysProxy: 0
-  _detachOnDisable: 1
-  _allowFirstReplicationWhenFrozen: 0
-  _autoRemoveChildEntities: 0
-  _entityBehaviourQueryOption: 0
-  _entityPriorityCalculatorQueryOption: 1
-  _entityReplicationFilterQueryOption: 1
 --- !u!114 &809592807
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10574,8 +10539,22 @@ MonoBehaviour:
   MC: {fileID: 809592805}
   players: []
   myPlayer: {fileID: 0}
+  gameInfo: {fileID: 0}
   SpawnPrefab: {fileID: 9087986202235492200, guid: 45bea264105a54207b7bf88a9c582b7a,
     type: 3}
+--- !u!114 &809592809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 809592802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e450d843a030b3a4488dbaac336b98ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeLeft: 0
 --- !u!1 &1049241107
 GameObject:
   m_ObjectHideFlags: 0

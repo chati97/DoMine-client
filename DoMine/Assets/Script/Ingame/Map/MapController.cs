@@ -131,9 +131,9 @@ namespace DoMine
             float _nearestDistance = 10000;
             float _sampleDistance;
             Vector2 _nearestVector = new Vector2(0, 0);
-            for (int i = 0; i < mapSize; i++)
+            for (int i = (int)Math.Ceiling(player.transform.position.x) - 1; i < (int)Math.Ceiling(player.transform.position.x) + 1; i++)// 본인둘러싼 총9칸을 비교하는 수 기존 10000개 다 search하던 것에서 최적화
             {
-                for (int j = 0; j < mapSize; j++)
+                for (int j = (int)Math.Ceiling(player.transform.position.y) - 1; j < (int)Math.Ceiling(player.transform.position.y) + 1; j++)
                 {
                     if (mapObject[i * 100 + j] != null)
                     {

@@ -9,12 +9,10 @@ namespace DoMine
     public class PlayerControl : EntityBehaviour<IPlayerState>
     {
         [SerializeField] GameObject player = null;
-        public float power;
-        public float xspeed, yspeed;
         public float breakCool;
-        float breakCoolBase = 0;
+        float breakCoolBase = 0.5f;
         public float returnCool;
-        float returnCoolBase = 0;
+        float returnCoolBase = 0.5f;
         public MapController mapCtrl;
         public ItemController itemCtrl;
         public GameController gameCtrl;
@@ -27,29 +25,11 @@ namespace DoMine
         public override void Attached()
         {
             state.SetTransforms(state.Location, transform);
-
-            if (breakCool > 0)
-            {
-                breakCool -= Time.deltaTime;
-            }
-            if (breakCool < 0)
-            {
-                breakCool = 0;
-            }
-            if (returnCool > 0)
-            {
-                returnCool -= Time.deltaTime;
-            }
-            if (returnCool < 0)
-            {
-                returnCool = 0;
-            }
         }
 
         // Start is called before the first frame update
         void Start()
         {
-            MovePlayer(player, new Vector2(50, 50));
             mapCtrl = GameObject.Find("GameController").GetComponent<MapController>();
         }
 
@@ -89,7 +69,7 @@ namespace DoMine
                 }
                 else
                 {
-                    Debug.Log("in Return-Cooltime");
+                    //Debug.Log("in Return-Cooltime");
                 }
 
             }
@@ -106,12 +86,24 @@ namespace DoMine
                 }
                 else
                 {
-                    Debug.Log("in Breaking-Cooltime");
+                    //Debug.Log("in Breaking-Cooltime");
                 }
 
             }
+            /*
+            if (Input.GetKey(KeyCode.S) == true)
+            {
+                if (itemCtrl.nearestItem != null)
+                {
+                    if (Vector2.Distance(player.transform.position, itemCtrl.nearestItem.item.transform.position) < 0.5)
+                    {
+                        itemCtrl.GetItem(gameCtrl.playerInfo, itemCtrl.nearestItem);
+                    }
+                }
+            }
+            */
         }
-        /*
+        
         // Update is called once per frame
         void FixedUpdate()
         {
@@ -131,38 +123,7 @@ namespace DoMine
             {
                 returnCool = 0;
             }
-            if (Input.GetKey(KeyCode.LeftArrow) == true)
-            {
-                playerRB.AddForce(Vector2.left * power);
-            }
-            if (Input.GetKey(KeyCode.RightArrow) == true)
-            {
-                playerRB.AddForce(Vector2.right * power);
-            }
-            if (Input.GetKey(KeyCode.UpArrow) == true)
-            {
-                playerRB.AddForce(Vector2.up * power);
-            }
-            if (Input.GetKey(KeyCode.DownArrow) == true)
-            {
-                playerRB.AddForce(Vector2.down * power);
-            }
-            xspeed = playerRB.velocity.x;
-            yspeed = playerRB.velocity.y;
-
-            
-
-            if (Input.GetKey(KeyCode.S) == true)
-            {
-                if(itemCtrl.nearestItem != null)
-                {
-                    if (Vector2.Distance(player.transform.position, itemCtrl.nearestItem.item.transform.position) < 0.5)
-                    {
-                        itemCtrl.GetItem(gameCtrl.playerInfo, itemCtrl.nearestItem);
-                    }
-                }
-            }
-        }*/
+        }
     }
 }
 
