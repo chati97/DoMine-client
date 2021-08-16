@@ -17,11 +17,6 @@ namespace DoMine
 
         public override void SceneLoadLocalDone(string scene, IProtocolToken token)
         {
-            if (BoltNetwork.IsServer)
-            {
-                MC.CreateMap(MC.mapArray = MC.MakeMapArr(), ref MC.mapObject);
-                Debug.Log("Creation");
-            }
             var spawnPos = new Vector3(Random.Range(50, 52), 50, 0);
             myPlayer = BoltNetwork.Instantiate(BoltPrefabs.Player, spawnPos, Quaternion.identity);
             myPlayer.TakeControl();

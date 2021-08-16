@@ -70,10 +70,10 @@ namespace DoMine
                         case 0:
                             break;
                         case 1:
-                            mapObject[i * 100 + j] = BoltNetwork.Instantiate(BoltPrefabs.Wall2, new Vector2(i, j), Quaternion.identity);
+                            mapObject[i * 100 + j] = Instantiate(breakable, new Vector2(i, j), Quaternion.identity, wallParent);
                             break;
                         case 2:
-                            mapObject[i * 100 + j] = BoltNetwork.Instantiate(BoltPrefabs.Wall, new Vector2(i, j), Quaternion.identity);
+                            mapObject[i * 100 + j] = Instantiate(unbreakable, new Vector2(i, j), Quaternion.identity, wallParent);
                             break;
                     }
                 }
@@ -104,7 +104,7 @@ namespace DoMine
 
 
         //DestroyWall 부술수있는 벽을 부술때 호출되는 함수
-        public void DestroyWall(int x, int y)
+        public void DestroyWall(int x, int y, bool callback) //callback이 false면 이벤트생성
         {
             Debug.Log(mapArray[x * 100 + y]);
             if (mapArray[x * 100 + y] == 1)
@@ -112,7 +112,15 @@ namespace DoMine
                 Destroy(mapObject[x * 100 + y]);
                 mapArray[x * 100 + y] = 0;
                 Debug.Log(nearestWallX + "," + nearestWallY);
-            }
+
+                if(callback == false) //콜백이 false일시(본인이 처음 보내는거면)
+                {
+                    var evnt = WallDestoryed.Create();
+                    evnt.LocationX = x;
+                    evnt.LocationY = y;
+                    evnt.Send();
+                }
+          }
             
         }
 

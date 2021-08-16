@@ -6,7 +6,7 @@ using Photon.Bolt;
 
 namespace DoMine
 {
-    public class GameController : EntityBehaviour<IGameInfo>
+    public class GameController : GlobalEventListener
     {
         [SerializeField] GameObject player = null;
         [SerializeField] ItemController itemcontroller = null;
@@ -17,22 +17,18 @@ namespace DoMine
         // Start is called before the first frame update
         void Start()
         {
-            //if (BoltNetwork.IsServer)
-            //{
-                //state.TimeLeft = 900;
-            //}
-
+            MC.CreateMap(MC.mapArray = MC.MakeMapArr(), ref MC.mapObject);
         }
 
+        public override void OnEvent(WallDestoryed evnt)
+        {
+            MC.DestroyWall(evnt.LocationX, evnt.LocationY, true);
+        }
 
         // Update is called once per frame
         void Update()
         {
-            //time = state.TimeLeft;
-            //if (BoltNetwork.IsServer && time > 0)
-            //    state.TimeLeft -= Time.deltaTime;
-            //timeLeft.text = time.ToString();
-            
+
         }
 
 
