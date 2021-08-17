@@ -1,36 +1,56 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
-
+using UnityEngine.UI;
+using Photon.Bolt;
 
 namespace DoMine
 {
-    public class GameController : MonoBehaviour
+    public class GameController : GlobalEventListener
     {
-        [SerializeField] GameObject player = null;
-        [SerializeField] ItemController itemcontroller = null;
-        public Player playerInfo = new Player();
-        public bool gold = true;
-        public float time;
+        [SerializeField] ItemController IC = null;
+        [SerializeField] MapController MC = null;
+        [SerializeField] Text timeLeft = null;
+        float time;
 
         // Start is called before the first frame update
         void Start()
         {
-            time = 900;
-            itemcontroller.Init(playerInfo);
-            itemcontroller.CreateItem(50, 98, 0);
-            itemcontroller.CreateItem(49, 49, 0);
+            MC.CreateMap(MC.mapArray = MC.MakeMapArr(), MC.mapObject);
+            if (BoltNetwork.IsServer)
+            {
+                time = 600;
+            }
         }
 
-
-        // Update is called once per frame
-        void Update()
+        public override void OnEvent(WallDestoryed evnt)
         {
-            gold = playerInfo.inventory.gold;
-            playerInfo.x_location = player.transform.position.x;
-            playerInfo.y_location = player.transform.position.y;
-            if(time > 0)
-                time -= Time.deltaTime;
+            MC.DestroyWall(evnt.LocationX, evnt.LocationY, true);
+        }
+
+        public override void OnEvent(PlayerJoined evnt)
+        {
+            if(BoltNetwork.IsServer)
+            {
+                var reply = TimeAlert.Create();
+                reply.TimeLeft = time;
+                reply.Send();
+            }            
+        }
+
+        public override void OnEvent(TimeAlert evnt)
+        {
+            time = evnt.TimeLeft; 
+        }
+
+        public override void OnEvent(WallCreated evnt)
+        {
+            MC.CreateWall(MC.mapObject, evnt.Type, evnt.LocationX, evnt.LocationY, true);
+        }
+        // Update is called once per frame
+        void Update() 
+        {
+            time -= Time.deltaTime;
+            timeLeft.text = ((int)Math.Floor(time)/60).ToString() + " : " + ((int)Math.Floor(time) % 60).ToString();
         }
 
 
