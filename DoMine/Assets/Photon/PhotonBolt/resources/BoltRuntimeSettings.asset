@@ -51,7 +51,7 @@ MonoBehaviour:
   debugBuildMode: 1
   debugStartMapName: 
   debugPlayAsServer: 0
-  showDebugInfo: 0
+  showDebugInfo: 1
   overrideTimeScale: 1
   debugEditorMode: 1
   consoleToggleKey: 9
