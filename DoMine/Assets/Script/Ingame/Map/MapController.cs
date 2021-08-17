@@ -30,9 +30,7 @@ namespace DoMine
             FindWall(mapObject);
         }
 
-        //MakeMapArr 맵 배열을 생성하는 함수 나중엔 서버에서 생성할것or호스트가 생성
-        //현재 함수는 중간 공간을 제외한 모든 공간에 부술수있는벽을 채우고 맨끝은 부서지지 않는 벽으로 채움
-        //추후에 변수값을 받아서 원하는 크기로 맵을 만들게 할 예정
+        //정해진 맵 배열을 만드는 함수 현재는 맨끝만 만들었지만 이후 게임 방 정보에 따라 매개변수를 받아 다른종류의 맵을 만들도록 할 예정
         public int[] MakeMapArr()
         {
             int[] mapArray = new int[mapSize * mapSize];
@@ -59,7 +57,7 @@ namespace DoMine
 
 
         // CreateMap 맵 정보를 받아 최초 맵생성 생성하는 정보만 있음
-        public void CreateMap(int[] mapArray, ref GameObject[] mapObject)
+        public void CreateMap(int[] mapArray, GameObject[] mapObject)
         {
             for(int i = 0; i< mapSize; i++)
             {
@@ -80,25 +78,30 @@ namespace DoMine
             }
         }
 
-
-        //UpdateMap 추후구현 게임 중간 중간 맵 상태를 업데이트함
-        //다른플레이어가 중간에 벽을 파괴 생성할때도 벽을 파괴하는 신호를 날리고 받는 함수도 있을거지만
-        //중간에 통신오류로 플레이어간 꼬일거를 예측해서 전체적으로 한번 로딩하는 함수
-        public void UpdateMap(int[,] mapArray, ref GameObject[,] mapObject)
+        public void CreateWall(GameObject[] mapObject ,int type, int x, int y, bool callback)
         {
-            foreach (int type in mapArray)
+            if(mapObject[x*100+y] != null)
             {
-                switch(type)
+                switch (type)
                 {
                     case 0:
                         break;
                     case 1:
+                        mapObject[x * 100 + y] = Instantiate(breakable, new Vector2(x, y), Quaternion.identity, wallParent);
                         break;
                     case 2:
+                        mapObject[x * 100 + y] = Instantiate(unbreakable, new Vector2(x, y), Quaternion.identity, wallParent);
                         break;
 
                 }
-
+                if (callback == false) //콜백이 false일시(본인이 처음 보내는거면)
+                {
+                    var evnt = WallCreated.Create();
+                    evnt.Type = type;
+                    evnt.LocationX = x;
+                    evnt.LocationY = y;
+                    evnt.Send();
+                }
             }
         }
 
@@ -131,9 +134,11 @@ namespace DoMine
             float _nearestDistance = 10000;
             float _sampleDistance;
             Vector2 _nearestVector = new Vector2(0, 0);
-            for (int i = (int)Math.Ceiling(player.transform.position.x) - 1; i < (int)Math.Ceiling(player.transform.position.x) + 1; i++)// 본인둘러싼 총9칸을 비교하는 수 기존 10000개 다 search하던 것에서 최적화
+            int _currentPositionX = (int)Math.Ceiling(player.transform.position.x);
+            int _currentPositionY = (int)Math.Ceiling(player.transform.position.y);
+            for (int i = _currentPositionX - 1; i < _currentPositionX + 1; i++)// 본인둘러싼 총9칸을 비교하는 수 기존 10000개 다 search하던 것에서 최적화
             {
-                for (int j = (int)Math.Ceiling(player.transform.position.y) - 1; j < (int)Math.Ceiling(player.transform.position.y) + 1; j++)
+                for (int j = _currentPositionY - 1; j < _currentPositionY + 1; j++)
                 {
                     if (mapObject[i * 100 + j] != null)
                     {
@@ -149,7 +154,6 @@ namespace DoMine
                     }
 
                 }
-
             }
             if (Vector2.Distance(_nearestVector, player.transform.position) < 0.8)
             {

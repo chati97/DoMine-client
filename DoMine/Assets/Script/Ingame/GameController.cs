@@ -15,7 +15,7 @@ namespace DoMine
         // Start is called before the first frame update
         void Start()
         {
-            MC.CreateMap(MC.mapArray = MC.MakeMapArr(), ref MC.mapObject);
+            MC.CreateMap(MC.mapArray = MC.MakeMapArr(), MC.mapObject);
             if (BoltNetwork.IsServer)
             {
                 time = 600;
@@ -42,6 +42,10 @@ namespace DoMine
             time = evnt.TimeLeft; 
         }
 
+        public override void OnEvent(WallCreated evnt)
+        {
+            MC.CreateWall(MC.mapObject, evnt.Type, evnt.LocationX, evnt.LocationY, true);
+        }
         // Update is called once per frame
         void Update() 
         {
