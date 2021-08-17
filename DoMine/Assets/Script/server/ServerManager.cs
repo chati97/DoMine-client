@@ -1,17 +1,32 @@
-using System;
-using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
 using Photon.Bolt;
-
-[BoltGlobalBehaviour]
-public class NetworkCallbacks : Photon.Bolt.GlobalEventListener
+namespace DoMine
 {
-    public void SceneLoadLocalDone(string map)
+    public class ServerManager : GlobalEventListener
     {
-    // randomize a position
-        var pos = new Vector3(UnityEngine.Random.Range(-16, 16), 0, UnityEngine.Random.Range(-16, 16));
+        public static ServerManager NM;
+        [SerializeField] MapController MC;
+        private void Awake() => NM = this;
+        public List<BoltEntity> players = new List<BoltEntity>();
+        public BoltEntity myPlayer;
+        public BoltEntity gameInfo;
+        
+        public GameObject SpawnPrefab;
 
-    // instantiate cube
-        BoltNetwork.Instantiate(BoltPrefabs.Player, pos, Quaternion.identity);
+        public override void SceneLoadLocalDone(string scene, IProtocolToken token)
+        {
+            var spawnPos = new Vector3(Random.Range(49, 50), Random.Range(49, 50), 0);
+            myPlayer = BoltNetwork.Instantiate(BoltPrefabs.Player, spawnPos, Quaternion.identity);
+            myPlayer.TakeControl();
+            MC.player = myPlayer;//Mcø° ≥÷¿Ω
+            if(BoltNetwork.IsClient)
+            {
+                var evnt = PlayerJoined.Create();
+                evnt.Send();
+            }
+        }
     }
 }
