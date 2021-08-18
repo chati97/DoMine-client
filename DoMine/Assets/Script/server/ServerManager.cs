@@ -9,6 +9,7 @@ namespace DoMine
     {
         public static ServerManager NM;
         [SerializeField] MapController MC;
+        [SerializeField] ItemController IC;
         private void Awake() => NM = this;
         public List<BoltEntity> players = new List<BoltEntity>();
         public BoltEntity myPlayer;
@@ -22,7 +23,8 @@ namespace DoMine
             myPlayer = BoltNetwork.Instantiate(BoltPrefabs.Player, spawnPos, Quaternion.identity);
             myPlayer.TakeControl();
             MC.player = myPlayer;//Mc에 넣음
-            if(BoltNetwork.IsClient)
+            IC.player = myPlayer;//Ic에 넣음
+            if (BoltNetwork.IsClient)
             {
                 var evnt = PlayerJoined.Create();
                 evnt.Send();

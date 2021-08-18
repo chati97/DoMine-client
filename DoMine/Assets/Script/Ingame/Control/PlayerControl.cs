@@ -31,6 +31,7 @@ namespace DoMine
         void Start()
         {
             mapCtrl = GameObject.Find("GameController").GetComponent<MapController>();
+            itemCtrl = GameObject.Find("GameController").GetComponent<ItemController>();
         }
 
         public override void SimulateOwner()
@@ -90,18 +91,17 @@ namespace DoMine
                 }
 
             }
-            /*
+            
             if (Input.GetKey(KeyCode.S) == true)
             {
                 if (itemCtrl.nearestItem != null)
                 {
-                    if (Vector2.Distance(player.transform.position, itemCtrl.nearestItem.item.transform.position) < 0.5)
+                    if (Vector2.Distance(player.transform.position, itemCtrl.nearestItem.transform.position) < 0.5)
                     {
-                        itemCtrl.GetItem(gameCtrl.playerInfo, itemCtrl.nearestItem);
+                        itemCtrl.GetItem(itemCtrl.nearestItemX, itemCtrl.nearestItemY, state, false);
                     }
                 }
             }
-            */
         }
         
         // Update is called once per frame
@@ -123,6 +123,8 @@ namespace DoMine
             {
                 returnCool = 0;
             }
+            mapCtrl.FindWall(mapCtrl.mapObject);
+            itemCtrl.FindItem(itemCtrl.itemObject);
         }
     }
 }

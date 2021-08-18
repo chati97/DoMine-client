@@ -1,17 +1,24 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
+using Photon.Bolt;
+
 namespace DoMine
 {
     public class ItemController : MonoBehaviour
     {
-        int[,] mapArray = new int[100, 100];
-        List<Item> items = new List<Item>();
-        [SerializeField] GameObject player = null;
+        public int[] itemArray = new int[10000];
+        public GameObject player = null;
+        public int playerCode;
+        public GameObject[] itemObject = new GameObject[10000];
         [SerializeField] GameObject gold = null;
         [SerializeField] Transform itemParent = null;
-        [SerializeField] GameObject mapIndicator = null;
-        public Item nearestItem = null;
+        [SerializeField] GameObject itemIndicator = null;
+        public GameObject nearestItem = null;
+        public int nearestItemX = -1;
+        public int nearestItemY = -1;
+
+        // 인벤토리는 0=금 1..부터는 미정
+        // 맵정보에서 0=공백, 1=금, 2...부터는 미정으로 한칸 밀림
         
         // Start is called before the first frame update
         void Start()
@@ -22,79 +29,107 @@ namespace DoMine
         // Update is called once per frame
         void Update()
         {
-            FindItem(items);
+
         }
 
-        public void Init(Player player)
+        public void Init(int playernum)
         {
-            player.inventory.gold = false;
-        }
-
-        public void GetItem(Player player, Item item)
-        {
-            
-            switch (item.itemCode)
+            for(int i = 0 ; i < 10000; i++)
             {
-                case 0:
-                    if (player.inventory.gold == false)
-                        player.inventory.gold = true;
-                    else
-                    {
-                        Debug.Log("Already having gold");
-                        return;
-                    }
-                    break;
+                itemArray[i] = 0;
             }
-            DeleteItem(ref item);
+        }
+
+        public void GetItem(int x, int y, IPlayerState player, bool callback)
+        {
+            int _type = itemArray[x * 100 + y];
+
+            if(callback == false)
+            {
+                switch (itemArray[x * 100 + y])
+                {
+                    case 1:
+                        if (player.Inventory[0] == 0)
+                        {
+                            player.Inventory[0] = 1;
+                            Debug.Log("Gold get");
+                        }
+                        else
+                        {
+                            Debug.Log("Already having gold");//추후 여기에서 이미 확보해둔상태라고 UI에서 메세지 보내는거로 호출
+                            return;
+                        }
+                        break;
+                }
+                var evnt = ItemPicked.Create();
+                evnt.LocationX = x;
+                evnt.LocationY = y;
+                evnt.Type = _type;
+                evnt.Send();
+            }
+            Destroy(itemObject[x * 100 + y]);
+            itemArray[x * 100 + y] = 0;
         }
 
         // instantiate로 만들고 list에 삽입
-        public void CreateItem(int x, int y, int itemCode)
+        public void CreateItem(int x, int y, int itemCode, bool callback)
         {
             GameObject _targetItem = null;
-            GameObject _target = null;
             switch (itemCode)
             {
                 case 0:
+                    break;
+                case 1:
                     _targetItem = gold;
+                    itemArray[x * 100 + y] = 1;
                     break;
             }
-            _target = Instantiate(_targetItem, new Vector2(x, y), Quaternion.identity, itemParent);
-            items.Add(new Item(_target, itemCode, x, y));
-            return;
+            itemObject[x * 100 + y] = Instantiate(_targetItem, new Vector2(x, y), Quaternion.identity, itemParent);
+            if (callback == false)
+            {
+                var evnt = ItemCreated.Create();
+                evnt.LocationX = x;
+                evnt.LocationY = y;
+                evnt.Type = itemCode;
+                evnt.Player = playerCode;
+                evnt.Send();
+            }
         }
 
-        public void DeleteItem(ref Item item)
+        public void FindItem(GameObject[] itemObject)//mapController와 동일한 알고리즘 기존 아이템 리스트전체를 탐색하는 방식이었지만 아이템 구현방식을 map구현과 동일하게 수정하면서 같이 수정됨
         {
-            Destroy(item.item);
-            items.Remove(item);
-        }
-
-        public void FindItem(List<Item> items)
-        {
-            float _nearestDistance;
+            float _nearestDistance = 10000;
             float _sampleDistance;
             Vector2 _nearestVector = new Vector2(0, 0);
-
-            _nearestDistance = 10000;
-            foreach (Item item in items)
+            int _currentPositionX = (int)Math.Ceiling(player.transform.position.x);
+            int _currentPositionY = (int)Math.Ceiling(player.transform.position.y);
+            for (int i = _currentPositionX - 1; i < _currentPositionX + 1; i++)
             {
-                _sampleDistance = Vector2.Distance(player.transform.position, item.item.transform.position);
-                if (_nearestDistance > _sampleDistance)
+                for (int j = _currentPositionY - 1; j < _currentPositionY + 1; j++)
                 {
-                    _nearestDistance = _sampleDistance;
-                    _nearestVector = item.item.transform.position;
-                    nearestItem = item;
+                    if (itemObject[i * 100 + j] != null)
+                    {
+                        _sampleDistance = Vector2.Distance(player.transform.position, itemObject[i * 100 + j].transform.position);
+                        if (_nearestDistance > _sampleDistance)
+                        {
+                            _nearestDistance = _sampleDistance;
+                            _nearestVector = itemObject[i * 100 + j].transform.position;
+                            nearestItem = itemObject[i * 100 + j];
+                            nearestItemX = i;
+                            nearestItemY = j;
+                        }
+                    }
+
                 }
             }
-            if (Vector2.Distance(_nearestVector, player.transform.position) < 0.5)
+            if (Vector2.Distance(_nearestVector, player.transform.position) < 0.8)
             {
-                mapIndicator.gameObject.SetActive(true);
-                mapIndicator.transform.position = _nearestVector;
+                itemIndicator.gameObject.SetActive(true);
+                itemIndicator.transform.position = _nearestVector;
             }
             else
             {
-                mapIndicator.gameObject.SetActive(false);
+                itemIndicator.gameObject.SetActive(false);
             }
         }
     }
