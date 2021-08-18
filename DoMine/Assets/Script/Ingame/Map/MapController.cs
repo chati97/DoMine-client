@@ -11,6 +11,7 @@ namespace DoMine
         public int[] mapArray = new int[10000];
         public GameObject[] mapObject = new GameObject[10000];
         public GameObject player = null;
+        public int playerCode;
         [SerializeField] GameObject breakable = null;
         [SerializeField] GameObject unbreakable = null;
         [SerializeField] Transform wallParent = null;
@@ -27,7 +28,7 @@ namespace DoMine
 
         private void Update()
         {
-            FindWall(mapObject);
+
         }
 
         //정해진 맵 배열을 만드는 함수 현재는 맨끝만 만들었지만 이후 게임 방 정보에 따라 매개변수를 받아 다른종류의 맵을 만들도록 할 예정
@@ -88,9 +89,11 @@ namespace DoMine
                         break;
                     case 1:
                         mapObject[x * 100 + y] = Instantiate(breakable, new Vector2(x, y), Quaternion.identity, wallParent);
+                        mapArray[x * 100 + y] = 1;
                         break;
                     case 2:
                         mapObject[x * 100 + y] = Instantiate(unbreakable, new Vector2(x, y), Quaternion.identity, wallParent);
+                        mapArray[x * 100 + y] = 2;
                         break;
 
                 }
@@ -100,6 +103,7 @@ namespace DoMine
                     evnt.Type = type;
                     evnt.LocationX = x;
                     evnt.LocationY = y;
+                    evnt.Player = playerCode;
                     evnt.Send();
                 }
             }
