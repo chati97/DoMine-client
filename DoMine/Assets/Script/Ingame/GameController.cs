@@ -17,14 +17,14 @@ namespace DoMine
         // Start is called before the first frame update
         void Start()
         {
-            MC.CreateMap(MC.mapArray = MC.MakeMapArr(), MC.mapObject);
-            IC.Init(0);
             if (BoltNetwork.IsServer)
             {
                 time = 600;
                 playerNum = 1;
                 playerCode = 0;
             }
+            MC.CreateMap(MC.mapArray = MC.MakeMapArr(), MC.mapObject);
+            IC.Init(playerNum);
         }
 
         public override void OnEvent(WallDestoryed evnt)
