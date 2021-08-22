@@ -293,7 +293,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 387510524}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1948125643}
+        m_TargetAssemblyTypeName: LobbyManaging, Assembly-CSharp
+        m_MethodName: LoadGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &387510524
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2278,13 +2290,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1948125642}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0967de893ea167d4ca9477006466d369, type: 3}
+  m_Script: {fileID: 11500000, guid: 40a210fe98de1460db4dc89d9fc64556, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _entity: {fileID: 0}
-  ready: 0
-  nameInput: {fileID: 0}
-  readyButton: {fileID: 0}
+  Startbtn: {fileID: 387510521}
+  Readybtn: {fileID: 622549048}
 --- !u!4 &1948125644
 Transform:
   m_ObjectHideFlags: 0

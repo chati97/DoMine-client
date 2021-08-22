@@ -11,5 +11,6 @@ public class OptionSetting : MonoBehaviour
     public void ApplyOption()
     {
         playerName.text = Nickname.text;
+        PlayerPrefs.SetString("nick", playerName.text);
     }
 }
