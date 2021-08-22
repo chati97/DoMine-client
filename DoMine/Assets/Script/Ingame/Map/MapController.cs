@@ -79,9 +79,9 @@ namespace DoMine
             }
         }
 
-        public void CreateWall(GameObject[] mapObject ,int type, int x, int y, bool callback)
+        public int CreateWall(GameObject[] mapObject ,int type, int x, int y, bool callback)
         {
-            if(mapObject[x*100+y] != null)
+            if(mapObject[x*100+y] == null)
             {
                 switch (type)
                 {
@@ -106,6 +106,11 @@ namespace DoMine
                     evnt.Player = playerCode;
                     evnt.Send();
                 }
+                return 0;
+            }
+            else
+            {
+                return 1;
             }
         }
 

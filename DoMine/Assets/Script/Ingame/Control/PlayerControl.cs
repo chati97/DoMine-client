@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 using Photon.Bolt;
 
@@ -9,6 +8,7 @@ namespace DoMine
     public class PlayerControl : EntityBehaviour<IPlayerState>
     {
         [SerializeField] GameObject player = null;
+        [SerializeField] GameObject aimIndicator = null;
         public float breakCool;
         float breakCoolBase = 0.5f;
         public float returnCool;
@@ -16,6 +16,7 @@ namespace DoMine
         public MapController mapCtrl;
         public ItemController itemCtrl;
         public GameController gameCtrl;
+        int lookingAt = -1;//왼쪽부터 시계방향으로 0123
 
         public void MovePlayer(GameObject player, Vector2 location)
         {
@@ -32,28 +33,35 @@ namespace DoMine
         {
             mapCtrl = GameObject.Find("GameController").GetComponent<MapController>();
             itemCtrl = GameObject.Find("GameController").GetComponent<ItemController>();
+            aimIndicator = GameObject.Find("AimIndicator");
+            state.Inventory[1] = 10;
         }
 
         public override void SimulateOwner()
         {
             var speed = 4f;
             var movement = Vector3.zero;
+            int output = -1;
 
             if (Input.GetKey(KeyCode.LeftArrow) == true)
             {
                 movement.x -= 1f;
+                lookingAt = 0;
             }
             if (Input.GetKey(KeyCode.RightArrow) == true)
             {
                 movement.x += 1f;
+                lookingAt = 2;
             }
             if (Input.GetKey(KeyCode.UpArrow) == true)
             {
                 movement.y += 1f;
+                lookingAt = 1;
             }
             if (Input.GetKey(KeyCode.DownArrow) == true)
             {
                 movement.y -= 1f;
+                lookingAt = 3;
             }
             
             if (movement != Vector3.zero)
@@ -71,6 +79,35 @@ namespace DoMine
                 else
                 {
                     //Debug.Log("in Return-Cooltime");
+                }
+
+            }
+
+            if (Input.GetKey(KeyCode.D) == true)
+            {
+                if (state.Inventory[1] > 0)
+                {
+                    switch (lookingAt)
+                    {
+                        case 0:
+                            output = mapCtrl.CreateWall(mapCtrl.mapObject, 2, (int)Math.Round(state.Location.Position.x) - 1, (int)Math.Round(state.Location.Position.y), false);
+                            break;
+                        case 1:
+                            output = mapCtrl.CreateWall(mapCtrl.mapObject, 2, (int)Math.Round(state.Location.Position.x), (int)Math.Round(state.Location.Position.y) + 1, false);
+                            break;
+                        case 2:
+                            output = mapCtrl.CreateWall(mapCtrl.mapObject, 2, (int)Math.Round(state.Location.Position.x) + 1, (int)Math.Round(state.Location.Position.y), false);
+                            break;
+                        case 3:
+                            output = mapCtrl.CreateWall(mapCtrl.mapObject, 2, (int)Math.Round(state.Location.Position.x), (int)Math.Round(state.Location.Position.y) - 1, false);
+                            break;
+                    }
+                    if(output == 0)
+                        --state.Inventory[1];
+                }
+                else
+                {
+                    Debug.Log("barricade error");
                 }
 
             }
@@ -125,6 +162,26 @@ namespace DoMine
             }
             mapCtrl.FindWall(mapCtrl.mapObject);
             itemCtrl.FindItem(itemCtrl.itemObject);
+            Aiming();
+        }
+
+        void Aiming()
+        {
+            switch (lookingAt)
+            {
+                case 0:
+                    aimIndicator.transform.position = new Vector2((int)Math.Round(state.Location.Position.x) - 1, (int)Math.Round(state.Location.Position.y));
+                    break;
+                case 1:
+                    aimIndicator.transform.position = new Vector2((int)Math.Round(state.Location.Position.x), (int)Math.Round(state.Location.Position.y) + 1);
+                    break;
+                case 2:
+                    aimIndicator.transform.position = new Vector2((int)Math.Round(state.Location.Position.x) + 1, (int)Math.Round(state.Location.Position.y));
+                    break;
+                case 3:
+                    aimIndicator.transform.position = new Vector2((int)Math.Round(state.Location.Position.x), (int)Math.Round(state.Location.Position.y) - 1);
+                    break;
+            }
         }
     }
 }
