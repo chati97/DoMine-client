@@ -231,6 +231,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 9087986202235492200}
+  aimIndicator: {fileID: 0}
   breakCool: 0
   returnCool: 0
   mapCtrl: {fileID: 0}

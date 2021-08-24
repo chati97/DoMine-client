@@ -25,7 +25,6 @@ namespace Photon.Bolt
 
         public override void BoltStartDone()
         {
-            
             if (BoltNetwork.IsServer)
             {
                 BoltMatchmaking.CreateSession(sessionID: RoomInput.text, sceneToLoad: "Lobby");
