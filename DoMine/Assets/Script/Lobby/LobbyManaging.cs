@@ -21,6 +21,6 @@ public class LobbyManaging : MonoBehaviour
 
     public void LoadGame()
     {
-        SceneManager.LoadScene("Ingame");
+        BoltNetwork.LoadScene("Ingame");
     }
 }
