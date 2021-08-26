@@ -4,23 +4,38 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Photon.Bolt;
 using Photon.Bolt.Matchmaking;
+using UdpKit;
 
-public class LobbyManaging : MonoBehaviour
+
+namespace Photon.Bolt
 {
-    // Start is called before the first frame update
-    public GameObject Startbtn;
-    public GameObject Readybtn;
-    void Start()
+    public class LobbyManaging : GlobalEventListener
     {
-        if(BoltNetwork.IsServer)
+        // Start is called before the first frame update
+        public GameObject Startbtn;
+        public GameObject Readybtn;
+        void Start()
         {
-            Startbtn.SetActive(true);
-            Readybtn.SetActive(false);
+            if (BoltNetwork.IsServer)
+            {
+                Startbtn.SetActive(true);
+                Readybtn.SetActive(false);
+            }
+        }
+
+        public void LoadGame()
+        {
+            BoltNetwork.LoadScene("Ingame");
+        }
+        public void LeaveGame()
+        {
+            BoltLauncher.Shutdown();
+        }
+
+        public override void BoltShutdownBegin(AddCallback registerDoneCallback, UdpConnectionDisconnectReason disconnectReason)
+        {
+            SceneManager.LoadScene("Title");
         }
     }
-
-    public void LoadGame()
-    {
-        BoltNetwork.LoadScene("Ingame");
-    }
 }
+
