@@ -28,7 +28,7 @@ namespace Photon.Bolt
             PlayerPrefs.SetString("nick", NickInput.text);
             if (BoltNetwork.IsServer)
             {
-                BoltMatchmaking.CreateSession(sessionID: SessionInput.text, sceneToLoad: "Ingame");
+                BoltMatchmaking.CreateSession(sessionID: SessionInput.text, sceneToLoad: "Lobby");
             }
         }
 
