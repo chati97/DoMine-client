@@ -8,6 +8,11 @@ public class OptionSetting : MonoBehaviour
     public Text playerName;
     public InputField Nickname;
 
+    public void Start()
+    {
+        playerName.text = PlayerPrefs.GetString("nick");
+    }
+
     public void ApplyOption()
     {
         playerName.text = Nickname.text;
