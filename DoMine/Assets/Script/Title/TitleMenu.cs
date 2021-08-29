@@ -3,6 +3,7 @@ using Photon.Bolt;
 using Photon.Bolt.Matchmaking;
 using UnityEngine.UI;
 using UdpKit;
+using UnityEngine.SceneManagement;
 
 namespace Photon.Bolt
 {
@@ -13,6 +14,7 @@ namespace Photon.Bolt
         public InputField NameInput;
         public GameObject room;
         public Transform gridTr;
+        public OptionSetting op;
 
         public void StartServer()
         {
@@ -25,11 +27,14 @@ namespace Photon.Bolt
 
         public override void BoltStartDone()
         {
+            PlayerPrefs.SetString("nick", NameInput.text);
             if (BoltNetwork.IsServer)
             {
                 BoltMatchmaking.CreateSession(sessionID: RoomInput.text, sceneToLoad: "Lobby");
             }
         }
+
+        
 
         public void StartClient()
         {

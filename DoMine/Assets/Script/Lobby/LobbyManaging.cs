@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Photon.Bolt;
 using Photon.Bolt.Matchmaking;
@@ -14,6 +15,7 @@ namespace Photon.Bolt
         // Start is called before the first frame update
         public GameObject Startbtn;
         public GameObject Readybtn;
+        public Text PlayerList;
         void Start()
         {
             if (BoltNetwork.IsServer)
@@ -21,8 +23,10 @@ namespace Photon.Bolt
                 Startbtn.SetActive(true);
                 Readybtn.SetActive(false);
             }
+            
         }
 
+        
         public void LoadGame()
         {
             BoltNetwork.LoadScene("Ingame");
@@ -35,6 +39,7 @@ namespace Photon.Bolt
         public override void BoltShutdownBegin(AddCallback registerDoneCallback, UdpConnectionDisconnectReason disconnectReason)
         {
             SceneManager.LoadScene("Title");
+            
         }
     }
 }
