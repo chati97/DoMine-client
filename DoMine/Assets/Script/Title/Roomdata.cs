@@ -6,15 +6,20 @@ using UdpKit;
 public class Roomdata : MonoBehaviour
 {
     public Text roomName;
+    public int currentPlayer = 0;
+    public int maxPlayer = 0;
     public Text playerCount;
     public Button JoinButton;
 
     public void UpdateInfo(UdpSession session, Action click)
     {
         roomName.text = session.HostName;
-        playerCount.text = string.Format("{0}/{1}", session.ConnectionsCurrent, session.ConnectionsMax);
+        currentPlayer = session.ConnectionsCurrent;
+        maxPlayer = session.ConnectionsMax;
+        playerCount.text = string.Format("{0}/{1}", currentPlayer, maxPlayer);
 
         JoinButton.onClick.RemoveAllListeners();
         JoinButton.onClick.AddListener(click.Invoke);
     }
+
 }

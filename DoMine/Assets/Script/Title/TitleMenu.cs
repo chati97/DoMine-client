@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Photon.Bolt;
 using Photon.Bolt.Matchmaking;
@@ -15,6 +16,7 @@ namespace Photon.Bolt
         public GameObject room;
         public Transform gridTr;
         public OptionSetting op;
+        public Action click;
 
         public void StartServer()
         {
@@ -57,16 +59,40 @@ namespace Photon.Bolt
 
         public override void SessionListUpdated(Map<System.Guid, UdpSession> sessionList)
         {
-            string log = "";
+            foreach (GameObject obj in GameObject.FindGameObjectsWithTag("ROOM"))
+            {
+                Destroy(obj);
+            }
+
+            foreach (var session in sessionList)
+            {
+                UdpSession photonSession = session.Value;
+                GameObject _room = Instantiate(room, gridTr);
+                Roomdata roomData = _room.GetComponent<Roomdata>();
+                roomData.roomName.text = photonSession.HostName;
+                roomData.maxPlayer = photonSession.ConnectionsMax;
+                roomData.currentPlayer = photonSession.ConnectionsCurrent;
+                roomData.UpdateInfo(photonSession, click);
+                roomData.GetComponent<Button>().onClick.AddListener(
+                    delegate
+                    {
+                        OnClickRoom(roomData.roomName.text);
+                    });
+            }
+
+            /*string log = "";
             foreach (var session in sessionList)
             {
                 UdpSession photonSession = session.Value;
                 if (photonSession.Source == UdpSessionSource.Photon)
                     log += $"{photonSession.HostName}\n";
             }
-            LogText.text = log;
+            LogText.text = log;*/
         }
-
+        public void OnClickRoom(string roomName)
+        {
+            BoltMatchmaking.JoinSession(roomName, null);
+            PlayerPrefs.SetString("nick", NameInput.text);
+        }
     }
-
 }
