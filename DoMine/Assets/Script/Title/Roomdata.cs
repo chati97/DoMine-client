@@ -13,13 +13,13 @@ public class Roomdata : MonoBehaviour
 
     public void UpdateInfo(UdpSession session, Action click)
     {
-        roomName.text = session.HostName;
-        currentPlayer = session.ConnectionsCurrent;
-        maxPlayer = session.ConnectionsMax;
-        playerCount.text = string.Format("{0}/{1}", currentPlayer, maxPlayer);
+        //roomName.text = session.HostName;
+        //currentPlayer = session.ConnectionsCurrent;
+        //maxPlayer = session.ConnectionsMax;
+        //playerCount.text = string.Format("{0}/{1}", currentPlayer, maxPlayer);
 
-        JoinButton.onClick.RemoveAllListeners();
-        JoinButton.onClick.AddListener(click.Invoke);
+        //JoinButton.onClick.RemoveAllListeners();
+        //JoinButton.onClick.AddListener(click.Invoke);
     }
 
 }

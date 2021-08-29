@@ -72,12 +72,9 @@ namespace Photon.Bolt
                 roomData.roomName.text = photonSession.HostName;
                 roomData.maxPlayer = photonSession.ConnectionsMax;
                 roomData.currentPlayer = photonSession.ConnectionsCurrent;
-                roomData.UpdateInfo(photonSession, click);
-                roomData.GetComponent<Button>().onClick.AddListener(
-                    delegate
-                    {
-                        OnClickRoom(roomData.roomName.text);
-                    });
+                //roomData.UpdateInfo(photonSession, click);
+                Button join = roomData.GetComponentInChildren<Button>();
+                join.onClick.AddListener(() => OnClickRoom(roomData.roomName.text));
             }
 
             /*string log = "";
@@ -91,8 +88,12 @@ namespace Photon.Bolt
         }
         public void OnClickRoom(string roomName)
         {
-            BoltMatchmaking.JoinSession(roomName, null);
-            PlayerPrefs.SetString("nick", NameInput.text);
+            BoltMatchmaking.JoinSession(roomName);
+            //PlayerPrefs.SetString("nick", NameInput.text);
+        }
+        public void LeaveGame()
+        {
+            BoltLauncher.Shutdown();
         }
     }
 }
