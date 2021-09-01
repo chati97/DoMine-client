@@ -10,13 +10,15 @@ namespace DoMine
         [SerializeField] GameObject player = null;
         [SerializeField] GameObject aimIndicator = null;
         [SerializeField] GameObject playerName = null;
+        public MapController mapCtrl;
+        public ItemController itemCtrl;
+        public GameController gameCtrl;
         public float breakCool;
         float breakCoolBase = 0.5f;
         public float returnCool;
         float returnCoolBase = 0.5f;
-        public MapController mapCtrl;
-        public ItemController itemCtrl;
-        public GameController gameCtrl;
+        public bool canCreateWall = true;
+        public Vector2 aim;
         int lookingAt = -1;//왼쪽부터 시계방향으로 0123
 
         public void MovePlayer(GameObject player, Vector2 location)
@@ -34,10 +36,19 @@ namespace DoMine
         {
             mapCtrl = GameObject.Find("GameController").GetComponent<MapController>();
             itemCtrl = GameObject.Find("GameController").GetComponent<ItemController>();
-            aimIndicator = GameObject.Find("AimIndicator");
-            state.Inventory[1] = 10;
-            state.PlayerName = PlayerPrefs.GetString("nick");
+            gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
+            if (entity.IsOwner)
+            {
+                aimIndicator = GameObject.Find("AimIndicator");
+                state.Inventory[1] = 10;
+                state.PlayerName = PlayerPrefs.GetString("nick");
+            }
             playerName.GetComponent<TextMeshPro>().text = state.PlayerName;
+            gameCtrl.GC.players.Add(entity);
+        }
+        void OnDestroy()
+        {
+            gameCtrl.GC.players.Remove(entity);
         }
 
         public override void SimulateOwner()
@@ -88,23 +99,9 @@ namespace DoMine
 
             if (Input.GetKey(KeyCode.D) == true)
             {
-                if (state.Inventory[1] > 0)
+                if (state.Inventory[1] > 0 && canCreateWall)
                 {
-                    switch (lookingAt)
-                    {
-                        case 0:
-                            output = mapCtrl.CreateWall(mapCtrl.mapObject, 2, (int)Math.Round(state.Location.Position.x) - 1, (int)Math.Round(state.Location.Position.y), false);
-                            break;
-                        case 1:
-                            output = mapCtrl.CreateWall(mapCtrl.mapObject, 2, (int)Math.Round(state.Location.Position.x), (int)Math.Round(state.Location.Position.y) + 1, false);
-                            break;
-                        case 2:
-                            output = mapCtrl.CreateWall(mapCtrl.mapObject, 2, (int)Math.Round(state.Location.Position.x) + 1, (int)Math.Round(state.Location.Position.y), false);
-                            break;
-                        case 3:
-                            output = mapCtrl.CreateWall(mapCtrl.mapObject, 2, (int)Math.Round(state.Location.Position.x), (int)Math.Round(state.Location.Position.y) - 1, false);
-                            break;
-                    }
+                    output = mapCtrl.CreateWall(mapCtrl.mapObject, 2, (int)aim.x, (int)aim.y, false);
                     if(output == 0)
                         --state.Inventory[1];
                 }
@@ -170,20 +167,36 @@ namespace DoMine
 
         void Aiming()
         {
+            int i;
             switch (lookingAt)
             {
                 case 0:
-                    aimIndicator.transform.position = new Vector2((int)Math.Round(state.Location.Position.x) - 1, (int)Math.Round(state.Location.Position.y));
+                    aim = new Vector2((int)Math.Round(state.Location.Position.x) - 1, (int)Math.Round(state.Location.Position.y));
                     break;
                 case 1:
-                    aimIndicator.transform.position = new Vector2((int)Math.Round(state.Location.Position.x), (int)Math.Round(state.Location.Position.y) + 1);
+                    aim = new Vector2((int)Math.Round(state.Location.Position.x), (int)Math.Round(state.Location.Position.y) + 1);
                     break;
                 case 2:
-                    aimIndicator.transform.position = new Vector2((int)Math.Round(state.Location.Position.x) + 1, (int)Math.Round(state.Location.Position.y));
+                    aim = new Vector2((int)Math.Round(state.Location.Position.x) + 1, (int)Math.Round(state.Location.Position.y));
                     break;
                 case 3:
-                    aimIndicator.transform.position = new Vector2((int)Math.Round(state.Location.Position.x), (int)Math.Round(state.Location.Position.y) - 1);
+                    aim = new Vector2((int)Math.Round(state.Location.Position.x), (int)Math.Round(state.Location.Position.y) - 1);
                     break;
+            }
+            aimIndicator.transform.position = aim;
+            i = 0;
+            foreach (BoltEntity player in gameCtrl.players)
+            {
+                if (Vector2.Distance(player.GetState<IPlayerState>().Location.Transform.position, aim) < 0.9)
+                {
+                    canCreateWall = false;
+                }
+                else
+                    i++;
+            }
+            if(i == gameCtrl.playerNum)
+            {
+                canCreateWall = true;
             }
         }
     }

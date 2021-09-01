@@ -9,6 +9,7 @@ namespace DoMine
 {
     public class GameController : GlobalEventListener
     {
+        public GameController GC;
         [SerializeField] ItemController IC = null;
         [SerializeField] MapController MC = null;
         [SerializeField] Text timeLeft = null;
@@ -18,6 +19,11 @@ namespace DoMine
         public List<BoltEntity> players = new List<BoltEntity>();//안씀
         public BoltEntity myPlayer;
 
+        private void Awake()
+        {
+            GC = this;
+        }
+
         public override void SceneLoadLocalDone(string scene, IProtocolToken token)
         {
             var spawnPos = new Vector3(UnityEngine.Random.Range(49, 50), UnityEngine.Random.Range(49, 50), 0);
@@ -25,6 +31,7 @@ namespace DoMine
             myPlayer.TakeControl();
             MC.player = myPlayer;//Mc에 넣음
             IC.player = myPlayer;//Ic에 넣음
+
             if (BoltNetwork.IsClient)
             {
                 var evnt = PlayerJoined.Create();
