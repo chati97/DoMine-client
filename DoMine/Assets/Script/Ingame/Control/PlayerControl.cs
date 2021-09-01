@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using Photon.Bolt;
-
+using TMPro;
 
 namespace DoMine
 {
@@ -9,6 +9,7 @@ namespace DoMine
     {
         [SerializeField] GameObject player = null;
         [SerializeField] GameObject aimIndicator = null;
+        [SerializeField] GameObject playerName = null;
         public float breakCool;
         float breakCoolBase = 0.5f;
         public float returnCool;
@@ -35,6 +36,8 @@ namespace DoMine
             itemCtrl = GameObject.Find("GameController").GetComponent<ItemController>();
             aimIndicator = GameObject.Find("AimIndicator");
             state.Inventory[1] = 10;
+            state.PlayerName = PlayerPrefs.GetString("nick");
+            playerName.GetComponent<TextMeshPro>().text = state.PlayerName;
         }
 
         public override void SimulateOwner()

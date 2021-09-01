@@ -438,7 +438,6 @@ GameObject:
   - component: {fileID: 809592804}
   - component: {fileID: 809592803}
   - component: {fileID: 809592807}
-  - component: {fileID: 809592808}
   - component: {fileID: 809592805}
   m_Layer: 0
   m_Name: GameController
@@ -464,6 +463,8 @@ MonoBehaviour:
   timeLeft: {fileID: 197455785}
   playerCode: -1
   playerNum: 1
+  players: []
+  myPlayer: {fileID: 0}
 --- !u!4 &809592804
 Transform:
   m_ObjectHideFlags: 0
@@ -20526,25 +20527,6 @@ MonoBehaviour:
   nearestItem: {fileID: 0}
   nearestItemX: -1
   nearestItemY: -1
---- !u!114 &809592808
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 809592802}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f96234228303949c082e2216091e8ed9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MC: {fileID: 809592805}
-  IC: {fileID: 809592807}
-  players: []
-  myPlayer: {fileID: 0}
-  gameInfo: {fileID: 0}
-  SpawnPrefab: {fileID: 9087986202235492200, guid: 45bea264105a54207b7bf88a9c582b7a,
-    type: 3}
 --- !u!1 &1049241107
 GameObject:
   m_ObjectHideFlags: 0

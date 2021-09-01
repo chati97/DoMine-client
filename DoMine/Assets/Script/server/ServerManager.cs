@@ -5,17 +5,14 @@ using UnityEngine.UI;
 using Photon.Bolt;
 namespace DoMine
 {
-    public class ServerManager : GlobalEventListener
+    /*public class ServerManager : GlobalEventListener
     {
-        public static ServerManager NM;
+        //public static ServerManager NM;
         [SerializeField] MapController MC;
         [SerializeField] ItemController IC;
-        private void Awake() => NM = this;
+        //private void Awake() => NM = this;
         public List<BoltEntity> players = new List<BoltEntity>();
         public BoltEntity myPlayer;
-        public BoltEntity gameInfo;
-        
-        public GameObject SpawnPrefab;
 
         public override void SceneLoadLocalDone(string scene, IProtocolToken token)
         {
@@ -31,4 +28,5 @@ namespace DoMine
             }
         }
     }
+    */
 }

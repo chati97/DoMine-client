@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Bolt;
+using TMPro;
 
 namespace DoMine
 {
@@ -13,6 +15,22 @@ namespace DoMine
         public int playerCode = -1;
         public int playerNum;
         float time;
+        public List<BoltEntity> players = new List<BoltEntity>();//안씀
+        public BoltEntity myPlayer;
+
+        public override void SceneLoadLocalDone(string scene, IProtocolToken token)
+        {
+            var spawnPos = new Vector3(UnityEngine.Random.Range(49, 50), UnityEngine.Random.Range(49, 50), 0);
+            myPlayer = BoltNetwork.Instantiate(BoltPrefabs.Player, spawnPos, Quaternion.identity);
+            myPlayer.TakeControl();
+            MC.player = myPlayer;//Mc에 넣음
+            IC.player = myPlayer;//Ic에 넣음
+            if (BoltNetwork.IsClient)
+            {
+                var evnt = PlayerJoined.Create();
+                evnt.Send();
+            }
+        }
 
         // Start is called before the first frame update
         void Start()
@@ -49,14 +67,14 @@ namespace DoMine
         public override void OnEvent(GameInfo evnt)
         {
             time = evnt.TimeLeft;
-            playerNum = evnt.PlayerNum;  //현재 플레이어 동시시작이 안되어서 일단 오는사람 받을때 정보 건네주는 역할, 나중에 로비 개발이후 한번에 접속인원 넘겨받을시에 수정
+            playerNum = evnt.PlayerNum;
             if(playerCode == -1)
             {
                 playerCode = evnt.PlayerNum - 1;
                 IC.playerCode = playerCode;
                 MC.playerCode = playerCode;
             }
-            Debug.Log("[" + playerNum + "," +  playerCode + "]");
+            Debug.LogWarning("[" + playerNum + "," +  (playerNum-1) + "] Joined");
             
         }
 
