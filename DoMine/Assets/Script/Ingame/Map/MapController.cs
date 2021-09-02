@@ -19,7 +19,7 @@ namespace DoMine
         public GameObject nearestWall = null;
         public int nearestWallX = -1;
         public int nearestWallY = -1;
-        int mapSize = 100;
+        public int mapSize = 100;
         public int isHost = 0;
         private void Start()
         {
@@ -35,6 +35,7 @@ namespace DoMine
         public int[] MakeMapArr()
         {
             int[] mapArray = new int[mapSize * mapSize];
+            int half = mapSize / 2;
             for(int i = 0; i< mapSize; i++)
             {
                 mapArray[i] = 2;
@@ -49,10 +50,20 @@ namespace DoMine
                     mapArray[i*100 + j] = 1; //나머지는 부서지는벽으로설정
                 }
             }
-            mapArray[(mapSize / 2 - 1)*100 + mapSize / 2 - 1] = 0;
-            mapArray[(mapSize / 2 - 1)* 100 + mapSize / 2] = 0;
-            mapArray[(mapSize / 2)* 100 + mapSize / 2 - 1] = 0;
-            mapArray[(mapSize / 2)* 100 + mapSize / 2] = 0;
+            for(int i = -3; i < 3; i++)//게임 시작전 4*4크기를 감싸서 막는 용
+            {
+                mapArray[(half - 3) * 100 + half + i] = 2;
+                mapArray[(half + 2) * 100 + half + i] = 2;
+                mapArray[(half + i) * 100 + half - 3] = 2;
+                mapArray[(half + i) * 100 + half + 2] = 2;
+            }
+            for (int i = -2; i < 2; i++)//중앙 4*4 공간
+            {
+                mapArray[(half+i) * 100 + half - 2] = 0;
+                mapArray[(half+i) * 100 + half - 1] = 0;
+                mapArray[(half+i) * 100 + half] = 0;
+                mapArray[(half+i) * 100 + half + 1] = 0;
+            }
             return mapArray;
         }
 
@@ -116,10 +127,10 @@ namespace DoMine
 
 
         //DestroyWall 부술수있는 벽을 부술때 호출되는 함수
-        public void DestroyWall(int x, int y, bool callback) //callback이 false면 이벤트생성
+        public void DestroyWall(int x, int y, bool callback, bool system) //callback이 false면 이벤트생성
         {
             Debug.Log(mapArray[x * 100 + y]);
-            if (mapArray[x * 100 + y] == 1)
+            if (mapArray[x * 100 + y] == 1 || system == true)
             {
                 Destroy(mapObject[x * 100 + y]);
                 mapArray[x * 100 + y] = 0;

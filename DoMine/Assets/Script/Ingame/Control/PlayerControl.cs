@@ -37,18 +37,23 @@ namespace DoMine
             mapCtrl = GameObject.Find("GameController").GetComponent<MapController>();
             itemCtrl = GameObject.Find("GameController").GetComponent<ItemController>();
             gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
+            playerName.GetComponent<TextMeshPro>().text = state.PlayerName;
+            gameCtrl.players.Add(entity);
             if (entity.IsOwner)
             {
                 aimIndicator = GameObject.Find("AimIndicator");
                 state.Inventory[1] = 10;
                 state.PlayerName = PlayerPrefs.GetString("nick");
+                if (BoltNetwork.IsClient)
+                {
+                    var evnt = PlayerJoined.Create();
+                    evnt.Send();
+                }
             }
-            playerName.GetComponent<TextMeshPro>().text = state.PlayerName;
-            gameCtrl.GC.players.Add(entity);
         }
         void OnDestroy()
         {
-            gameCtrl.GC.players.Remove(entity);
+            gameCtrl.players.Remove(entity);
         }
 
         public override void SimulateOwner()
@@ -109,7 +114,6 @@ namespace DoMine
                 {
                     Debug.Log("barricade error");
                 }
-
             }
 
             if (Input.GetKey(KeyCode.A) == true)
@@ -118,7 +122,7 @@ namespace DoMine
                 {
                     if (Vector2.Distance(player.transform.position, mapCtrl.nearestWall.transform.position) < 0.8)
                     {
-                        mapCtrl.DestroyWall(mapCtrl.nearestWallX, mapCtrl.nearestWallY, false);
+                        mapCtrl.DestroyWall(mapCtrl.nearestWallX, mapCtrl.nearestWallY, false, false);
                         breakCool = breakCoolBase;
                     }
                 }
@@ -160,9 +164,12 @@ namespace DoMine
             {
                 returnCool = 0;
             }
-            mapCtrl.FindWall(mapCtrl.mapObject);
-            itemCtrl.FindItem(itemCtrl.itemObject);
-            Aiming();
+            if(entity.IsOwner)
+            {
+                mapCtrl.FindWall(mapCtrl.mapObject);
+                itemCtrl.FindItem(itemCtrl.itemObject);
+                Aiming();
+            }
         }
 
         void Aiming()
@@ -194,7 +201,7 @@ namespace DoMine
                 else
                     i++;
             }
-            if(i == gameCtrl.playerNum)
+            if(i == gameCtrl.players.Count)
             {
                 canCreateWall = true;
             }
