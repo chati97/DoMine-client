@@ -17,7 +17,6 @@ namespace Photon.Bolt
         public Transform gridTr;
         public OptionSetting op;
         public Action click;
-
         public void StartServer()
         {
             if (NameInput.text == "" || RoomInput.text == "")
@@ -34,6 +33,7 @@ namespace Photon.Bolt
             {
                 BoltMatchmaking.CreateSession(sessionID: RoomInput.text, sceneToLoad: "Lobby");
             }
+            
         }
 
         
@@ -76,7 +76,7 @@ namespace Photon.Bolt
                 Button join = roomData.GetComponentInChildren<Button>();
                 join.onClick.AddListener(() => OnClickRoom(roomData.roomName.text));
             }
-
+            
             /*string log = "";
             foreach (var session in sessionList)
             {
