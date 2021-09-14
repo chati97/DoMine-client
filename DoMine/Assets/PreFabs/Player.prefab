@@ -234,11 +234,13 @@ MonoBehaviour:
   player: {fileID: 9087986202235492200}
   aimIndicator: {fileID: 0}
   playerName: {fileID: 9158129739901957007}
-  breakCool: 0
-  returnCool: 0
   mapCtrl: {fileID: 0}
   itemCtrl: {fileID: 0}
   gameCtrl: {fileID: 0}
+  breakCool: 0
+  returnCool: 0
+  canCreateWall: 1
+  aim: {x: 0, y: 0}
 --- !u!114 &7664376511355177180
 MonoBehaviour:
   m_ObjectHideFlags: 0

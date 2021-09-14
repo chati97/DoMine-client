@@ -11,7 +11,6 @@ namespace DoMine
         public int[] mapArray = new int[10000];
         public GameObject[] mapObject = new GameObject[10000];
         public GameObject player = null;
-        public int playerCode;
         [SerializeField] GameObject breakable = null;
         [SerializeField] GameObject unbreakable = null;
         [SerializeField] Transform wallParent = null;
@@ -114,7 +113,7 @@ namespace DoMine
                     evnt.Type = type;
                     evnt.LocationX = x;
                     evnt.LocationY = y;
-                    evnt.Player = playerCode;
+                    evnt.Player = GameController.playerCode;
                     evnt.Send();
                 }
                 return 0;

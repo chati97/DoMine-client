@@ -6,23 +6,6 @@
       "$type": "Photon.Bolt.Compiler.StateDefinition, bolt.compiler",
       "Properties": [
         {
-          "Name": "PlayerNum",
-          "Enabled": true,
-          "ReplicationMode": 1,
-          "Priority": 1,
-          "PropertyType": {
-            "$type": "Photon.Bolt.Compiler.PropertyTypeInteger, bolt.compiler",
-            "MaxValue": 255
-          },
-          "AssetSettings": {
-            "$type": "Photon.Bolt.Compiler.PropertyStateSettings, bolt.compiler",
-            "ExtrapolationErrorTolerance": 0.25,
-            "_ExtrapolationCorrectionFrames": 6,
-            "ExtrapolationMaxFrames": 9,
-            "SnapMagnitude": 10.0
-          }
-        },
-        {
           "Name": "Location",
           "Enabled": true,
           "ReplicationMode": 1,
@@ -103,22 +86,6 @@
           }
         },
         {
-          "Name": "IsSabotage",
-          "Enabled": true,
-          "ReplicationMode": 1,
-          "Priority": 1,
-          "PropertyType": {
-            "$type": "Photon.Bolt.Compiler.PropertyTypeBool, bolt.compiler"
-          },
-          "AssetSettings": {
-            "$type": "Photon.Bolt.Compiler.PropertyStateSettings, bolt.compiler",
-            "ExtrapolationErrorTolerance": 0.25,
-            "_ExtrapolationCorrectionFrames": 6,
-            "ExtrapolationMaxFrames": 9,
-            "SnapMagnitude": 10.0
-          }
-        },
-        {
           "Name": "Inventory",
           "Enabled": true,
           "ReplicationMode": 1,
@@ -130,23 +97,6 @@
               "$type": "Photon.Bolt.Compiler.PropertyTypeInteger, bolt.compiler",
               "MaxValue": 255
             }
-          },
-          "AssetSettings": {
-            "$type": "Photon.Bolt.Compiler.PropertyStateSettings, bolt.compiler",
-            "ExtrapolationErrorTolerance": 0.25,
-            "_ExtrapolationCorrectionFrames": 6,
-            "ExtrapolationMaxFrames": 9,
-            "SnapMagnitude": 10.0
-          }
-        },
-        {
-          "Name": "CurrentState",
-          "Enabled": true,
-          "ReplicationMode": 1,
-          "Priority": 1,
-          "PropertyType": {
-            "$type": "Photon.Bolt.Compiler.PropertyTypeInteger, bolt.compiler",
-            "MaxValue": 255
           },
           "AssetSettings": {
             "$type": "Photon.Bolt.Compiler.PropertyStateSettings, bolt.compiler",
@@ -285,22 +235,7 @@
     },
     {
       "$type": "Photon.Bolt.Compiler.EventDefinition, bolt.compiler",
-      "Properties": [
-        {
-          "Name": "PlayerCode",
-          "Enabled": true,
-          "Expanded": true,
-          "ReplicationMode": 1,
-          "Priority": 1,
-          "PropertyType": {
-            "$type": "Photon.Bolt.Compiler.PropertyTypeInteger, bolt.compiler",
-            "MaxValue": 255
-          },
-          "AssetSettings": {
-            "$type": "Photon.Bolt.Compiler.PropertyEventSettings, bolt.compiler"
-          }
-        }
-      ],
+      "Properties": [],
       "Name": "PlayerJoined",
       "Guid": "b9e03a06-90c2-467b-911b-88ac0ec8d2c0",
       "Groups": []
@@ -346,6 +281,20 @@
         },
         {
           "Name": "PlayerCode",
+          "Enabled": true,
+          "Expanded": true,
+          "ReplicationMode": 1,
+          "Priority": 1,
+          "PropertyType": {
+            "$type": "Photon.Bolt.Compiler.PropertyTypeInteger, bolt.compiler",
+            "MaxValue": 255
+          },
+          "AssetSettings": {
+            "$type": "Photon.Bolt.Compiler.PropertyEventSettings, bolt.compiler"
+          }
+        },
+        {
+          "Name": "Sabotage",
           "Enabled": true,
           "Expanded": true,
           "ReplicationMode": 1,
@@ -623,7 +572,7 @@
       "$type": "Photon.Bolt.Compiler.EventDefinition, bolt.compiler",
       "Properties": [
         {
-          "Name": "EventCode",
+          "Name": "Code",
           "Enabled": true,
           "Expanded": true,
           "ReplicationMode": 1,
@@ -637,30 +586,8 @@
           }
         }
       ],
-      "Name": "GameProgressEvent",
-      "Guid": "3de65510-7025-459b-9048-92267cb6fb04",
-      "Groups": []
-    },
-    {
-      "$type": "Photon.Bolt.Compiler.EventDefinition, bolt.compiler",
-      "Properties": [
-        {
-          "Name": "Player",
-          "Enabled": true,
-          "Expanded": true,
-          "ReplicationMode": 1,
-          "Priority": 1,
-          "PropertyType": {
-            "$type": "Photon.Bolt.Compiler.PropertyTypeInteger, bolt.compiler",
-            "MaxValue": 255
-          },
-          "AssetSettings": {
-            "$type": "Photon.Bolt.Compiler.PropertyEventSettings, bolt.compiler"
-          }
-        }
-      ],
-      "Name": "TurnInGold",
-      "Guid": "3aca52b7-8256-4772-83e4-8741be2946b5",
+      "Name": "PlayerCode",
+      "Guid": "fd1f13f5-485b-48c1-a8eb-87e838a112d8",
       "Groups": []
     }
   ],
