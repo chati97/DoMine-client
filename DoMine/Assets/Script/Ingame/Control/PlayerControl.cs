@@ -118,7 +118,7 @@ namespace DoMine
 
             if (Input.GetKey(KeyCode.A) == true)
             {
-                if (breakCool == 0)
+                if (breakCool == 0 && mapCtrl.nearestWall != null)
                 {
                     if (Vector2.Distance(player.transform.position, mapCtrl.nearestWall.transform.position) < 0.8)
                     {

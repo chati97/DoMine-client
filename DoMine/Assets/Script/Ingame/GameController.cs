@@ -72,7 +72,7 @@ namespace DoMine
             }
         }
 
-        public override void OnEvent(GameInfo evnt)// 게임 시작 이벤트에 대한 콜백함수 일단 막고있는 벽을 없애는 용도 임시로 아이템 추가하는것도 넣음
+        public override void OnEvent(GameStart evnt)// 게임 시작 이벤트에 대한 콜백함수 일단 막고있는 벽을 없애는 용도 임시로 아이템 추가하는것도 넣음
         {
             time = evnt.TimeLeft;
             int _sabotage = evnt.Sabotage;
@@ -155,7 +155,7 @@ namespace DoMine
                 {
                     gameStarted = true;
                     //추후 플레이어 3인 이하일시 게임 종료기능 추가
-                    var evnt = GameInfo.Create();
+                    var evnt = GameStart.Create();
                     evnt.TimeLeft = 900;
                     evnt.PlayerNum = playerNum;
                     evnt.Sabotage = DividePlayer();

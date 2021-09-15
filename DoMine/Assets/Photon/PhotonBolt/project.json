@@ -308,7 +308,7 @@
           }
         }
       ],
-      "Name": "GameInfo",
+      "Name": "GameStart",
       "Guid": "ecaebbed-3df9-4b65-9264-8305b632b03e",
       "Groups": []
     },
