@@ -16,23 +16,24 @@ namespace Photon.Bolt
         public GameObject Startbtn;
         public GameObject Readybtn;
         public Text PlayerList;
-        int playercount;
-        int playerdiscount;
+        public Text PlayerCountText;
+        int playercount = 0;
         void Start()
         {
             if (BoltNetwork.IsServer)
             {
                 Startbtn.SetActive(true);
                 Readybtn.SetActive(false);
-                playercount = 1;
-                playerdiscount = 0;
+                PlayerCountText.text = "Player : " + playercount + "/ 10";
             }
         }
-        
+        void Update()
+        {
+            PlayerCountText.text = "Player : " + playercount + "/ 10";
+        }
         public override void Connected(BoltConnection connection)
         {
             playercount++;
-            Debug.Log("player count is " + playercount);
         }
         public override void Disconnected(BoltConnection connection)
         {
