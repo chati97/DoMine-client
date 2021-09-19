@@ -19,16 +19,16 @@ namespace Photon.Bolt
         public Action click;
         public void StartServer()
         {
-            if (NameInput.text == "" || RoomInput.text == "")
+            if (RoomInput.text == "" || PlayerPrefs.GetString("nick") == "")
             {
                 Debug.LogError("Please check your input");
+                return;
             }
             BoltLauncher.StartServer();
         }
 
         public override void BoltStartDone()
         {
-            //PlayerPrefs.SetString("nick", NameInput.text);
             if (BoltNetwork.IsServer)
             {
                 BoltMatchmaking.CreateSession(sessionID: RoomInput.text, sceneToLoad: "Lobby");
