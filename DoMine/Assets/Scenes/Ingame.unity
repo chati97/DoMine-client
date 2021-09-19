@@ -158,8 +158,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 353.49}
-  m_SizeDelta: {x: 400, y: 100}
+  m_AnchoredPosition: {x: 0, y: 350}
+  m_SizeDelta: {x: 600, y: 100}
   m_Pivot: {x: 0.5, y: 0.49999976}
 --- !u!114 &197455785
 MonoBehaviour:
@@ -191,10 +191,10 @@ MonoBehaviour:
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_HorizontalOverflow: 1
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: '10 : 00'
+  m_Text: 
 --- !u!222 &197455786
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -438,7 +438,6 @@ GameObject:
   - component: {fileID: 809592804}
   - component: {fileID: 809592803}
   - component: {fileID: 809592807}
-  - component: {fileID: 809592808}
   - component: {fileID: 809592805}
   m_Layer: 0
   m_Name: GameController
@@ -459,11 +458,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dbb0e638b9529a4bb2ea4c3d5c54ead, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GC: {fileID: 0}
   IC: {fileID: 809592807}
   MC: {fileID: 809592805}
   timeLeft: {fileID: 197455785}
   playerCode: -1
   playerNum: 1
+  players: []
+  myPlayer: {fileID: 0}
 --- !u!4 &809592804
 Transform:
   m_ObjectHideFlags: 0
@@ -10503,6 +10505,7 @@ MonoBehaviour:
   nearestWall: {fileID: 0}
   nearestWallX: -1
   nearestWallY: -1
+  mapSize: 100
   isHost: 0
 --- !u!114 &809592807
 MonoBehaviour:
@@ -20526,25 +20529,6 @@ MonoBehaviour:
   nearestItem: {fileID: 0}
   nearestItemX: -1
   nearestItemY: -1
---- !u!114 &809592808
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 809592802}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f96234228303949c082e2216091e8ed9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MC: {fileID: 809592805}
-  IC: {fileID: 809592807}
-  players: []
-  myPlayer: {fileID: 0}
-  gameInfo: {fileID: 0}
-  SpawnPrefab: {fileID: 9087986202235492200, guid: 45bea264105a54207b7bf88a9c582b7a,
-    type: 3}
 --- !u!1 &1049241107
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,7 +8,6 @@ namespace DoMine
     {
         public int[] itemArray = new int[10000];
         public GameObject player = null;
-        public int playerCode;
         public GameObject[] itemObject = new GameObject[10000];
         [SerializeField] GameObject gold = null;
         [SerializeField] Transform itemParent = null;
@@ -40,7 +39,7 @@ namespace DoMine
             }
         }
 
-        public void GetItem(int x, int y, IPlayerState player, bool callback)
+        public void GetItem(int x, int y, IPlayerState player, bool callback)//playercontrol에서 호출시엔 인벤토리를 늘려주고 이벤트날리면서 받음, 콜백으로 GC에서 호출시엔 단순 아이템삭제
         {
             int _type = itemArray[x * 100 + y];
 
@@ -91,7 +90,7 @@ namespace DoMine
                 evnt.LocationX = x;
                 evnt.LocationY = y;
                 evnt.Type = itemCode;
-                evnt.Player = playerCode;
+                evnt.Player = GameController.playerCode;
                 evnt.Send();
             }
         }

@@ -28,7 +28,7 @@ namespace Photon.Bolt
 
         public override void BoltStartDone()
         {
-            PlayerPrefs.SetString("nick", NameInput.text);
+            //PlayerPrefs.SetString("nick", NameInput.text);
             if (BoltNetwork.IsServer)
             {
                 BoltMatchmaking.CreateSession(sessionID: RoomInput.text, sceneToLoad: "Lobby");
