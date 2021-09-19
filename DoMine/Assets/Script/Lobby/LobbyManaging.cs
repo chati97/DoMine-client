@@ -17,14 +17,13 @@ namespace Photon.Bolt
         public GameObject Readybtn;
         public Text PlayerList;
         public Text PlayerCountText;
-        int playercount = 0;
+        int playercount = 1;
         void Start()
         {
             if (BoltNetwork.IsServer)
             {
                 Startbtn.SetActive(true);
                 Readybtn.SetActive(false);
-                PlayerCountText.text = "Player : " + playercount + "/ 10";
             }
         }
         void Update()
@@ -41,7 +40,7 @@ namespace Photon.Bolt
         }
         public void LoadGame()
         {
-            if(playercount < 4)
+            if(playercount < 1)
             {
                 Debug.Log("Can't Start");
             }
