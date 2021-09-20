@@ -7,6 +7,8 @@ public class LobbyPlayerData : MonoBehaviour
 {
     public Text PlayerName;
     public Button KickButton;
+    public bool Ready;
+    public Button IsReady;
 
     public void KickButtonSetting()
     {
@@ -19,4 +21,18 @@ public class LobbyPlayerData : MonoBehaviour
             KickButton.gameObject.SetActive(false);
         }
     }
+
+    public void OnClickReady()
+    {
+        if (Ready)
+        {
+            IsReady.interactable = true;
+        }
+
+        else
+        {
+            IsReady.interactable = false;
+        }
+    }
+
 }

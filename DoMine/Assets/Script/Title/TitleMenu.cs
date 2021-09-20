@@ -77,14 +77,6 @@ namespace Photon.Bolt
                 join.onClick.AddListener(() => OnClickRoom(roomData.roomName.text));
             }
             
-            /*string log = "";
-            foreach (var session in sessionList)
-            {
-                UdpSession photonSession = session.Value;
-                if (photonSession.Source == UdpSessionSource.Photon)
-                    log += $"{photonSession.HostName}\n";
-            }
-            LogText.text = log;*/
         }
         public void OnClickRoom(string roomName)
         {

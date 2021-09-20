@@ -1824,8 +1824,8 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 200, y: 30}
-  m_Spacing: {x: 0, y: 0}
+  m_CellSize: {x: 400, y: 30}
+  m_Spacing: {x: 0, y: 5}
   m_Constraint: 0
   m_ConstraintCount: 2
 --- !u!1 &884206002
@@ -3081,8 +3081,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -68.27606, y: 23.867996}
-  m_SizeDelta: {x: -165.1328, y: -72.937}
+  m_AnchoredPosition: {x: -84.78656, y: 23.867996}
+  m_SizeDelta: {x: -198.1538, y: -72.937}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1921063186
 MonoBehaviour:
@@ -3275,6 +3275,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1948125644}
   - component: {fileID: 1948125643}
+  - component: {fileID: 1948125645}
   m_Layer: 0
   m_Name: LobbyManager
   m_TagString: Untagged
@@ -3312,6 +3313,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1948125645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1948125642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 896e37f56dafa6d408f4d7ee98ff1071, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Player: {fileID: 2086795855441723251, guid: ea7f1c0819e24c545a67890ea88e742a, type: 3}
+  lobbyGrid: {fileID: 847312468}
+  Nickname: {fileID: 85903537}
+  ready: {fileID: 622549050}
 --- !u!1 &1967704391
 GameObject:
   m_ObjectHideFlags: 0
