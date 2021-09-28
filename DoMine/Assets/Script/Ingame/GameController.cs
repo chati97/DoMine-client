@@ -20,6 +20,7 @@ namespace DoMine
         public BoltEntity myPlayer;
         public static bool isSabotage = false;
         bool gameStarted = false;
+        IPlayerState mystate = null;
 
         public override void SceneLoadLocalDone(string scene, IProtocolToken token)
         {
@@ -28,6 +29,7 @@ namespace DoMine
             myPlayer.TakeControl();
             MC.player = myPlayer;//Mc에 넣음
             IC.player = myPlayer;//Ic에 넣음
+            myPlayer.TryFindState<IPlayerState>(out mystate);
         }
 
         // Start is called before the first frame update
@@ -42,7 +44,11 @@ namespace DoMine
             MC.CreateMap(MC.mapArray = MC.MakeMapArr(), MC.mapObject);
             IC.Init(0);
         }
-
+        public override void OnEvent(SaveGold evnt)
+        {
+            playerList[evnt.Player] = 2;
+            Debug.LogWarning("Player" + evnt.Player + " Saved Gold");
+        }
         public override void OnEvent(WallDestoryed evnt)
         {
             MC.DestroyWall(evnt.LocationX, evnt.LocationY, true, true);
@@ -85,10 +91,13 @@ namespace DoMine
                     MC.DestroyWall(MC.mapSize / 2 + i, MC.mapSize / 2 + 2, false, true);
                     MC.DestroyWall(MC.mapSize / 2 + 2, MC.mapSize / 2 + i, false, true);
                 }
-                IC.CreateItem(48, 52, 1, false);
-                IC.CreateItem(49, 52, 1, false);
-                IC.CreateItem(50, 52, 1, false);
-                IC.CreateItem(51, 52, 1, false);
+                if(BoltNetwork.IsServer)
+                {
+                    IC.CreateItem(48, 52, 1, false);
+                    IC.CreateItem(49, 52, 1, false);
+                    IC.CreateItem(50, 52, 1, false);
+                    IC.CreateItem(51, 52, 1, false);
+                }
             }
             if(BoltNetwork.IsClient)
             {
@@ -107,6 +116,7 @@ namespace DoMine
             {
                 isSabotage = true;
                 Debug.LogWarning("you are Sabotage");
+                mystate.Inventory[2] = 10;//사보타지일 경우엔 바리케이트 10개 지급
             }
             else
             {

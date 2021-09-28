@@ -133,10 +133,9 @@ namespace DoMine
             {
                 Destroy(mapObject[x * 100 + y]);
                 mapArray[x * 100 + y] = 0;
-                Debug.Log(nearestWallX + "," + nearestWallY);
-
                 if(callback == false) //콜백이 false일시(본인이 처음 보내는거면)
                 {
+                    Debug.Log(nearestWallX + "," + nearestWallY);
                     var evnt = WallDestoryed.Create();
                     evnt.LocationX = x;
                     evnt.LocationY = y;

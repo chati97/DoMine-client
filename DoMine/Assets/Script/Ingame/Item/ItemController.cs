@@ -16,9 +16,9 @@ namespace DoMine
         public int nearestItemX = -1;
         public int nearestItemY = -1;
 
-        // 인벤토리는 0=금 1..부터는 미정
-        // 맵정보에서 0=공백, 1=금, 2...부터는 미정으로 한칸 밀림
-        
+        // 인벤토리는 0=곡괭이, 1=금, 2=바리케이트
+        // 맵정보에서 0=공백, 1=금, 2=바리케이트  
+
         // Start is called before the first frame update
         void Start()
         {
@@ -48,14 +48,14 @@ namespace DoMine
                 switch (itemArray[x * 100 + y])
                 {
                     case 1:
-                        if (player.Inventory[0] == 0)
+                        if (player.Inventory[1] == 0 && GameController.isSabotage == false)
                         {
-                            player.Inventory[0] = 1;
-                            Debug.Log("Gold get");
+                            player.Inventory[1] = 1;
+                            Debug.LogWarning("Gold get");
                         }
                         else
                         {
-                            Debug.Log("Already having gold");//추후 여기에서 이미 확보해둔상태라고 UI에서 메세지 보내는거로 호출
+                            Debug.LogWarning("you cannot pick gold");//추후 여기에서 이미 확보해둔상태라고 UI에서 메세지 보내는거로 호출
                             return;
                         }
                         break;
@@ -66,6 +66,7 @@ namespace DoMine
                 evnt.Type = _type;
                 evnt.Send();
             }
+
             Destroy(itemObject[x * 100 + y]);
             itemArray[x * 100 + y] = 0;
         }

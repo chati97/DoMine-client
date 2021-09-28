@@ -42,7 +42,6 @@ namespace DoMine
             if (entity.IsOwner)
             {
                 aimIndicator = GameObject.Find("AimIndicator");
-                state.Inventory[1] = 10;
                 state.PlayerName = PlayerPrefs.GetString("nick");
                 if (BoltNetwork.IsClient)
                 {
@@ -104,11 +103,11 @@ namespace DoMine
 
             if (Input.GetKey(KeyCode.D) == true)
             {
-                if (state.Inventory[1] > 0 && canCreateWall)
+                if (state.Inventory[2] > 0 && canCreateWall)
                 {
                     output = mapCtrl.CreateWall(mapCtrl.mapObject, 2, (int)aim.x, (int)aim.y, false);
                     if(output == 0)
-                        --state.Inventory[1];
+                        --state.Inventory[2];
                 }
                 else
                 {
@@ -120,10 +119,11 @@ namespace DoMine
             {
                 if (breakCool == 0 && mapCtrl.nearestWall != null)
                 {
-                    if (Vector2.Distance(player.transform.position, mapCtrl.nearestWall.transform.position) < 0.8)
+                    if (Vector2.Distance(player.transform.position, mapCtrl.nearestWall.transform.position) < 0.8 && state.Inventory[0] > 0)
                     {
                         mapCtrl.DestroyWall(mapCtrl.nearestWallX, mapCtrl.nearestWallY, false, false);
                         breakCool = breakCoolBase;
+                        state.Inventory[0]--;//곡괭이 갯수 소진
                     }
                 }
                 else
@@ -169,6 +169,21 @@ namespace DoMine
                 mapCtrl.FindWall(mapCtrl.mapObject);
                 itemCtrl.FindItem(itemCtrl.itemObject);
                 Aiming();
+                if (Vector2.Distance(entity.transform.position, new Vector2(49.5f,49.5f)) < 1)
+                {
+                    if(state.Inventory[0] < 15)
+                    {
+                        state.Inventory[0] = 15;
+                        Debug.LogWarning("Pickaxe Recharged");
+                    }
+                    if (state.Inventory[1] == 1 && gameCtrl.playerList[GameController.playerCode] == 0)
+                    {
+                        var evnt = SaveGold.Create();
+                        evnt.Player = GameController.playerCode;
+                        evnt.Send();
+                    }
+                    
+                }
             }
         }
 
@@ -194,7 +209,7 @@ namespace DoMine
             i = 0;
             foreach (BoltEntity player in gameCtrl.players)
             {
-                if (Vector2.Distance(player.GetState<IPlayerState>().Location.Transform.position, aim) < 0.9)
+                if (Vector2.Distance(player.GetState<IPlayerState>().Location.Transform.position, aim) < 0.9)//유저위에 벽못깔게 하는코드
                 {
                     canCreateWall = false;
                 }
