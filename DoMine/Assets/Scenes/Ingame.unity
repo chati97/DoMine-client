@@ -439,6 +439,7 @@ GameObject:
   - component: {fileID: 809592803}
   - component: {fileID: 809592807}
   - component: {fileID: 809592805}
+  - component: {fileID: 809592806}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -460,7 +461,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IC: {fileID: 809592807}
   MC: {fileID: 809592805}
-  timeLeft: {fileID: 197455785}
+  UC: {fileID: 809592806}
   playerList: 00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
   playerNum: 1
   players: []
@@ -10505,6 +10506,19 @@ MonoBehaviour:
   nearestWallY: -1
   mapSize: 100
   isHost: 0
+--- !u!114 &809592806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 809592802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b27ff7fd5e8a434da0b5523fa6f8393, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeLeft: {fileID: 197455785}
 --- !u!114 &809592807
 MonoBehaviour:
   m_ObjectHideFlags: 0

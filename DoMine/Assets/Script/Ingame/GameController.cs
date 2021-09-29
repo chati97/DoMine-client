@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Bolt;
-using TMPro;
 
 namespace DoMine
 {
@@ -11,15 +10,15 @@ namespace DoMine
     {
         [SerializeField] ItemController IC = null;
         [SerializeField] MapController MC = null;
-        [SerializeField] Text timeLeft = null;
+        [SerializeField] UIController UC = null;
         public int[] playerList = {0,-1,-1,-1,-1,-1,-1,-1,-1,-1};//최대 10인 입장, 인덱스는 플레이어코드(-1 없음, 0 광부, 1 사보타지, 2는 입금한광부..?)
         public static int playerCode = -1;
         public int playerNum;
-        float time;
+        public static float time;
         public List<BoltEntity> players = new List<BoltEntity>();
         public BoltEntity myPlayer;
         public static bool isSabotage = false;
-        bool gameStarted = false;
+        public static bool gameStarted = false;
         IPlayerState mystate = null;
 
         public override void SceneLoadLocalDone(string scene, IProtocolToken token)
@@ -155,12 +154,10 @@ namespace DoMine
             if (time > 0 && time <= 900 && gameStarted == false)
             {
                 time -= Time.deltaTime;
-                timeLeft.text = "게임시작까지" + ((int)Math.Floor(time)).ToString();
             }
             else if (gameStarted == false)//여기서 호스트가 게임 시작 요청을 보냄
             {
                 time = 1000;//update문 발동안되는 값
-                timeLeft.text = "게임 준비중";
                 if(BoltNetwork.IsServer)
                 {
                     gameStarted = true;
@@ -170,22 +167,19 @@ namespace DoMine
                     evnt.PlayerNum = playerNum;
                     evnt.Sabotage = DividePlayer();
                     evnt.Send();
-                    
                 }
             }
             else if (time > 0 && time <= 900 && gameStarted == true)//게임 시작했다는 이벤트를 호스트포함 모두가 받으면 실행
             {
                 time -= Time.deltaTime;
-                timeLeft.text = "게임종료까지" + ((int)Math.Floor(time) / 60).ToString() + " : " + ((int)Math.Floor(time) % 60).ToString();
             }
             else if (time <= 0 && gameStarted == true) // 게임 종료시
             {
                 time = 1000;//update문 발동안되는 값
-                timeLeft.text = "게임종료";
             }
         }
 
-        int DividePlayer()//사보타지 수를 리턴하는 함수
+        int DividePlayer()//사보타지 코드를 리턴하는 함수 (ex 사보타지가 9, 4 ,3, 0 이면 9430 리턴, 없을시 -1)
         {
             int _sabotage = (int)(playerNum * 0.43) - UnityEngine.Random.Range(0,1); //현재 접속인원에 맞춰서 현재인원/ 0.43 에서 랜덤으로 1을 빼거나 더해서 사보타지수를 구함
             int _code = 0;
