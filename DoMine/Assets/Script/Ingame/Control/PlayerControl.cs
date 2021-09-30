@@ -42,7 +42,6 @@ namespace DoMine
             {
                 aimIndicator = GameObject.Find("AimIndicator");
                 state.PlayerName = PlayerPrefs.GetString("nick");
-                playerName.GetComponent<TextMeshPro>().text = state.PlayerName;
                 if (BoltNetwork.IsClient)
                 {
                     var evnt = PlayerJoined.Create();
@@ -50,6 +49,7 @@ namespace DoMine
                     evnt.Send();
                 }
             }
+            playerName.GetComponent<TextMeshPro>().text = state.PlayerName;
         }
         void OnDestroy()
         {
