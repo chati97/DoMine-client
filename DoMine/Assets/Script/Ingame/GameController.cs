@@ -8,19 +8,22 @@ namespace DoMine
 {
     public class GameController : GlobalEventListener
     {
-        [SerializeField] ItemController IC = null;
+        [SerializeField] ItemController IC = null;// 각 스크립트 연결
         [SerializeField] MapController MC = null;
         [SerializeField] UIController UC = null;
         public int[] playerList = {0,-1,-1,-1,-1,-1,-1,-1,-1,-1};//최대 10인 입장, 인덱스는 플레이어코드(-1 없음, 0 광부, 1 사보타지, 2는 입금한광부..?)
-        public static int playerCode = -1;
-        public int playerNum;
-        public static float time;
-        public List<BoltEntity> players = new List<BoltEntity>();
-        public BoltEntity myPlayer;
-        public static bool isSabotage = false;
-        public static bool gameStarted = false;
-        public static bool gameLoaded = false;
-        IPlayerState mystate = null;
+        public string[] playerNameList = {"", "", "", "", "", "", "", "", "", ""};
+        public static int playerCode = -1;//플레이어 코드
+        public int playerNum; //최초입장한유저수
+        int goldAmount = 0;//생성된 금 갯수
+        int sabotages = 0;//사보타지 수
+        public static float time; //게임시간
+        public List<BoltEntity> players = new List<BoltEntity>(); //볼트엔티티 모으는 리스트
+        public BoltEntity myPlayer;//본인 플레이어
+        public static bool isSabotage = false;//플레이어가 사보타지인지 확인
+        public static bool gameStarted = false;//게임 시작여부
+        public static bool gameLoaded = false;//게임로딩여부
+        IPlayerState mystate = null;//본인 상태 수정위해 가지고 있는변수
 
         public override void SceneLoadLocalDone(string scene, IProtocolToken token)
         {
@@ -58,6 +61,7 @@ namespace DoMine
         public override void OnEvent(PlayerJoined evnt) // 플레이어 접속시 호출 접속한 플레이어에게 코드를 배정
         {
             IPlayerState state;
+            int i = 0;
             var code = PlayerCode.Create();
             code.Code = playerNum;
             code.Send();
@@ -67,7 +71,8 @@ namespace DoMine
             foreach (BoltEntity entity in players)
             {
                 entity.TryFindState<IPlayerState>(out state);//신기한 함수 플레이어가 접속했을때 인원 추가하고 볼트엔티티 로그 남기는 기능
-                //Debug.LogWarning("[" + state.PlayerName + "] playing");
+                playerNameList[i] = state.PlayerName;
+                i++;
             }
         }
 
@@ -111,6 +116,7 @@ namespace DoMine
                     playerList[_sabotage % 10] = 1;//해당 인덱스값을 받아서 1로만듬
                     Debug.LogWarning("Player" + _sabotage % 10 + "is Sabotage");
                     _sabotage = _sabotage / 10;
+                    sabotages++;
                 } while (_sabotage != 0);
             }
             if (playerList[playerCode] == 1)//본인이 사보타지인지 확인하고 반영 기능
@@ -148,6 +154,25 @@ namespace DoMine
         public override void OnEvent(ItemUsed evnt)
         {
             return;
+        }// 아이템 사용 함수(바리케이트, 곡괭이, 금에는 해당되지않음)
+
+        public override void OnEvent(GameEnd evnt)//게임 종료이벤트 수신 함수
+        {
+            bool _amIWin = false;
+            int _temp = evnt.WinPlayer;
+            if (evnt.WinPlayer != -1)
+            {
+                do
+                {
+                    if (_temp % 10 == playerCode)//우승자중 내 코드가 있다면
+                    {
+                        _amIWin = true;
+                        break;
+                    }
+                    _temp = _temp / 10;
+                } while (_temp != 0);
+            }
+            UC.GameWinner(evnt.WinPlayer, evnt.IsSabotageWin, _amIWin, playerNameList);
         }
 
         // Update is called once per frame
@@ -173,11 +198,15 @@ namespace DoMine
             }
             else if (time > 0 && time <= 900 && gameStarted == true)//게임 시작했다는 이벤트를 호스트포함 모두가 받으면 실행
             {
-                time -= Time.deltaTime;
+                time -= Time.deltaTime*500;
             }
             else if (time <= 0 && gameStarted == true) // 게임 종료시
             {
                 time = 1000;//update문 발동안되는 값
+                if(BoltNetwork.IsServer)
+                {
+                    GameEnd();
+                }
             }
         }
 
@@ -228,9 +257,58 @@ namespace DoMine
             return _code;
         }
 
-        void GameEnd()//게임 종료 함수
+        void GameEnd()//게임 종료이벤트 송신 함수
         {
+            int _gold2win = (int)(playerNum*0.43);
+            int _goldSavedPlayer = 0;
+            int _winPlayer = 0;
+            bool _isSabotageWin;
 
+            for (int i = 0; i < playerNum; i++)
+            {
+                if(playerList[i] == 2)
+                {
+                    _goldSavedPlayer++;
+                }
+            }
+
+            if (_goldSavedPlayer >= _gold2win && _goldSavedPlayer > 0)//광부 승리시
+            {
+                _isSabotageWin = false;
+                for (int i = playerNum - 1; i >= 0; i--)
+                {
+                    if (playerList[i] == 2)//입금상태인 광부 측정
+                    {
+                        _winPlayer = _winPlayer * 10 + i;
+                    }
+                }
+            }
+            else//사보타지 혹은 승리한 인원이 없을 시
+            {
+                if (sabotages != 0)
+                {
+                    _isSabotageWin = true;
+                    for (int i = playerNum - 1; i >= 0; i--)
+                    {
+                        if (playerList[i] == 1)//사보타지 수 측정
+                        {
+                            _winPlayer = _winPlayer * 10 + i;
+                        }
+                    }
+                }
+                else
+                {
+                    _isSabotageWin = false;//아무도 승리하지 못했을 시
+                    _winPlayer = -1;
+                }
+            }
+            Debug.LogWarning(_goldSavedPlayer);
+            Debug.LogWarning(_gold2win);
+            Debug.LogWarning(_winPlayer);
+            var evnt = Photon.Bolt.GameEnd.Create();
+            evnt.WinPlayer = _winPlayer;
+            evnt.IsSabotageWin = _isSabotageWin;
+            evnt.Send();
         }
 
     }

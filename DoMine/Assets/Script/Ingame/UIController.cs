@@ -11,11 +11,16 @@ namespace DoMine
         [SerializeField] Text timeLeft = null;
         [SerializeField] GameObject panel = null;
         [SerializeField] Text gameInfo = null;
-
+        [SerializeField] Text winPlayers = null;
+        [SerializeField] Text winSide = null;
+        [SerializeField] Button endExit = null;
         private void Start()
         {
             panel.gameObject.SetActive(true);
             gameInfo.text = "Loading";
+            endExit.gameObject.SetActive(false);
+            winSide.gameObject.SetActive(false);
+            winPlayers.gameObject.SetActive(false);
         }
         void Update()
         {
@@ -38,8 +43,52 @@ namespace DoMine
             else if (GameController.time <= 0 && GameController.gameStarted == true) // 게임 종료시
             {
                 panel.gameObject.SetActive(true);
-                gameInfo.text = "GameEnded";
+                gameInfo.text = "";
             }
+        }
+
+        public void GameWinner(int winPlayer, bool isSabotageWin, bool amIWin, string[] nameList)
+        {
+            int _temp = winPlayer;
+            panel.gameObject.SetActive(true);
+            endExit.gameObject.SetActive(true);
+            winSide.gameObject.SetActive(true);
+            winPlayers.gameObject.SetActive(true);
+            GameController.gameLoaded = false;
+
+            if(winPlayer == -1)
+            {
+                gameInfo.text = "You Lose";
+                winSide.text = "No One Won";
+                winPlayers.text = "";
+            }
+            else
+            {
+                if (amIWin == true)
+                {
+                    gameInfo.text = "You Won";
+                }
+                else
+                {
+                    gameInfo.text = "You Lost";
+                }
+                if (isSabotageWin == true)
+                {
+                    winSide.text = "Sabotage Win!";
+                }
+                else
+                {
+                    winSide.text = "Miner Win!";
+                }
+                winPlayers.text = "Win players";
+                do
+                {
+                    winPlayers.text = winPlayers.text + "\n" + nameList[_temp % 10];
+                    _temp = _temp / 10;
+                } while (_temp != 0);
+            }
+
+            
         }
     }
 }
