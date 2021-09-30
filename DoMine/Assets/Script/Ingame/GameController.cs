@@ -13,21 +13,21 @@ namespace DoMine
         [SerializeField] UIController UC = null;
         public int[] playerList = {0,-1,-1,-1,-1,-1,-1,-1,-1,-1};//최대 10인 입장, 인덱스는 플레이어코드(-1 없음, 0 광부, 1 사보타지, 2는 입금한광부..?)
         public string[] playerNameList = {"", "", "", "", "", "", "", "", "", ""};
-        public static int playerCode = -1;//플레이어 코드
+        public static int playerCode;//플레이어 코드
         public int playerNum; //최초입장한유저수
         int goldAmount = 0;//생성된 금 갯수
         int sabotages = 0;//사보타지 수
         public static float time; //게임시간
         public List<BoltEntity> players = new List<BoltEntity>(); //볼트엔티티 모으는 리스트
         public BoltEntity myPlayer;//본인 플레이어
-        public static bool isSabotage = false;//플레이어가 사보타지인지 확인
-        public static bool gameStarted = false;//게임 시작여부
-        public static bool gameLoaded = false;//게임로딩여부
+        public static bool isSabotage;//플레이어가 사보타지인지 확인
+        public static bool gameStarted;//게임 시작여부
+        public static bool gameLoaded;//게임로딩여부
         IPlayerState mystate = null;//본인 상태 수정위해 가지고 있는변수
 
         public override void SceneLoadLocalDone(string scene, IProtocolToken token)
         {
-            var spawnPos = new Vector3(UnityEngine.Random.Range(48, 51), UnityEngine.Random.Range(48, 51), 0);
+            var spawnPos = new Vector3(UnityEngine.Random.Range(48, 52), UnityEngine.Random.Range(48, 52), 0);
             myPlayer = BoltNetwork.Instantiate(BoltPrefabs.Player, spawnPos, Quaternion.identity);
             myPlayer.TakeControl();
             MC.player = myPlayer;//Mc에 넣음
@@ -39,6 +39,10 @@ namespace DoMine
         // Start is called before the first frame update
         void Start()
         {
+            playerCode = -1;
+            sabotages = 0;
+            gameStarted = false;//게임 시작여부
+            gameLoaded = false;//게임로딩여부
             if (BoltNetwork.IsServer)
             {
                 playerNum = 1;
@@ -60,24 +64,19 @@ namespace DoMine
 
         public override void OnEvent(PlayerJoined evnt) // 플레이어 접속시 호출 접속한 플레이어에게 코드를 배정
         {
-            IPlayerState state;
             int i = 0;
             var code = PlayerCode.Create();
             code.Code = playerNum;
+            code.Name = evnt.PlayerName;
             code.Send();
             playerList[playerNum] = 0;
             playerNum++;
             Debug.LogWarning(playerNum + " : 현재 플레이어 수");
-            //foreach (BoltEntity entity in players)
-            //{
-            //    entity.TryFindState<IPlayerState>(out state);//신기한 함수 플레이어가 접속했을때 인원 추가하고 볼트엔티티 로그 남기는 기능
-            //    i++;
-            //}
         }
 
         public override void OnEvent(PlayerCode evnt)//자신의 코드값이 -1(최초)값이면 보낸 코드값대로 자신의 코드를 설정
         {
-            if(playerCode == -1)
+            if(mystate.PlayerName == evnt.Name)
             {
                 playerCode = evnt.Code;
             }
@@ -205,7 +204,7 @@ namespace DoMine
             }
             else if (time > 0 && time <= 900 && gameStarted == true)//게임 시작했다는 이벤트를 호스트포함 모두가 받으면 실행
             {
-                time -= Time.deltaTime*30;//현재 30초에 끝나도록 가속되어있음
+                time -= Time.deltaTime*100;//현재 30초에 끝나도록 가속되어있음
             }
             else if (time <= 0 && gameStarted == true) // 게임 종료시
             {
@@ -219,7 +218,7 @@ namespace DoMine
 
         int DividePlayer()//사보타지 코드를 리턴하는 함수 (ex 사보타지가 9, 4 ,3, 0 이면 9430 리턴, 없을시 -1)
         {
-            int _sabotage = (int)(playerNum * 0.43) - UnityEngine.Random.Range(0,1); //현재 접속인원에 맞춰서 현재인원/ 0.43 에서 랜덤으로 1을 빼거나 더해서 사보타지수를 구함
+            int _sabotage = (int)(playerNum * 0.43) - UnityEngine.Random.Range(0,2); //현재 접속인원에 맞춰서 현재인원/ 0.43 에서 랜덤으로 1을 빼거나 더해서 사보타지수를 구함
             int _code = 0;
             int _temp = -1;
             List<int> _sabolist = new List<int>();
@@ -237,7 +236,7 @@ namespace DoMine
                     do
                     {
                         _crash = false;
-                        _temp = UnityEngine.Random.Range(0, playerNum - 1);
+                        _temp = UnityEngine.Random.Range(0, playerNum);
                         foreach (int previous in _sabolist)
                         {
                             if (previous == _temp)
@@ -247,7 +246,6 @@ namespace DoMine
                             }
                         }
                     } while (_crash == true);
-
                     _sabolist.Add(_temp);
                 }
                 _sabolist.Sort();//정렬후 역순으로 입력해서 플레이어0(방장)이 배열 맨첫번째로 와서 자릿수 안엉키도록 방지

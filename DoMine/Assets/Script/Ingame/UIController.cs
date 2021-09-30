@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Bolt;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 namespace DoMine
@@ -94,8 +96,11 @@ namespace DoMine
                     _temp = _temp / 10;
                 } while (_temp != 0);
             }
-
-            
+        }
+        public void GameExit()
+        {
+            BoltLauncher.Shutdown();
+            SceneManager.LoadScene("Title");
         }
     }
 }
