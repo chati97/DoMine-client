@@ -52,7 +52,6 @@ namespace DoMine
             else if (GameController.time <= 0 && GameController.gameStarted == true) // 게임 종료시
             {
                 panel.gameObject.SetActive(true);
-                gameInfo.text = "";
             }
         }
 

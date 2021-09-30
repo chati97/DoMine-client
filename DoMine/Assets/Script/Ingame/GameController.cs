@@ -48,7 +48,7 @@ namespace DoMine
                 playerNum = 1;
                 playerCode = 0;
             }
-            time = 5;
+            time = 10;
             MC.CreateMap(MC.mapArray = MC.MakeMapArr(), MC.mapObject);
             IC.Init(0);
         }
