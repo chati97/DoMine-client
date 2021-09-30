@@ -9,8 +9,20 @@ namespace DoMine
     public class UIController : MonoBehaviour
     {
         [SerializeField] Text timeLeft = null;
+        [SerializeField] GameObject panel = null;
+        [SerializeField] Text gameInfo = null;
+
+        private void Start()
+        {
+            panel.gameObject.SetActive(true);
+            gameInfo.text = "Loading";
+        }
         void Update()
         {
+            if(GameController.gameLoaded == true)
+            {
+                panel.gameObject.SetActive(false);
+            }
             if (GameController.time > 0 && GameController.time <= 900 && GameController.gameStarted == false)
             {
                 timeLeft.text = "게임시작까지" + ((int)Math.Floor(GameController.time)).ToString();
@@ -25,7 +37,8 @@ namespace DoMine
             }
             else if (GameController.time <= 0 && GameController.gameStarted == true) // 게임 종료시
             {
-                timeLeft.text = "게임종료";
+                panel.gameObject.SetActive(true);
+                gameInfo.text = "GameEnded";
             }
         }
     }

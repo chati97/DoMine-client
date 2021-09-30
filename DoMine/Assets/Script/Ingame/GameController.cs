@@ -19,6 +19,7 @@ namespace DoMine
         public BoltEntity myPlayer;
         public static bool isSabotage = false;
         public static bool gameStarted = false;
+        public static bool gameLoaded = false;
         IPlayerState mystate = null;
 
         public override void SceneLoadLocalDone(string scene, IProtocolToken token)
@@ -29,6 +30,7 @@ namespace DoMine
             MC.player = myPlayer;//Mc에 넣음
             IC.player = myPlayer;//Ic에 넣음
             myPlayer.TryFindState<IPlayerState>(out mystate);
+            gameLoaded = true;
         }
 
         // Start is called before the first frame update
