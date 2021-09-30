@@ -68,12 +68,11 @@ namespace DoMine
             playerList[playerNum] = 0;
             playerNum++;
             Debug.LogWarning(playerNum + " : 현재 플레이어 수");
-            foreach (BoltEntity entity in players)
-            {
-                entity.TryFindState<IPlayerState>(out state);//신기한 함수 플레이어가 접속했을때 인원 추가하고 볼트엔티티 로그 남기는 기능
-                playerNameList[i] = state.PlayerName;
-                i++;
-            }
+            //foreach (BoltEntity entity in players)
+            //{
+            //    entity.TryFindState<IPlayerState>(out state);//신기한 함수 플레이어가 접속했을때 인원 추가하고 볼트엔티티 로그 남기는 기능
+            //    i++;
+            //}
         }
 
         public override void OnEvent(PlayerCode evnt)//자신의 코드값이 -1(최초)값이면 보낸 코드값대로 자신의 코드를 설정
@@ -129,6 +128,10 @@ namespace DoMine
             {
                 Debug.LogWarning("you are Miner");
             }
+            var name = PlayerName.Create();
+            name.Code = playerCode;
+            name.Name = mystate.PlayerName;
+            name.Send();
         }
 
         public override void OnEvent(WallCreated evnt)// 최초 생성이후 자잘한 바리케이트나 맵이벤트시 호출
@@ -175,6 +178,10 @@ namespace DoMine
             UC.GameWinner(evnt.WinPlayer, evnt.IsSabotageWin, _amIWin, playerNameList);
         }
 
+        public override void OnEvent(PlayerName evnt)
+        {
+            playerNameList[evnt.Code] = evnt.Name;
+        }
         // Update is called once per frame
         void Update() 
         {
@@ -198,7 +205,7 @@ namespace DoMine
             }
             else if (time > 0 && time <= 900 && gameStarted == true)//게임 시작했다는 이벤트를 호스트포함 모두가 받으면 실행
             {
-                time -= Time.deltaTime*500;
+                time -= Time.deltaTime*30;//현재 30초에 끝나도록 가속되어있음
             }
             else if (time <= 0 && gameStarted == true) // 게임 종료시
             {
@@ -302,9 +309,6 @@ namespace DoMine
                     _winPlayer = -1;
                 }
             }
-            Debug.LogWarning(_goldSavedPlayer);
-            Debug.LogWarning(_gold2win);
-            Debug.LogWarning(_winPlayer);
             var evnt = Photon.Bolt.GameEnd.Create();
             evnt.WinPlayer = _winPlayer;
             evnt.IsSabotageWin = _isSabotageWin;

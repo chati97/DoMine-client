@@ -37,16 +37,12 @@ namespace DoMine
             mapCtrl = GameObject.Find("GameController").GetComponent<MapController>();
             itemCtrl = GameObject.Find("GameController").GetComponent<ItemController>();
             gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
-            playerName.GetComponent<TextMeshPro>().text = state.PlayerName;
             gameCtrl.players.Add(entity);
-            if (BoltNetwork.IsServer)
-            {
-                gameCtrl.playerNameList[0] = state.PlayerName;
-            }
             if (entity.IsOwner)
             {
                 aimIndicator = GameObject.Find("AimIndicator");
                 state.PlayerName = PlayerPrefs.GetString("nick");
+                playerName.GetComponent<TextMeshPro>().text = state.PlayerName;
                 if (BoltNetwork.IsClient)
                 {
                     var evnt = PlayerJoined.Create();

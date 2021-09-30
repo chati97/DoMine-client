@@ -30,7 +30,7 @@ namespace DoMine
             }
             if (GameController.time > 0 && GameController.time <= 900 && GameController.gameStarted == false)
             {
-                timeLeft.text = "게임시작까지" + ((int)Math.Floor(GameController.time)).ToString();
+                timeLeft.text = "게임시작까지 " + ((int)Math.Floor(GameController.time+1)).ToString();
             }
             else if (GameController.gameStarted == false)//여기서 호스트가 게임 시작 요청을 보냄
             {
@@ -38,7 +38,14 @@ namespace DoMine
             }
             else if (GameController.time > 0 && GameController.time <= 900 && GameController.gameStarted == true)//게임 시작했다는 이벤트를 호스트포함 모두가 받으면 실행
             {
-                timeLeft.text = "게임종료까지" + ((int)Math.Floor(GameController.time) / 60).ToString() + " : " + ((int)Math.Floor(GameController.time) % 60).ToString();
+                if((int)Math.Floor(GameController.time) % 60 / 10 < 1)
+                {
+                    timeLeft.text = "게임종료까지 " + ((int)Math.Floor(GameController.time) / 60).ToString() + " : 0" + ((int)Math.Floor(GameController.time) % 60).ToString();
+                }
+                else
+                {
+                    timeLeft.text = "게임종료까지 " + ((int)Math.Floor(GameController.time) / 60).ToString() + " : " + ((int)Math.Floor(GameController.time) % 60).ToString();
+                }
             }
             else if (GameController.time <= 0 && GameController.gameStarted == true) // 게임 종료시
             {
