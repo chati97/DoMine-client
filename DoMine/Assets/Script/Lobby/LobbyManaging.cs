@@ -32,20 +32,13 @@ namespace Photon.Bolt
         }
         public override void OnEvent(PlayerConnectLobby evnt)
         {
-            if(BoltNetwork.IsServer)
-            {
-                playerNameList[count] = evnt.PlayerNick;
-                Debug.LogError(evnt.PlayerNick);
-                Debug.LogError("test");
+            playerNameList[count] = evnt.PlayerNick;
+            Debug.LogError(evnt.PlayerNick);
+            Debug.LogError("test");
                 
                 
-                PlayerNickList.text += playerNameList[count];
-                count++;
-            }
-            if(BoltNetwork.IsClient)
-            {
-                
-            }
+            PlayerNickList.text += playerNameList[count];
+            count++;
         }
         public override void SceneLoadLocalDone(string scene, IProtocolToken token)
         {
