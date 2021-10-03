@@ -711,6 +711,28 @@
       "Name": "PlayerName",
       "Guid": "fb39359c-d85e-4422-a78d-68aa607035e6",
       "Groups": []
+    },
+    {
+      "$type": "Photon.Bolt.Compiler.EventDefinition, bolt.compiler",
+      "Properties": [
+        {
+          "Name": "PlayerNick",
+          "Enabled": true,
+          "Expanded": true,
+          "ReplicationMode": 1,
+          "Priority": 1,
+          "PropertyType": {
+            "$type": "Photon.Bolt.Compiler.PropertyTypeString, bolt.compiler",
+            "MaxLength": 1
+          },
+          "AssetSettings": {
+            "$type": "Photon.Bolt.Compiler.PropertyEventSettings, bolt.compiler"
+          }
+        }
+      ],
+      "Name": "PlayerConnectLobby",
+      "Guid": "47d2dfa4-04ef-409a-b8f8-2e78f3c59271",
+      "Groups": []
     }
   ],
   "ActiveGroup": "Everything"

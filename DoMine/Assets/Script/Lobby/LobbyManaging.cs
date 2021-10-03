@@ -15,9 +15,13 @@ namespace Photon.Bolt
         // Start is called before the first frame update
         public GameObject Startbtn;
         public GameObject Readybtn;
-        public Text PlayerList;
+        public Text PlayerNickList;
         public Text PlayerCountText;
+        public BoltEntity a;
+        public List<BoltEntity> playername = new List<BoltEntity>();
+        public string[] playerNameList = { "", "", "", "", "", "", "", "", "", "" };
         int playercount = 1;
+        int count = 0;
         void Start()
         {
             if (BoltNetwork.IsServer)
@@ -26,13 +30,41 @@ namespace Photon.Bolt
                 Readybtn.SetActive(false);
             }
         }
+        public override void OnEvent(PlayerConnectLobby evnt)
+        {
+            if(BoltNetwork.IsServer)
+            {
+                playerNameList[count] = evnt.PlayerNick;
+                Debug.LogError(evnt.PlayerNick);
+                Debug.LogError("test");
+                
+                
+                PlayerNickList.text += playerNameList[count];
+                count++;
+            }
+            if(BoltNetwork.IsClient)
+            {
+                
+            }
+        }
+        public override void SceneLoadLocalDone(string scene, IProtocolToken token)
+        {
+            var evnt = PlayerConnectLobby.Create();
+            evnt.PlayerNick = PlayerPrefs.GetString("nick");
+            evnt.Send();
+        }
+        
         void Update()
         {
-            PlayerCountText.text = "Player : " + playercount + "/ 10";
+            PlayerCountText.text = "Player : " + count + "/ 10";
         }
         public override void Connected(BoltConnection connection)
         {
-            playercount++;
+            if(BoltNetwork.IsServer)
+            {
+                playercount++;
+            }
+            var evnt = PlayerJoined.Create();
         }
         public override void Disconnected(BoltConnection connection)
         {
