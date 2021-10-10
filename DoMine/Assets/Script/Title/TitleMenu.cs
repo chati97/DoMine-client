@@ -14,9 +14,18 @@ namespace Photon.Bolt
         public InputField RoomInput;
         public InputField NameInput;
         public GameObject room;
+        public GameObject loadingPanel;
         public Transform gridTr;
         public OptionSetting op;
         public Action click;
+        public Text loading;
+        public Text playerName;
+
+        public void Start()
+        {
+            playerName.text = PlayerPrefs.GetString("nick");
+        }
+
         public void StartServer()
         {
             if (RoomInput.text == "" || PlayerPrefs.GetString("nick") == "")
@@ -68,6 +77,7 @@ namespace Photon.Bolt
             {
                 UdpSession photonSession = session.Value;
                 GameObject _room = Instantiate(room, gridTr);
+                loading.gameObject.SetActive(false);
                 Roomdata roomData = _room.GetComponent<Roomdata>();
                 roomData.roomName.text = photonSession.HostName;
                 roomData.maxPlayer = photonSession.ConnectionsMax;
@@ -78,8 +88,16 @@ namespace Photon.Bolt
             }
             
         }
+
+        public void ApplyName()
+        {
+            playerName.text = NameInput.text;
+            PlayerPrefs.SetString("nick", playerName.text);
+        }
+
         public void OnClickRoom(string roomName)
         {
+            loadingPanel.gameObject.SetActive(true);
             BoltMatchmaking.JoinSession(roomName);
             //PlayerPrefs.SetString("nick", NameInput.text);
         }
