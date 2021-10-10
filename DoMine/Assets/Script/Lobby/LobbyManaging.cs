@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using Photon.Bolt;
 using Photon.Bolt.Matchmaking;
 using UdpKit;
+using TMPro;
 
 
 namespace Photon.Bolt
@@ -18,10 +19,7 @@ namespace Photon.Bolt
         public Text PlayerNickList;
         public Text PlayerCountText;
         public BoltEntity a;
-        public List<BoltEntity> playername = new List<BoltEntity>();
-        public string[] playerNameList = { "", "", "", "", "", "", "", "", "", "" };
         int playercount = 1;
-        int count = 0;
         void Start()
         {
             if (BoltNetwork.IsServer)
@@ -29,28 +27,25 @@ namespace Photon.Bolt
                 Startbtn.SetActive(true);
                 Readybtn.SetActive(false);
             }
+            
         }
-        public override void OnEvent(PlayerConnectLobby evnt)
+        /*public override void OnEvent(PlayerConnectLobby evnt)
         {
-            playerNameList[count] = evnt.PlayerNick;
-            Debug.LogError(evnt.PlayerNick);
-            Debug.LogError("test");
-                
-                
-            PlayerNickList.text += playerNameList[count];
-            count++;
-        }
+            var spawnPos = new Vector3(UnityEngine.Random.Range(100, 105), 300, 0);
+            //a.GetComponent<TextMeshPro>().text = evnt.PlayerNick;
+            BoltNetwork.Instantiate(a, spawnPos, Quaternion.identity);
+            Debug.LogError(a.GetComponent<TextMeshPro>().text);
+        }*/
         public override void SceneLoadLocalDone(string scene, IProtocolToken token)
         {
-            var evnt = PlayerConnectLobby.Create();
-            evnt.PlayerNick = PlayerPrefs.GetString("nick");
-            evnt.Send();
+            var spawnPos = new Vector3(UnityEngine.Random.Range(100, 105), 300, 0);
+            BoltNetwork.Instantiate(a, spawnPos, Quaternion.identity);
+           // var evnt = PlayerConnectLobby.Create();
+           // evnt.PlayerNick = PlayerPrefs.GetString("nick");
+           // evnt.Send();
         }
         
-        void Update()
-        {
-            PlayerCountText.text = "Player : " + count + "/ 10";
-        }
+
         public override void Connected(BoltConnection connection)
         {
             if(BoltNetwork.IsServer)
