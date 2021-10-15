@@ -78,7 +78,6 @@ namespace DoMine
 
         public override void OnEvent(PlayerJoined evnt) // 플레이어 접속시 호출 접속한 플레이어에게 코드를 배정
         {
-            int i = 0;
             var code = PlayerCode.Create();
             code.Code = playerNum;
             code.Name = evnt.PlayerName;

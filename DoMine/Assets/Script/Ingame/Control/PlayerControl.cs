@@ -14,6 +14,7 @@ namespace DoMine
         public ItemController itemCtrl;
         public GameController gameCtrl;
         BoltEntity targetPlayer = null;
+        public bool movable = false;
         public float breakCool;
         float breakCoolBase = 0.5f;
         public float returnCool;
