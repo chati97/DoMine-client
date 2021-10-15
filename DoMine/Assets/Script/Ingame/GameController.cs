@@ -62,6 +62,20 @@ namespace DoMine
                         mystate.Inventory[0] = 0;
                     }
                     break;
+                case 1:
+                    if (playerCode == evnt.TargetPlayer)
+                    {
+                        mystate.Blinded = true;
+                        PlayerControl.blindCool = PlayerControl.blindCoolBase;
+                    }
+                    break;
+                case 2:
+                    if (playerCode == evnt.TargetPlayer)
+                    {
+                        mystate.Paralyzed = true;
+                        PlayerControl.paralyzeCool = PlayerControl.paralyzeCoolBase;
+                    }
+                    break;
             }
             
 

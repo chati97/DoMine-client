@@ -14,7 +14,12 @@ namespace DoMine
         public ItemController itemCtrl;
         public GameController gameCtrl;
         BoltEntity targetPlayer = null;
-        public bool movable = false;
+        Light playerView = null;
+
+        public static float paralyzeCool;
+        public static float paralyzeCoolBase = 5f;
+        public static float blindCool;
+        public static float blindCoolBase = 10f;
         public float breakCool;
         float breakCoolBase = 0.5f;
         public float returnCool;
@@ -44,6 +49,7 @@ namespace DoMine
             {
                 aimIndicator = GameObject.Find("AimIndicator");
                 state.PlayerName = PlayerPrefs.GetString("nick");
+                playerView = entity.GetComponentInChildren<Light>();
                 if (BoltNetwork.IsClient)
                 {
                     var evnt = PlayerJoined.Create();
@@ -63,48 +69,50 @@ namespace DoMine
             var speed = 4f;
             var movement = Vector3.zero;
             int output = -1;
+            if(!state.Paralyzed)
+            {
+                if (Input.GetKey(KeyCode.LeftArrow) == true)
+                {
+                    movement.x -= 1f;
+                    lookingAt = 0;
+                }
+                if (Input.GetKey(KeyCode.RightArrow) == true)
+                {
+                    movement.x += 1f;
+                    lookingAt = 2;
+                }
+                if (Input.GetKey(KeyCode.UpArrow) == true)
+                {
+                    movement.y += 1f;
+                    lookingAt = 1;
+                }
+                if (Input.GetKey(KeyCode.DownArrow) == true)
+                {
+                    movement.y -= 1f;
+                    lookingAt = 3;
+                }
+                if (Input.GetKey(KeyCode.R) == true)
+                {
+                    if (returnCool == 0)
+                    {
+                        MovePlayer(player, new Vector2(50, 50));
+                        returnCool = returnCoolBase;
+                    }
+                    else
+                    {
+                        //Debug.Log("in Return-Cooltime");
+                    }
 
-            if (Input.GetKey(KeyCode.LeftArrow) == true)
-            {
-                movement.x -= 1f;
-                lookingAt = 0;
+                }
             }
-            if (Input.GetKey(KeyCode.RightArrow) == true)
-            {
-                movement.x += 1f;
-                lookingAt = 2;
-            }
-            if (Input.GetKey(KeyCode.UpArrow) == true)
-            {
-                movement.y += 1f;
-                lookingAt = 1;
-            }
-            if (Input.GetKey(KeyCode.DownArrow) == true)
-            {
-                movement.y -= 1f;
-                lookingAt = 3;
-            }
-            
+
+
             if (movement != Vector3.zero)
             {
                 transform.position = transform.position + (movement.normalized * speed * BoltNetwork.FrameDeltaTime);
             }
 
-            if (Input.GetKey(KeyCode.R) == true)
-            {
-                if (returnCool == 0)
-                {
-                    MovePlayer(player, new Vector2(50, 50));
-                    returnCool = returnCoolBase;
-                }
-                else
-                {
-                    //Debug.Log("in Return-Cooltime");
-                }
-
-            }
-
-            if (Input.GetKey(KeyCode.D) == true)
+            if (Input.GetKey(KeyCode.S) == true)
             {
                 if (state.Inventory[2] > 0 && canCreateWall)
                 {
@@ -136,7 +144,7 @@ namespace DoMine
 
             }
             
-            if (Input.GetKey(KeyCode.S) == true)
+            if (Input.GetKey(KeyCode.Q) == true)
             {
                 if(targetPlayer != null)
                 {
@@ -145,6 +153,30 @@ namespace DoMine
                     evnt.AttakingPlayer = GameController.playerCode;
                     evnt.TargetPlayer = targetPlayer.GetState<IPlayerState>().PlayerCode;
                     evnt.Action = 0;
+                    evnt.Send();
+                }
+            }
+            if (Input.GetKey(KeyCode.W) == true)
+            {
+                if (targetPlayer != null)
+                {
+                    Debug.LogWarning("AmingPlayer : " + targetPlayer.GetState<IPlayerState>().PlayerName);
+                    var evnt = PlayerInteraction.Create();
+                    evnt.AttakingPlayer = GameController.playerCode;
+                    evnt.TargetPlayer = targetPlayer.GetState<IPlayerState>().PlayerCode;
+                    evnt.Action = 1;
+                    evnt.Send();
+                }
+            }
+            if (Input.GetKey(KeyCode.E) == true)
+            {
+                if (targetPlayer != null)
+                {
+                    Debug.LogWarning("AmingPlayer : " + targetPlayer.GetState<IPlayerState>().PlayerName);
+                    var evnt = PlayerInteraction.Create();
+                    evnt.AttakingPlayer = GameController.playerCode;
+                    evnt.TargetPlayer = targetPlayer.GetState<IPlayerState>().PlayerCode;
+                    evnt.Action = 2;
                     evnt.Send();
                 }
             }
@@ -157,6 +189,7 @@ namespace DoMine
                 }
             }
         }
+        
         
         // Update is called once per frame
         void FixedUpdate()
@@ -177,8 +210,36 @@ namespace DoMine
             {
                 returnCool = 0;
             }
+
             if(entity.IsOwner)
             {
+                if (blindCool > 0)
+                {
+                    blindCool -= Time.deltaTime;
+                }
+                else
+                {
+                    blindCool = 0;
+                    state.Blinded = false;
+                }
+                if (paralyzeCool > 0)
+                {
+                    paralyzeCool -= Time.deltaTime;
+                }
+                else
+                {
+                    paralyzeCool = 0;
+                    state.Paralyzed = false;
+                }
+                if (state.Blinded == true)
+                {
+                    playerView.spotAngle = 10;
+                }
+                else
+                {
+                    playerView.spotAngle = 50;
+                }
+
                 mapCtrl.FindWall(mapCtrl.mapObject);
                 itemCtrl.FindItem(itemCtrl.itemObject);
                 Aiming();
