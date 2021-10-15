@@ -91,7 +91,8 @@ namespace DoMine
 
         public int CreateWall(GameObject[] mapObject ,int type, int x, int y, bool callback)
         {
-            if(mapObject[x*100+y] == null)
+            int half = mapSize / 2;
+            if (mapObject[x*100+y] == null)
             {
                 switch (type)
                 {

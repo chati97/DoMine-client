@@ -107,7 +107,7 @@ namespace DoMine
             {
                 if (state.Inventory[2] > 0 && canCreateWall)
                 {
-                    output = mapCtrl.CreateWall(mapCtrl.mapObject, 2, (int)aim.x, (int)aim.y, false);
+                    output = mapCtrl.CreateWall(mapCtrl.mapObject, 1, (int)aim.x, (int)aim.y, false);
                     if(output == 0)
                         --state.Inventory[2];
                 }
@@ -220,7 +220,6 @@ namespace DoMine
             {
                 if (Vector2.Distance(player.GetState<IPlayerState>().Location.Transform.position, aim) < 0.8)//유저위에 벽못깔게 하는코드, 유저가 가까이있을시 유저를 조준하도록
                 {
-                    canCreateWall = false;
                     if (player == gameCtrl.myPlayer)
                     {
                         //본인이면 스킵
@@ -238,12 +237,16 @@ namespace DoMine
                     i++;
             }
 
-            if(i == gameCtrl.players.Count)
+            if(i == gameCtrl.players.Count && Vector2.Distance(aim, new Vector2(49.5f, 49.5f)) > 5) // 중앙선에서 5칸 이내일시
             {
                 canCreateWall = true;
             }
+            else
+            {
+                canCreateWall = false;
+            }
 
-            if(nearestPlayer != null)
+            if (nearestPlayer != null) // 가까운타겟플레이어 조정
             {
                 targetPlayer = nearestPlayer;
             }
@@ -252,7 +255,7 @@ namespace DoMine
                 targetPlayer = null;
             }
 
-            if(targetPlayer !=null)
+            if(targetPlayer !=null) // 조준점위치 옮기기
             {
                 aimIndicator.transform.position = targetPlayer.GetState<IPlayerState>().Location.Transform.position;
             }
