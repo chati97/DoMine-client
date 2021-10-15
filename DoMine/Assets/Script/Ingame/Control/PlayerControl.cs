@@ -140,6 +140,11 @@ namespace DoMine
                 if(targetPlayer != null)
                 {
                     Debug.LogWarning("AmingPlayer : " + targetPlayer.GetState<IPlayerState>().PlayerName);
+                    var evnt = PlayerInteraction.Create();
+                    evnt.AttakingPlayer = GameController.playerCode;
+                    evnt.TargetPlayer = targetPlayer.GetState<IPlayerState>().PlayerCode;
+                    evnt.Action = 0;
+                    evnt.Send();
                 }
             }
 

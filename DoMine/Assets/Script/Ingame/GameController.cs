@@ -52,6 +52,20 @@ namespace DoMine
             MC.CreateMap(MC.mapArray = MC.MakeMapArr(), MC.mapObject);
             IC.Init(0);
         }
+        public override void OnEvent(PlayerInteraction evnt)
+        {
+            switch(evnt.Action)
+            {
+                case 0 :
+                    if (playerCode == evnt.TargetPlayer)
+                    {
+                        mystate.Inventory[0] = 0;
+                    }
+                    break;
+            }
+            
+
+        }
         public override void OnEvent(SaveGold evnt)
         {
             playerList[evnt.Player] = 2;
@@ -74,11 +88,12 @@ namespace DoMine
             Debug.LogWarning(playerNum + " : 현재 플레이어 수");
         }
 
-        public override void OnEvent(PlayerCode evnt)//자신의 코드값이 -1(최초)값이면 보낸 코드값대로 자신의 코드를 설정
+        public override void OnEvent(PlayerCode evnt)//자신의 이름이 이벤트와 같다면 해당이벤트의 코드를 본인의 유저코드로설정
         {
             if(mystate.PlayerName == evnt.Name)
             {
                 playerCode = evnt.Code;
+                mystate.PlayerCode = playerCode;
             }
         }
 
