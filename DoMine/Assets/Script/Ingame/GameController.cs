@@ -121,11 +121,12 @@ namespace DoMine
             {
                 isSabotage = true;
                 Debug.LogWarning("you are Sabotage");
-                mystate.Inventory[2] = 10;//사보타지일 경우엔 바리케이트 10개 지급
+                mystate.Inventory[2] = 20;//사보타지일 경우엔 바리케이트 10개 지급
             }
             else
             {
                 Debug.LogWarning("you are Miner");
+                mystate.Inventory[2] = 10;
             }
             var name = PlayerName.Create();
             name.Code = playerCode;
@@ -204,7 +205,7 @@ namespace DoMine
             }
             else if (time > 0 && time <= 900 && gameStarted == true)//게임 시작했다는 이벤트를 호스트포함 모두가 받으면 실행
             {
-                time -= Time.deltaTime*100;//현재 30초에 끝나도록 가속되어있음
+                time -= Time.deltaTime;//현재 30초에 끝나도록 가속되어있음
             }
             else if (time <= 0 && gameStarted == true) // 게임 종료시
             {

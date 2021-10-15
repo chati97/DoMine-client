@@ -13,10 +13,11 @@ namespace DoMine
         public MapController mapCtrl;
         public ItemController itemCtrl;
         public GameController gameCtrl;
+        BoltEntity targetPlayer = null;
         public float breakCool;
         float breakCoolBase = 0.5f;
         public float returnCool;
-        float returnCoolBase = 0.5f;
+        float returnCoolBase = 60f;
         public bool canCreateWall = true;
         public Vector2 aim;
         int lookingAt = -1;//왼쪽부터 시계방향으로 0123
@@ -136,12 +137,17 @@ namespace DoMine
             
             if (Input.GetKey(KeyCode.S) == true)
             {
-                if (itemCtrl.nearestItem != null)
+                if(targetPlayer != null)
                 {
-                    if (Vector2.Distance(player.transform.position, itemCtrl.nearestItem.transform.position) < 0.5)
-                    {
-                        itemCtrl.GetItem(itemCtrl.nearestItemX, itemCtrl.nearestItemY, state, false);
-                    }
+                    Debug.LogWarning("AmingPlayer : " + targetPlayer.GetState<IPlayerState>().PlayerName);
+                }
+            }
+
+            if (itemCtrl.nearestItem != null)
+            {
+                if (Vector2.Distance(player.transform.position, itemCtrl.nearestItem.transform.position) < 0.5)
+                {
+                    itemCtrl.GetItem(itemCtrl.nearestItemX, itemCtrl.nearestItemY, state, false);
                 }
             }
         }
@@ -152,7 +158,7 @@ namespace DoMine
             if (breakCool > 0)
             {
                 breakCool -= Time.deltaTime;
-            }
+            }//쿨타임관련 코드
             if (breakCool < 0)
             {
                 breakCool = 0;
@@ -175,12 +181,12 @@ namespace DoMine
                     if(state.Inventory[0] < 15)
                     {
                         state.Inventory[0] = 15;
-                        Debug.LogWarning("Pickaxe Recharged");
+                        Debug.LogWarning("Pickaxe Recharged");//중앙 안전지대 이동시 곡괭이 회복
                     }
                     if (state.Inventory[1] == 1 && gameCtrl.playerList[GameController.playerCode] == 0)
                     {
                         var evnt = SaveGold.Create();
-                        evnt.Player = GameController.playerCode;
+                        evnt.Player = GameController.playerCode;//금을 들고 중앙으로 이동시 금 입금
                         evnt.Send();
                     }
                     
@@ -188,10 +194,11 @@ namespace DoMine
             }
         }
 
-        void Aiming()
+        void Aiming()//조준방향에 대한 함수 현재는 바리케이트 설치에만 관련, 유저 조준하는 기능도 추후 추가
         {
             int i;
-            switch (lookingAt)
+            
+            switch (lookingAt)//최초엔 보는방향을 기준으로 에임을 둠
             {
                 case 0:
                     aim = new Vector2((int)Math.Round(state.Location.Position.x) - 1, (int)Math.Round(state.Location.Position.y));
@@ -206,20 +213,52 @@ namespace DoMine
                     aim = new Vector2((int)Math.Round(state.Location.Position.x), (int)Math.Round(state.Location.Position.y) - 1);
                     break;
             }
-            aimIndicator.transform.position = aim;
+            
             i = 0;
+            BoltEntity nearestPlayer = null;
             foreach (BoltEntity player in gameCtrl.players)
             {
-                if (Vector2.Distance(player.GetState<IPlayerState>().Location.Transform.position, aim) < 0.9)//유저위에 벽못깔게 하는코드
+                if (Vector2.Distance(player.GetState<IPlayerState>().Location.Transform.position, aim) < 0.8)//유저위에 벽못깔게 하는코드, 유저가 가까이있을시 유저를 조준하도록
                 {
                     canCreateWall = false;
+                    if (player == gameCtrl.myPlayer)
+                    {
+                        //본인이면 스킵
+                    }
+                    else if(nearestPlayer == null)
+                    {
+                        nearestPlayer = player;//처음 걸린유저
+                    }
+                    else if(Vector2.Distance(player.GetState<IPlayerState>().Location.Transform.position, aim)< Vector2.Distance(nearestPlayer.GetState<IPlayerState>().Location.Transform.position, aim))
+                    {
+                        nearestPlayer = player;//만약 에임방향에 더 가까운 유저가 있을 시엔 바꿈
+                    }
                 }
                 else
                     i++;
             }
+
             if(i == gameCtrl.players.Count)
             {
                 canCreateWall = true;
+            }
+
+            if(nearestPlayer != null)
+            {
+                targetPlayer = nearestPlayer;
+            }
+            else
+            {
+                targetPlayer = null;
+            }
+
+            if(targetPlayer !=null)
+            {
+                aimIndicator.transform.position = targetPlayer.GetState<IPlayerState>().Location.Transform.position;
+            }
+            else
+            {
+                aimIndicator.transform.position = aim;
             }
         }
     }
