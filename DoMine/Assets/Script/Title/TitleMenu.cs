@@ -14,7 +14,11 @@ namespace Photon.Bolt
         public InputField RoomInput;
         public InputField NameInput;
         public GameObject room;
+        public GameObject hostLoading;
         public GameObject loadingPanel;
+        public GameObject namePanel;
+        public GameObject roomNameError;
+        public GameObject nicknameError;
         public Transform gridTr;
         public OptionSetting op;
         public Action click;
@@ -30,10 +34,12 @@ namespace Photon.Bolt
         {
             if (RoomInput.text == "" || PlayerPrefs.GetString("nick") == "")
             {
+                roomNameError.gameObject.SetActive(true);
                 Debug.LogError("Please check your input");
                 return;
             }
             BoltLauncher.StartServer();
+            hostLoading.gameObject.SetActive(true);
         }
 
         public override void BoltStartDone()
@@ -91,8 +97,17 @@ namespace Photon.Bolt
 
         public void ApplyName()
         {
-            playerName.text = NameInput.text;
-            PlayerPrefs.SetString("nick", playerName.text);
+            if(NameInput.text == "") 
+            { 
+                nicknameError.gameObject.SetActive(true);
+            }
+            else
+            {            
+                playerName.text = NameInput.text;
+                PlayerPrefs.SetString("nick", playerName.text);
+                namePanel.gameObject.SetActive(false);
+            }
+            
         }
 
         public void OnClickRoom(string roomName)
