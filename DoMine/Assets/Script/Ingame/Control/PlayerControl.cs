@@ -143,8 +143,13 @@ namespace DoMine
                 }
 
             }
-            
-            if (Input.GetKey(KeyCode.Q) == true)
+
+            if (Input.GetKeyUp(KeyCode.D) == true)
+            {
+                //itemCtrl.Init(gameCtrl.playerNum);
+            }
+
+                if (Input.GetKey(KeyCode.Q) == true)
             {
                 if(targetPlayer != null)
                 {

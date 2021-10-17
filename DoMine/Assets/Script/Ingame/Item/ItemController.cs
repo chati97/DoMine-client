@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Photon.Bolt;
 
@@ -22,7 +23,10 @@ namespace DoMine
         // Start is called before the first frame update
         void Start()
         {
-
+            for (int i = 0; i < 10000; i++)//1차로 비우는 절차
+            {
+                itemArray[i] = 0;
+            }
         }
 
         // Update is called once per frame
@@ -31,13 +35,7 @@ namespace DoMine
 
         }
 
-        public void Init(int playernum)
-        {
-            for(int i = 0 ; i < 10000; i++)
-            {
-                itemArray[i] = 0;
-            }
-        }
+        
 
         public void GetItem(int x, int y, IPlayerState player, bool callback)//playercontrol에서 호출시엔 인벤토리를 늘려주고 이벤트날리면서 받음, 콜백으로 GC에서 호출시엔 단순 아이템삭제
         {

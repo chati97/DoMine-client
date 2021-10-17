@@ -50,7 +50,6 @@ namespace DoMine
             }
             time = 10;
             MC.CreateMap(MC.mapArray = MC.MakeMapArr(), MC.mapObject);
-            IC.Init(0);
         }
         public override void OnEvent(PlayerInteraction evnt)
         {
@@ -79,18 +78,18 @@ namespace DoMine
             }
             
 
-        }
+        }//유저끼리 시야방해, 이동불가, 곡괭이 파괴 등을 할때 콜백
         public override void OnEvent(SaveGold evnt)
         {
             playerList[evnt.Player] = 2;
             Debug.LogWarning("Player" + evnt.Player + " Saved Gold");
-        }
+        }//금 입금 콜백
         public override void OnEvent(WallDestoryed evnt)
         {
             MC.DestroyWall(evnt.LocationX, evnt.LocationY, true, true);
-        }
+        } //벽파괴 콜백
 
-        public override void OnEvent(PlayerJoined evnt) // 플레이어 접속시 호출 접속한 플레이어에게 코드를 배정
+        public override void OnEvent(PlayerJoined evnt) // 플레이어 접속시 호출 접속한 플레이어에게 코드를 배정(키값-이름)
         {
             var code = PlayerCode.Create();
             code.Code = playerNum;
@@ -101,7 +100,7 @@ namespace DoMine
             Debug.LogWarning(playerNum + " : 현재 플레이어 수");
         }
 
-        public override void OnEvent(PlayerCode evnt)//자신의 이름이 이벤트와 같다면 해당이벤트의 코드를 본인의 유저코드로설정
+        public override void OnEvent(PlayerCode evnt)//자신의 이름이 이벤트와 같다면 해당이벤트의 코드를 본인의 유저코드로설정(키값-이름)
         {
             if(mystate.PlayerName == evnt.Name)
             {
@@ -110,7 +109,7 @@ namespace DoMine
             }
         }
 
-        public override void OnEvent(GameStart evnt)// 게임 시작 이벤트에 대한 콜백함수 일단 막고있는 벽을 없애는 용도 임시로 아이템 추가하는것도 넣음
+        public override void OnEvent(GameStart evnt)// 게임 시작 이벤트에 대한 콜백함수 일단 막고있는 벽을 없애는 용도 임시로 아이템 추가하는것도 넣음 호스트가 주체로 작동
         {
             time = evnt.TimeLeft;
             int _sabotage = evnt.Sabotage;
@@ -129,6 +128,7 @@ namespace DoMine
                     IC.CreateItem(49, 52, 1, false);
                     IC.CreateItem(50, 52, 1, false);
                     IC.CreateItem(51, 52, 1, false);
+                    GoldCreate(GoldListCreate(playerNum));
                 }
             }
             if(BoltNetwork.IsClient)
@@ -154,7 +154,7 @@ namespace DoMine
             else
             {
                 Debug.LogWarning("you are Miner");
-                mystate.Inventory[2] = 10;
+                mystate.Inventory[2] = 10;//일반유저일시바리케이트 10개지급
             }
             var name = PlayerName.Create();
             name.Code = playerCode;
@@ -206,7 +206,7 @@ namespace DoMine
             UC.GameWinner(evnt.WinPlayer, evnt.IsSabotageWin, _amIWin, playerNameList);
         }
 
-        public override void OnEvent(PlayerName evnt)
+        public override void OnEvent(PlayerName evnt) //게임 시작 후 유저 명단을 확정하는 함수
         {
             playerNameList[evnt.Code] = evnt.Name;
         }
@@ -233,7 +233,7 @@ namespace DoMine
             }
             else if (time > 0 && time <= 900 && gameStarted == true)//게임 시작했다는 이벤트를 호스트포함 모두가 받으면 실행
             {
-                time -= Time.deltaTime;//현재 30초에 끝나도록 가속되어있음
+                time -= Time.deltaTime;//실험때는 여기에 배수를 곱해서 게임 빠르게 진행
             }
             else if (time <= 0 && gameStarted == true) // 게임 종료시
             {
@@ -249,9 +249,9 @@ namespace DoMine
         {
             int _sabotage = (int)(playerNum * 0.43) - UnityEngine.Random.Range(0,2); //현재 접속인원에 맞춰서 현재인원/ 0.43 에서 랜덤으로 1을 빼거나 더해서 사보타지수를 구함
             int _code = 0;
-            int _temp = -1;
+            int _temp;
             List<int> _sabolist = new List<int>();
-            bool _crash = false;
+            bool _crash;
 
             if (playerNum < 3)
             {
@@ -340,6 +340,66 @@ namespace DoMine
             evnt.WinPlayer = _winPlayer;
             evnt.IsSabotageWin = _isSabotageWin;
             evnt.Send();
+        }
+        public List<int> GoldListCreate(int playerNum) // 금 생성을 위해 인원수에 맞게 중복되지않는 좌표리스트를 출력하는 함수
+        {
+            List<int> _goldList = new List<int>();
+            int _temp;
+            bool _crash;
+            int _gold = (int)(playerNum * 0.43) + UnityEngine.Random.Range(0, 2);
+            goldAmount = _gold;
+            for (int i = 0; i < _gold*3; i++)
+            {
+                do
+                {
+                    _crash = false;
+                    _temp = (50 + UnityEngine.Random.Range(10, 49) * (-1 + (2 * UnityEngine.Random.Range(0, 2)))) * 100 + (50 + UnityEngine.Random.Range(10, 49) * (-1 + (2 * UnityEngine.Random.Range(0, 2))));//1~40 60~99의 x y 수를 선택
+
+                    foreach (int previous in _goldList)
+                    {
+                        if (previous == _temp)
+                        {
+                            _crash = true;
+                            break;
+                        }
+                    }
+                } while (_crash == true);
+                _goldList.Add(_temp);
+            }
+
+            //foreach (int golds in _goldList)
+            //{
+            //    Debug.LogWarning(golds)
+            //}
+            return _goldList;
+        } 
+        public void GoldCreate(List<int> list) // 입력 받은 리스트로 금을 생성하는 함수
+        {
+            List<int> _goldList = new List<int>();
+            List<int> _emptyList = new List<int>();
+            int i = 0;
+            foreach(int item in list)
+            {
+                if (i < goldAmount)
+                {
+                    _goldList.Add(item);
+                }
+                else
+                {
+                    _emptyList.Add(item);
+                }
+                i++;
+            }
+
+            foreach (int item in _goldList)
+            {
+                Debug.LogWarning("gold" + item);
+            }
+            foreach (int item in _emptyList)
+            {
+                Debug.LogWarning("empty" + item);
+            }
+
         }
 
     }
