@@ -132,7 +132,7 @@ namespace DoMine
                 {
                     if (Vector2.Distance(player.transform.position, mapCtrl.nearestWall.transform.position) < 0.8 && state.Inventory[0] > 0)
                     {
-                        mapCtrl.DestroyWall(mapCtrl.nearestWallX, mapCtrl.nearestWallY, false, false, GameController.playerCode);
+                        mapCtrl.DestroyWall(mapCtrl.nearestWallX, mapCtrl.nearestWallY, false, false, -1);
                         breakCool = breakCoolBase;
                         state.Inventory[0]--;//곡괭이 갯수 소진
                     }
@@ -246,6 +246,7 @@ namespace DoMine
                 }
 
                 mapCtrl.FindWall(mapCtrl.mapObject);
+                mapCtrl.FindChest();
                 itemCtrl.FindItem(itemCtrl.itemObject);
                 Aiming();
                 if (Vector2.Distance(entity.transform.position, new Vector2(49.5f,49.5f)) < 1)
