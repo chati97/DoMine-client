@@ -14,10 +14,10 @@ TagManager:
   - 
   - Water
   - UI
-  - field
-  - 
-  - 
-  - 
+  - Field
+  - Item
+  - Wall
+  - Player
   - 
   - 
   - 
@@ -41,6 +41,18 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Field
+    uniqueID: 3303007837
+    locked: 0
+  - name: Item
+    uniqueID: 3791963723
+    locked: 0
+  - name: Wall
+    uniqueID: 942511267
+    locked: 0
+  - name: Player
+    uniqueID: 1396795719
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0

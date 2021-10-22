@@ -86,7 +86,7 @@ namespace DoMine
         }//금 입금 콜백
         public override void OnEvent(WallDestoryed evnt)
         {
-            MC.DestroyWall(evnt.LocationX, evnt.LocationY, true, true);
+            MC.DestroyWall(evnt.LocationX, evnt.LocationY, true, true, evnt.Player);
         } //벽파괴 콜백
 
         public override void OnEvent(PlayerJoined evnt) // 플레이어 접속시 호출 접속한 플레이어에게 코드를 배정(키값-이름)
@@ -117,17 +117,13 @@ namespace DoMine
             {
                 for (int i = -3; i < 3; i++)
                 {
-                    MC.DestroyWall(MC.mapSize / 2 + i, MC.mapSize / 2 - 3, false, true);
-                    MC.DestroyWall(MC.mapSize / 2 - 3, MC.mapSize / 2 + i, false, true);
-                    MC.DestroyWall(MC.mapSize / 2 + i, MC.mapSize / 2 + 2, false, true);
-                    MC.DestroyWall(MC.mapSize / 2 + 2, MC.mapSize / 2 + i, false, true);
+                    MC.DestroyWall(MC.mapSize / 2 + i, MC.mapSize / 2 - 3, false, true, -1);
+                    MC.DestroyWall(MC.mapSize / 2 - 3, MC.mapSize / 2 + i, false, true, -1);
+                    MC.DestroyWall(MC.mapSize / 2 + i, MC.mapSize / 2 + 2, false, true, -1);
+                    MC.DestroyWall(MC.mapSize / 2 + 2, MC.mapSize / 2 + i, false, true, -1);
                 }
                 if(BoltNetwork.IsServer)
                 {
-                    IC.CreateItem(48, 52, 1, false);
-                    IC.CreateItem(49, 52, 1, false);
-                    IC.CreateItem(50, 52, 1, false);
-                    IC.CreateItem(51, 52, 1, false);
                     GoldCreate(GoldListCreate(playerNum));
                 }
             }
@@ -166,7 +162,7 @@ namespace DoMine
         {
             if (playerCode != evnt.Player)
             {
-                MC.CreateWall(MC.mapObject, evnt.Type, evnt.LocationX, evnt.LocationY, true);
+                MC.CreateWall(evnt.Type, evnt.LocationX, evnt.LocationY, true);
             }
         }
         public override void OnEvent(ItemCreated evnt) // 아이템 생성 주체가 본인이 아니면 생성(본인이 보내고 콜백도받아서 중복생성방지)
@@ -390,17 +386,25 @@ namespace DoMine
                 }
                 i++;
             }
-
-            foreach (int item in _goldList)
+            foreach(int item in list)
+            {
+                MC.DestroyWall(item / 100, item % 100, false, true, -1);
+            }
+            foreach (int item in _goldList)//위는 금 생성, 밑은 빈깡통생성
             {
                 Debug.LogWarning("gold" + item);
+                IC.CreateItem(item / 100, item % 100, 1, false);
             }
             foreach (int item in _emptyList)
             {
                 Debug.LogWarning("empty" + item);
             }
-
+            foreach (int item in list)
+            {
+                MC.CreateWall(3, item / 100, item % 100, true);
+            }
         }
+
 
     }
 }

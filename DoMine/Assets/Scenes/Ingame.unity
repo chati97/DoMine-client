@@ -455,7 +455,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 606285559}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Items
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -470,7 +470,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 606285558}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 282.63562, y: 406.39557, z: -149.25069}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -618,7 +618,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 681968454}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Walls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10722,6 +10722,7 @@ MonoBehaviour:
     type: 3}
   unbreakable: {fileID: 9181782051117040114, guid: 90827f91d1e984a4d8df89486ac941ff,
     type: 3}
+  chest: {fileID: 2266946393070594806, guid: 98bd94e760e04a64294e52a8329d4025, type: 3}
   wallParent: {fileID: 681968454}
   wallIndicator: {fileID: 242872182}
   nearestWall: {fileID: 0}
@@ -21020,7 +21021,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1063068766}
   - component: {fileID: 1063068765}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21131,7 +21132,7 @@ GameObject:
   - component: {fileID: 1221436016}
   - component: {fileID: 1221436018}
   - component: {fileID: 1221436017}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Tilemap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21189,8 +21190,8 @@ TilemapRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -991959459
+  m_SortingLayer: -4
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
