@@ -73,26 +73,38 @@ namespace Photon.Bolt
                 }
             }
         }
-
+        public override void OnEvent(PlayerConnectLobby evnt)
+        {
+            if(BoltNetwork.IsClient)
+            {
+                var evnt2 = PlayerJoined.Create();
+                evnt2.PlayerName = PlayerPrefs.GetString("nick");
+                evnt2.Send();
+            }
+        }
         public override void Disconnected(BoltConnection connection)
         {
             if(BoltNetwork.IsServer)
             {
+                playercount = 1;
                 string[] tmparray = { "", "", "", "", "", "", "", "", "", "" };
                 playerNameList = tmparray;
                 playerNameList[0] = PlayerPrefs.GetString("nick");
                 playercode = 0;
+                var evnt = PlayerConnectLobby.Create();
+                evnt.Send();
             }
-            if(BoltNetwork.IsClient)
+            /*if(BoltNetwork.IsClient)
             {
-                /*var evnt = PlayerCode.Create();
+                Debug.LogError("Client Leave Game");
+                var evnt = PlayerCode.Create();
                 evnt.Name = PlayerPrefs.GetString("nick");
                 evnt.Code = playercode;
-                evnt.Send();*/
+                evnt.Send();
                 var evnt = PlayerJoined.Create();
                 evnt.PlayerName = PlayerPrefs.GetString("nick");
                 evnt.Send();
-            }
+            }*/
         }
         public void LoadGame()
         {
