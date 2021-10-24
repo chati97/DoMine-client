@@ -19,6 +19,7 @@ namespace Photon.Bolt
         public Text PlayerNickList;
         public Text PlayerCountText;
         public BoltEntity a;
+        public string[] playerNameList = { "", "", "", "", "", "", "", "", "", "" };
         int playercount = 1;
         void Start()
         {
@@ -38,14 +39,46 @@ namespace Photon.Bolt
         }*/
         public override void SceneLoadLocalDone(string scene, IProtocolToken token)
         {
-            var spawnPos = new Vector3(UnityEngine.Random.Range(100, 105), 300, 0);
-            BoltNetwork.Instantiate(a, spawnPos, Quaternion.identity);
+            if(BoltNetwork.IsServer)
+            {
+                playerNameList[0] = PlayerPrefs.GetString("nick");
+            }
+            if(BoltNetwork.IsClient)
+            {
+                var evnt = PlayerJoined.Create();
+                evnt.PlayerName = PlayerPrefs.GetString("nick");
+                evnt.Send();
+            }
+            //var spawnPos = new Vector3(UnityEngine.Random.Range(100, 105), 300, 0);
+            //BoltNetwork.Instantiate(a, spawnPos, Quaternion.identity);
            // var evnt = PlayerConnectLobby.Create();
            // evnt.PlayerNick = PlayerPrefs.GetString("nick");
            // evnt.Send();
         }
-        
-
+        public override void OnEvent(PlayerName evnt)
+        {
+            if(BoltNetwork.IsClient)
+            {
+                playerNameList[evnt.Code] = evnt.Name;
+            }
+        }
+        public override void OnEvent(PlayerJoined evnt)
+        {
+            if(BoltNetwork.IsServer)
+            {
+                int i = 0;
+                playerNameList[playercount] = evnt.PlayerName;
+                playercount++;
+                foreach(string name in playerNameList)
+                {
+                    var evnt2 = PlayerName.Create();
+                    evnt2.Name = playerNameList[i];
+                    evnt2.Code = i;
+                    evnt2.Send();
+                    i++;
+                }
+            }
+        }
         public override void Connected(BoltConnection connection)
         {
             if(BoltNetwork.IsServer)
