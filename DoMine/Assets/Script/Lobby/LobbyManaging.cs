@@ -30,13 +30,6 @@ namespace Photon.Bolt
             }
             
         }
-        /*public override void OnEvent(PlayerConnectLobby evnt)
-        {
-            var spawnPos = new Vector3(UnityEngine.Random.Range(100, 105), 300, 0);
-            //a.GetComponent<TextMeshPro>().text = evnt.PlayerNick;
-            BoltNetwork.Instantiate(a, spawnPos, Quaternion.identity);
-            Debug.LogError(a.GetComponent<TextMeshPro>().text);
-        }*/
         public override void SceneLoadLocalDone(string scene, IProtocolToken token)
         {
             if(BoltNetwork.IsServer)
@@ -49,11 +42,6 @@ namespace Photon.Bolt
                 evnt.PlayerName = PlayerPrefs.GetString("nick");
                 evnt.Send();
             }
-            //var spawnPos = new Vector3(UnityEngine.Random.Range(100, 105), 300, 0);
-            //BoltNetwork.Instantiate(a, spawnPos, Quaternion.identity);
-           // var evnt = PlayerConnectLobby.Create();
-           // evnt.PlayerNick = PlayerPrefs.GetString("nick");
-           // evnt.Send();
         }
         public override void OnEvent(PlayerName evnt)
         {
@@ -78,18 +66,6 @@ namespace Photon.Bolt
                     i++;
                 }
             }
-        }
-        public override void Connected(BoltConnection connection)
-        {
-            if(BoltNetwork.IsServer)
-            {
-                playercount++;
-            }
-            var evnt = PlayerJoined.Create();
-        }
-        public override void Disconnected(BoltConnection connection)
-        {
-            playercount--;
         }
         public void LoadGame()
         {
