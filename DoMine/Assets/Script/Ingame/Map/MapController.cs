@@ -13,13 +13,16 @@ namespace DoMine
         public GameObject player = null;
         [SerializeField] GameObject breakable = null;
         [SerializeField] GameObject unbreakable = null;
+        [SerializeField] GameObject chest = null;
         [SerializeField] Transform wallParent = null;
+        [SerializeField] Transform chestParent = null;
         [SerializeField] GameObject wallIndicator = null;
+        [SerializeField] GameObject chestSensor = null;
         public GameObject nearestWall = null;
         public int nearestWallX = -1;
         public int nearestWallY = -1;
         public int mapSize = 100;
-        public int isHost = 0;
+        bool chestNearby;
         private void Start()
         {
 
@@ -84,30 +87,41 @@ namespace DoMine
                         case 2:
                             mapObject[i * 100 + j] = Instantiate(unbreakable, new Vector2(i, j), Quaternion.identity, wallParent);
                             break;
+                        case 3:
+                            mapObject[i * 100 + j] = Instantiate(chest, new Vector2(i, j), Quaternion.identity, wallParent);
+                            break;
                     }
                 }
             }
         }
 
-        public int CreateWall(GameObject[] mapObject ,int type, int x, int y, bool callback)
+        public int CreateWall(int type, int x, int y, bool callback)
         {
-            int half = mapSize / 2;
-            if (mapObject[x*100+y] == null)
+            GameObject _targetItem = null;
+            Transform _targetParent = null;//추후 있을 상자 탐색시 최적화위해 추가
+            if (mapArray[x * 100 + y] == 0)
             {
                 switch (type)
                 {
                     case 0:
                         break;
                     case 1:
-                        mapObject[x * 100 + y] = Instantiate(breakable, new Vector2(x, y), Quaternion.identity, wallParent);
+                        _targetItem = breakable;
+                        _targetParent = wallParent;
                         mapArray[x * 100 + y] = 1;
                         break;
                     case 2:
-                        mapObject[x * 100 + y] = Instantiate(unbreakable, new Vector2(x, y), Quaternion.identity, wallParent);
+                        _targetItem = unbreakable;
+                        _targetParent = wallParent;
                         mapArray[x * 100 + y] = 2;
                         break;
-
+                    case 3:
+                        _targetItem = chest;
+                        _targetParent = chestParent;
+                        mapArray[x * 100 + y] = 3;
+                        break;
                 }
+                mapObject[x * 100 + y] = Instantiate(_targetItem, new Vector2(x, y), Quaternion.identity, _targetParent);
                 if (callback == false) //콜백이 false일시(본인이 처음 보내는거면)
                 {
                     var evnt = WallCreated.Create();
@@ -127,22 +141,26 @@ namespace DoMine
 
 
         //DestroyWall 부술수있는 벽을 부술때 호출되는 함수
-        public void DestroyWall(int x, int y, bool callback, bool system) //callback이 false면 이벤트생성
+        public void DestroyWall(int x, int y, bool callback, bool system, int playerCode) //callback이 false면 이벤트생성
         {
-            Debug.Log(mapArray[x * 100 + y]);
-            if (mapArray[x * 100 + y] == 1 || system == true)
+            if (playerCode != GameController.playerCode)
             {
-                Destroy(mapObject[x * 100 + y]);
-                mapArray[x * 100 + y] = 0;
-                if(callback == false) //콜백이 false일시(본인이 처음 보내는거면)
+                if (mapArray[x * 100 + y] != 2 || system == true)
                 {
-                    Debug.Log(nearestWallX + "," + nearestWallY);
-                    var evnt = WallDestoryed.Create();
-                    evnt.LocationX = x;
-                    evnt.LocationY = y;
-                    evnt.Send();
+                    Destroy(mapObject[x * 100 + y]);
+                    mapObject[x * 100 + y] = null;
+                    mapArray[x * 100 + y] = 0;
+                    if (callback == false) //콜백이 false일시(본인이 처음 보내는거면)
+                    {
+                        Debug.Log(nearestWallX + "," + nearestWallY);
+                        var evnt = WallDestoryed.Create();
+                        evnt.LocationX = x;
+                        evnt.LocationY = y;
+                        evnt.Player = GameController.playerCode;
+                        evnt.Send();
+                    }
                 }
-          }
+            }
             
         }
 
@@ -183,6 +201,54 @@ namespace DoMine
             {
                 wallIndicator.gameObject.SetActive(false);
             }
+        }
+        
+        public void FindChest()//상자가 근처에 있으면 신호하는 함수
+        {
+            int i=0;
+            Transform nearestChest;
+            float nearestDistance = 10000;
+            float tempDistance;
+            foreach (Transform chest in chestParent)
+            {
+                tempDistance = Vector2.Distance(player.transform.position, chest.transform.position);
+                if(tempDistance < 30)
+                {
+                    chestNearby = true;
+                    i++;
+                    if (nearestDistance > tempDistance)
+                    {
+                        nearestDistance = tempDistance;
+                        nearestChest = chest;
+                    }
+                }
+            }
+            if (i == 0)
+            {
+                chestNearby = false;
+            }
+            if(chestNearby)
+            {
+                chestSensor.gameObject.SetActive(true);
+                chestSensor.transform.position = player.transform.position;
+                if(nearestDistance < 10)
+                {
+                    chestSensor.gameObject.GetComponent<Renderer>().material.color = Color.red;
+                }
+                else if(nearestDistance < 20)
+                {
+                    chestSensor.gameObject.GetComponent<Renderer>().material.color = Color.yellow;
+                }
+                else
+                {
+                    chestSensor.gameObject.GetComponent<Renderer>().material.color = Color.green;
+                }
+            }
+            else
+            {
+                chestSensor.gameObject.SetActive(false);
+            }
+
         }
     }
 }
