@@ -21,6 +21,7 @@ namespace Photon.Bolt
         public BoltEntity a;
         public string[] playerNameList = { "", "", "", "", "", "", "", "", "", "" };
         int playercount = 1;
+        int playercode;
         void Start()
         {
             if (BoltNetwork.IsServer)
@@ -35,6 +36,7 @@ namespace Photon.Bolt
             if(BoltNetwork.IsServer)
             {
                 playerNameList[0] = PlayerPrefs.GetString("nick");
+                playercode = 0;
             }
             if(BoltNetwork.IsClient)
             {
@@ -48,6 +50,10 @@ namespace Photon.Bolt
             if(BoltNetwork.IsClient)
             {
                 playerNameList[evnt.Code] = evnt.Name;
+                if(evnt.Name == PlayerPrefs.GetString("nick"))
+                {
+                    playercode = evnt.Code;
+                }
             }
         }
         public override void OnEvent(PlayerJoined evnt)
@@ -65,6 +71,27 @@ namespace Photon.Bolt
                     evnt2.Send();
                     i++;
                 }
+            }
+        }
+
+        public override void Disconnected(BoltConnection connection)
+        {
+            if(BoltNetwork.IsServer)
+            {
+                string[] tmparray = { "", "", "", "", "", "", "", "", "", "" };
+                playerNameList = tmparray;
+                playerNameList[0] = PlayerPrefs.GetString("nick");
+                playercode = 0;
+            }
+            if(BoltNetwork.IsClient)
+            {
+                /*var evnt = PlayerCode.Create();
+                evnt.Name = PlayerPrefs.GetString("nick");
+                evnt.Code = playercode;
+                evnt.Send();*/
+                var evnt = PlayerJoined.Create();
+                evnt.PlayerName = PlayerPrefs.GetString("nick");
+                evnt.Send();
             }
         }
         public void LoadGame()
@@ -87,7 +114,7 @@ namespace Photon.Bolt
 
         public override void BoltShutdownBegin(AddCallback registerDoneCallback, UdpConnectionDisconnectReason disconnectReason)
         {
-            
+            Debug.LogError("Client shutdown");
             SceneManager.LoadScene("Title");
             
         }
