@@ -31,6 +31,10 @@ namespace Photon.Bolt
             }
             
         }
+        void Update()
+        {
+
+        }
         public override void SceneLoadLocalDone(string scene, IProtocolToken token)
         {
             if(BoltNetwork.IsServer)
@@ -108,15 +112,11 @@ namespace Photon.Bolt
         }
         public void LoadGame()
         {
-            if(playercount < 1)
-            {
-                Debug.Log("Can't Start");
-            }
-            else
+            if(playercount >= 3)
             {
                 BoltNetwork.LoadScene("Ingame");
             }
-            
+             
         }
         public void LeaveGame()
         {
@@ -126,7 +126,6 @@ namespace Photon.Bolt
 
         public override void BoltShutdownBegin(AddCallback registerDoneCallback, UdpConnectionDisconnectReason disconnectReason)
         {
-            Debug.LogError("Client shutdown");
             SceneManager.LoadScene("Title");
             
         }
