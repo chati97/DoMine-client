@@ -28,6 +28,10 @@ namespace Photon.Bolt
         public void Start()
         {
             playerName.text = PlayerPrefs.GetString("nick");
+            if(playerName.text != "")
+            {
+                namePanel.gameObject.SetActive(false);
+            }
         }
 
         public void StartServer()
