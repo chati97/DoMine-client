@@ -110,10 +110,15 @@ namespace DoMine
                     movement.y -= 1f;
                     lookingAt = 3;
                 }
-                if (Input.GetKey(KeyCode.R) == true)
+                if (Input.GetKey(KeyCode.R) == true)//귀환 - 금을 내려놓고 기지로 귀환
                 {
                     if (returnCool == 0)
                     {
+                        if(state.Inventory[1] == 1)
+                        {
+                            itemCtrl.CreateItem((int)player.transform.position.x, (int)player.transform.position.y, 1, false);
+                            state.Inventory[1] = 0;
+                        }
                         MovePlayer(player, new Vector2(50, 50));
                         returnCool = returnCoolBase;
                     }
