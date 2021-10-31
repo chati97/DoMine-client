@@ -312,8 +312,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 38.07428, y: 31.694077}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: -62.036316, y: 75.21184}
+  m_SizeDelta: {x: 525.9274, y: 65.5763}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &220206718
 MonoBehaviour:
@@ -3300,6 +3300,17 @@ MonoBehaviour:
   PlayerNickList: {fileID: 220206718}
   PlayerCountText: {fileID: 667532244}
   a: {fileID: 8522133671535299296, guid: 928a3a66eced34dd18d64c16d9162ef9, type: 3}
+  playerNameList:
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
 --- !u!4 &1948125644
 Transform:
   m_ObjectHideFlags: 0

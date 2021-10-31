@@ -41,6 +41,7 @@ namespace Photon.Bolt
             {
                 playerNameList[0] = PlayerPrefs.GetString("nick");
                 playercode = 0;
+                PlayerNickList.text = PlayerNickList.text +  playerNameList[playercode] + "     ";
             }
             if(BoltNetwork.IsClient)
             {
@@ -51,13 +52,20 @@ namespace Photon.Bolt
         }
         public override void OnEvent(PlayerName evnt)
         {
+            int i = 0;
             if(BoltNetwork.IsClient)
             {
                 playerNameList[evnt.Code] = evnt.Name;
                 if(evnt.Name == PlayerPrefs.GetString("nick"))
                 {
                     playercode = evnt.Code;
+                    foreach (string name in playerNameList)
+                    {
+                        PlayerNickList.text = PlayerNickList.text + playerNameList[i] + "     ";
+                        i++;
+                    }
                 }
+                
             }
         }
         public override void OnEvent(PlayerJoined evnt)
@@ -66,11 +74,13 @@ namespace Photon.Bolt
             {
                 int i = 0;
                 playerNameList[playercount] = evnt.PlayerName;
+                PlayerNickList.text = PlayerNickList.text + evnt.PlayerName + "     ";
                 playercount++;
                 foreach(string name in playerNameList)
                 {
                     var evnt2 = PlayerName.Create();
                     evnt2.Name = playerNameList[i];
+                    //PlayerNickList.text = PlayerNickList.text + evnt2.Name;
                     evnt2.Code = i;
                     evnt2.Send();
                     i++;
@@ -83,6 +93,7 @@ namespace Photon.Bolt
             {
                 var evnt2 = PlayerJoined.Create();
                 evnt2.PlayerName = PlayerPrefs.GetString("nick");
+                //PlayerNickList.text = PlayerNickList.text + evnt2.PlayerName + "     ";
                 evnt2.Send();
             }
         }
@@ -93,8 +104,10 @@ namespace Photon.Bolt
                 playercount = 1;
                 string[] tmparray = { "", "", "", "", "", "", "", "", "", "" };
                 playerNameList = tmparray;
+                PlayerNickList.text = "";
                 playerNameList[0] = PlayerPrefs.GetString("nick");
                 playercode = 0;
+                PlayerNickList.text = PlayerNickList.text + playerNameList[playercode] + "     ";
                 var evnt = PlayerConnectLobby.Create();
                 evnt.Send();
             }
