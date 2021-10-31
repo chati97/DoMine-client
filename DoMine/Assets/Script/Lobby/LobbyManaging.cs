@@ -125,7 +125,7 @@ namespace Photon.Bolt
         }
         public void LoadGame()
         {
-            if(playercount >= 3)
+            //if(playercount >= 3)
             {
                 BoltNetwork.LoadScene("Ingame");
             }

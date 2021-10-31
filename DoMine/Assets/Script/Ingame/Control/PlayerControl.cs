@@ -16,10 +16,15 @@ namespace DoMine
         BoltEntity targetPlayer = null;
         Light playerView = null;
 
+        public static bool canFindSabotage = true;
         public static float paralyzeCool;
-        public static float paralyzeCoolBase = 5f;
+        public static float paralyzeCoolBase = 10f;
         public static float blindCool;
-        public static float blindCoolBase = 10f;
+        public static float blindCoolBase = 30f;
+        public float windWalkCool;
+        public float windWalkDuration;
+        float windWalkDurationBase = 10f;
+        float windWalkCoolBase = 60f;
         public float breakCool;
         float breakCoolBase = 0.5f;
         public float returnCool;
@@ -47,6 +52,8 @@ namespace DoMine
             gameCtrl.players.Add(entity);
             if (entity.IsOwner)
             {
+                state.Inventory[0] = 15;
+                state.Color = new Color(0, 0, 0, 255);
                 aimIndicator = GameObject.Find("AimIndicator");
                 state.PlayerName = PlayerPrefs.GetString("nick");
                 playerView = entity.GetComponentInChildren<Light>();
@@ -58,17 +65,29 @@ namespace DoMine
                 }
             }
             playerName.GetComponent<TextMeshPro>().text = state.PlayerName;
+
         }
         void OnDestroy()
         {
             gameCtrl.players.Remove(entity);
         }
 
-        public override void SimulateOwner()
+        public override void SimulateOwner()//플레이어 조작 관련 코드
         {
             var speed = 4f;
             var movement = Vector3.zero;
             int output = -1;
+            // 이동 관련 코드
+
+            if (state.WindWalking)
+            {
+                speed = 8f;
+                state.Color = new Color(0, 0, 0, 0);
+            }
+            else
+            {
+                state.Color = new Color(0, 0, 0, 255);
+            }
             if(!state.Paralyzed)
             {
                 if (Input.GetKey(KeyCode.LeftArrow) == true)
@@ -105,27 +124,13 @@ namespace DoMine
 
                 }
             }
-
-
             if (movement != Vector3.zero)
             {
                 transform.position = transform.position + (movement.normalized * speed * BoltNetwork.FrameDeltaTime);
             }
 
-            if (Input.GetKey(KeyCode.S) == true)
-            {
-                if (state.Inventory[2] > 0 && canCreateWall)
-                {
-                    output = mapCtrl.CreateWall(1, (int)aim.x, (int)aim.y, false);
-                    if(output == 0)
-                        --state.Inventory[2];
-                }
-                else
-                {
-                    Debug.Log("barricade error");
-                }
-            }
 
+            //벽 파괴
             if (Input.GetKey(KeyCode.A) == true)
             {
                 if (breakCool == 0 && mapCtrl.nearestWall != null)
@@ -144,48 +149,84 @@ namespace DoMine
 
             }
 
-            if (Input.GetKeyUp(KeyCode.D) == true)
+            //파괴가능 벽 생성(바리케이드)
+            if (Input.GetKey(KeyCode.S) == true)
             {
-                //itemCtrl.Init(gameCtrl.playerNum);
+                if (state.Inventory[2] > 0 && canCreateWall)
+                {
+                    output = mapCtrl.CreateWall(1, (int)aim.x, (int)aim.y, false);
+                    if (output == 0)
+                        --state.Inventory[2];
+                }
+                else
+                {
+                    Debug.Log("Cannot Create Barricade");
+                }
             }
 
-                if (Input.GetKey(KeyCode.Q) == true)
+            // 플레이어에게 스킬을 사용하는 파트
+            if (Input.GetKeyUp(KeyCode.Q) == true) // 방해
             {
-                if(targetPlayer != null)
+                if(targetPlayer != null /*&& GameController.time < 600 */) //현재는 시간대별로 사용하는거 막아놓음
                 {
-                    Debug.LogWarning("AmingPlayer : " + targetPlayer.GetState<IPlayerState>().PlayerName);
+                    Debug.LogWarning("interrupt : " + targetPlayer.GetState<IPlayerState>().PlayerName);
                     var evnt = PlayerInteraction.Create();
                     evnt.AttakingPlayer = GameController.playerCode;
                     evnt.TargetPlayer = targetPlayer.GetState<IPlayerState>().PlayerCode;
                     evnt.Action = 0;
                     evnt.Send();
                 }
-            }
-            if (Input.GetKey(KeyCode.W) == true)
-            {
-                if (targetPlayer != null)
+                else
                 {
-                    Debug.LogWarning("AmingPlayer : " + targetPlayer.GetState<IPlayerState>().PlayerName);
-                    var evnt = PlayerInteraction.Create();
-                    evnt.AttakingPlayer = GameController.playerCode;
-                    evnt.TargetPlayer = targetPlayer.GetState<IPlayerState>().PlayerCode;
-                    evnt.Action = 1;
-                    evnt.Send();
+                    Debug.LogError("Cannot Use Now");
                 }
             }
-            if (Input.GetKey(KeyCode.E) == true)
+            if (Input.GetKeyUp(KeyCode.D) == true) // 사보타지 색출
+            {
+                if (!GameController.isSabotage)
+                {
+                    if (targetPlayer != null && canFindSabotage == true/* && GameController.time < 600*/)
+                    {
+                        Debug.LogWarning("FindSabotage : " + targetPlayer.GetState<IPlayerState>().PlayerName);
+                        var evnt = PlayerInteraction.Create();
+                        evnt.AttakingPlayer = GameController.playerCode;
+                        evnt.TargetPlayer = targetPlayer.GetState<IPlayerState>().PlayerCode;
+                        evnt.Action = 1;
+                        evnt.Send();
+                        canFindSabotage = false;
+                    }
+                    else
+                    {
+                        Debug.LogError("Cannot Use Now");
+                    }
+                }
+                else
+                {
+                    if (windWalkCool == 0)
+                    {
+                        windWalkDuration = windWalkDurationBase;
+                        windWalkCool = windWalkCoolBase;
+                        state.WindWalking = true;
+                    }
+                }
+            }
+            if (Input.GetKeyUp(KeyCode.E) == true) // 회복
             {
                 if (targetPlayer != null)
                 {
-                    Debug.LogWarning("AmingPlayer : " + targetPlayer.GetState<IPlayerState>().PlayerName);
+                    Debug.LogWarning("heal : " + targetPlayer.GetState<IPlayerState>().PlayerName);
                     var evnt = PlayerInteraction.Create();
                     evnt.AttakingPlayer = GameController.playerCode;
                     evnt.TargetPlayer = targetPlayer.GetState<IPlayerState>().PlayerCode;
                     evnt.Action = 2;
                     evnt.Send();
                 }
+                else
+                {
+                    Debug.LogError("Cannot Use Now");
+                }
             }
-
+                //아이템 획득 코드
             if (itemCtrl.nearestItem != null)
             {
                 if (Vector2.Distance(player.transform.position, itemCtrl.nearestItem.transform.position) < 0.5)
@@ -199,25 +240,58 @@ namespace DoMine
         // Update is called once per frame
         void FixedUpdate()
         {
-            if (breakCool > 0)
+            //플레이어 은신에 관한 내용
+            entity.GetComponent<SpriteRenderer>().color = state.Color;
+            if(state.Color == new Color(0,0,0,0))
             {
-                breakCool -= Time.deltaTime;
-            }//쿨타임관련 코드
-            if (breakCool < 0)
-            {
-                breakCool = 0;
+                playerName.SetActive(false);
             }
-            if (returnCool > 0)
+            else
             {
-                returnCool -= Time.deltaTime;
-            }
-            if (returnCool < 0)
-            {
-                returnCool = 0;
+                playerName.SetActive(true);
             }
 
-            if(entity.IsOwner)
+            if (true)//쿨타임관련 코드
             {
+                if (breakCool > 0)
+                {
+                    breakCool -= Time.deltaTime;
+                }
+                if (breakCool < 0)
+                {
+                    breakCool = 0;
+                }
+                if (returnCool > 0)
+                {
+                    returnCool -= Time.deltaTime;
+                }
+                if (returnCool < 0)
+                {
+                    returnCool = 0;
+                }
+                if (windWalkCool > 0)
+                {
+                    windWalkCool -= Time.deltaTime;
+                }
+                if (windWalkCool < 0)
+                {
+                    windWalkCool = 0;
+                }
+                if (windWalkDuration > 0)
+                {
+                    windWalkDuration -= Time.deltaTime;
+                }
+                if (windWalkDuration < 0)
+                {
+                    windWalkDuration = 0;
+                    state.WindWalking = false;
+                }
+            }
+
+
+            if (entity.IsOwner)
+            {
+                //플레이어 상태 코드
                 if (blindCool > 0)
                 {
                     blindCool -= Time.deltaTime;
@@ -249,6 +323,7 @@ namespace DoMine
                 mapCtrl.FindChest();
                 itemCtrl.FindItem(itemCtrl.itemObject);
                 Aiming();
+
                 if (Vector2.Distance(entity.transform.position, new Vector2(49.5f,49.5f)) < 1)
                 {
                     if(state.Inventory[0] < 15)

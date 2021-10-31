@@ -51,28 +51,56 @@ namespace DoMine
             time = 10;
             MC.CreateMap(MC.mapArray = MC.MakeMapArr(), MC.mapObject);
         }
+
+        public override void OnEvent(SabotageCaptured evnt)
+        {
+            if (evnt.isSabotage == true)
+            {
+                Debug.LogError(playerNameList[evnt.Player] + " is Sabotage");
+            }
+            else
+            {
+                Debug.LogError(playerNameList[evnt.Player] + " is Miner");
+            }
+        }
         public override void OnEvent(PlayerInteraction evnt)
         {
             switch(evnt.Action)
             {
-                case 0 :
+                case 0 ://방해 공작 통일
                     if (playerCode == evnt.TargetPlayer)
                     {
                         mystate.Inventory[0] = 0;
-                    }
-                    break;
-                case 1:
-                    if (playerCode == evnt.TargetPlayer)
-                    {
                         mystate.Blinded = true;
                         PlayerControl.blindCool = PlayerControl.blindCoolBase;
-                    }
-                    break;
-                case 2:
-                    if (playerCode == evnt.TargetPlayer)
-                    {
                         mystate.Paralyzed = true;
                         PlayerControl.paralyzeCool = PlayerControl.paralyzeCoolBase;
+                    }
+                    break;
+                case 1://사보타지 색출
+                    if (playerCode == evnt.TargetPlayer)
+                    {
+                        var evnt2 = SabotageCaptured.Create();
+                        evnt2.Player = playerCode;
+                        if (isSabotage == true)
+                        {
+                            evnt2.isSabotage = true;
+                        }
+                        else
+                        {
+                            evnt2.isSabotage = false;
+                        }
+                        evnt2.Send();
+                    }
+                    break;
+                case 2:// 도움을 받았을 때
+                    if (playerCode == evnt.TargetPlayer)
+                    {
+                        mystate.Inventory[0] = 15;
+                        mystate.Blinded = false;
+                        PlayerControl.blindCool = 0;
+                        mystate.Paralyzed = false;
+                        PlayerControl.paralyzeCool = 0;
                     }
                     break;
             }

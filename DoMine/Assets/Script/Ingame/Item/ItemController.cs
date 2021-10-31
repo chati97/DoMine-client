@@ -17,7 +17,7 @@ namespace DoMine
         public int nearestItemX = -1;
         public int nearestItemY = -1;
 
-        // 인벤토리는 0=곡괭이, 1=금, 2=바리케이트
+        // 인벤토리는 0=곡괭이, 1=금, 2=바리케이트, 3=뒤통수, 4=치료
         // 맵정보에서 0=공백, 1=금, 2=바리케이트  
 
         // Start is called before the first frame update
