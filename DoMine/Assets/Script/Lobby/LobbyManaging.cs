@@ -55,9 +55,11 @@ namespace Photon.Bolt
             int i = 0;
             if(BoltNetwork.IsClient)
             {
+                
                 playerNameList[evnt.Code] = evnt.Name;
                 if(evnt.Name == PlayerPrefs.GetString("nick"))
                 {
+                    PlayerNickList.text = "";
                     playercode = evnt.Code;
                     foreach (string name in playerNameList)
                     {
