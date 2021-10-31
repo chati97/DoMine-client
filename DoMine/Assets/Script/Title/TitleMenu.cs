@@ -28,7 +28,7 @@ namespace Photon.Bolt
         public void Start()
         {
             playerName.text = PlayerPrefs.GetString("nick");
-            if(playerName.text != "")
+            if(PlayerPrefs.GetString("nick") != "")
             {
                 namePanel.gameObject.SetActive(false);
             }
@@ -59,7 +59,7 @@ namespace Photon.Bolt
 
         public void StartClient()
         {
-            if (NameInput.text == "")
+            if (PlayerPrefs.GetString("nick") == "")
             {
                 Debug.LogError("Please check your input");
             }
@@ -69,7 +69,7 @@ namespace Photon.Bolt
 
         public void JoinSession()
         {
-            if (NameInput.text == "" || RoomInput.text == "")
+            if (PlayerPrefs.GetString("nick") == "" || RoomInput.text == "")
             {
                 Debug.LogError("Please check your input");
             }
