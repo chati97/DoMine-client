@@ -212,7 +212,7 @@ namespace DoMine
             foreach (Transform chest in chestParent)
             {
                 tempDistance = Vector2.Distance(player.transform.position, chest.transform.position);
-                if(tempDistance < 30)
+                if(tempDistance < 20)
                 {
                     chestNearby = true;
                     i++;
@@ -230,18 +230,18 @@ namespace DoMine
             if(chestNearby)
             {
                 chestSensor.gameObject.SetActive(true);
-                chestSensor.transform.position = player.transform.position;
-                if(nearestDistance < 10)
+                chestSensor.transform.position = player.transform.position + new Vector3(0,0.25f,0);
+                if(nearestDistance < 5)//(302010서 20105로 축소)
                 {
-                    chestSensor.gameObject.GetComponent<Renderer>().material.color = Color.red;
+                    chestSensor.gameObject.GetComponent<Renderer>().material.color = Color.green;
                 }
-                else if(nearestDistance < 20)
+                else if (nearestDistance < 10)
                 {
                     chestSensor.gameObject.GetComponent<Renderer>().material.color = Color.yellow;
                 }
                 else
                 {
-                    chestSensor.gameObject.GetComponent<Renderer>().material.color = Color.green;
+                    chestSensor.gameObject.GetComponent<Renderer>().material.color = Color.red;
                 }
             }
             else

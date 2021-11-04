@@ -63,8 +63,13 @@ namespace DoMine
             winSide.gameObject.SetActive(true);
             winPlayers.gameObject.SetActive(true);
             GameController.gameLoaded = false;
-
-            if(winPlayer == -1)
+            if (winPlayer == -2)
+            {
+                gameInfo.text = "Game Over";
+                winSide.text = "Host has been \n shut down";
+                winPlayers.text = "";
+            }
+            else if (winPlayer == -1)
             {
                 gameInfo.text = "You Lose";
                 winSide.text = "No One Won";

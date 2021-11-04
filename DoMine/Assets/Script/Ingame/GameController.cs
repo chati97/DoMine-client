@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Bolt;
+using UdpKit;
+using UnityEngine.SceneManagement;
 
 namespace DoMine
 {
@@ -16,6 +18,7 @@ namespace DoMine
         public static int playerCode;//플레이어 코드
         public int playerNum; //최초입장한유저수
         int goldAmount = 0;//생성된 금 갯수
+        int goldSaved = 0;//입금된 금 갯수
         int sabotages = 0;//사보타지 수
         public static float time; //게임시간
         public List<BoltEntity> players = new List<BoltEntity>(); //볼트엔티티 모으는 리스트
@@ -24,6 +27,7 @@ namespace DoMine
         public static bool gameStarted;//게임 시작여부
         public static bool gameLoaded;//게임로딩여부
         IPlayerState mystate = null;//본인 상태 수정위해 가지고 있는변수
+        float timeBase = 600;
 
         public override void SceneLoadLocalDone(string scene, IProtocolToken token)
         {
@@ -41,6 +45,7 @@ namespace DoMine
         {
             playerCode = -1;
             sabotages = 0;
+            goldSaved = 0;
             gameStarted = false;//게임 시작여부
             gameLoaded = false;//게임로딩여부
             if (BoltNetwork.IsServer)
@@ -52,6 +57,11 @@ namespace DoMine
             MC.CreateMap(MC.mapArray = MC.MakeMapArr(), MC.mapObject);
         }
 
+        public override void BoltShutdownBegin(AddCallback registerDoneCallback, UdpConnectionDisconnectReason disconnectReason)//호스트가 튕겼을시
+        {
+            time = 1000;//게임 중단
+            UC.GameWinner(-2, false, false, null);//게임종료화면으로 이동
+        }
         public override void OnEvent(SabotageCaptured evnt)
         {
             if (evnt.isSabotage == true)
@@ -110,6 +120,7 @@ namespace DoMine
         public override void OnEvent(SaveGold evnt)
         {
             playerList[evnt.Player] = 2;
+            goldSaved++;
             Debug.LogWarning("Player" + evnt.Player + " Saved Gold");
         }//금 입금 콜백
         public override void OnEvent(WallDestoryed evnt)
@@ -237,7 +248,7 @@ namespace DoMine
         // Update is called once per frame
         void Update() 
         {
-            if (time > 0 && time <= 900 && gameStarted == false)
+            if (time > 0 && time <= timeBase && gameStarted == false)
             {
                 time -= Time.deltaTime;
             }
@@ -249,15 +260,22 @@ namespace DoMine
                     gameStarted = true;
                     //추후 플레이어 3인 이하일시 게임 종료기능 추가
                     var evnt = GameStart.Create();
-                    evnt.TimeLeft = 900;
+                    evnt.TimeLeft = timeBase;
                     evnt.PlayerNum = playerNum;
                     evnt.Sabotage = DividePlayer();
                     evnt.Send();
                 }
             }
-            else if (time > 0 && time <= 900 && gameStarted == true)//게임 시작했다는 이벤트를 호스트포함 모두가 받으면 실행
+            else if (time > 0 && time <= timeBase && gameStarted == true)//게임 시작했다는 이벤트를 호스트포함 모두가 받으면 실행
             {
                 time -= Time.deltaTime;//실험때는 여기에 배수를 곱해서 게임 빠르게 진행
+                if(goldSaved == goldAmount)// 만약 생성된 모든 금이 입금되었다면게임종료
+                {
+                    if (BoltNetwork.IsServer && goldAmount != 0)
+                    {
+                        GameEnd();
+                    }
+                }
             }
             else if (time <= 0 && gameStarted == true) // 게임 종료시
             {
@@ -317,6 +335,7 @@ namespace DoMine
 
         void GameEnd()//게임 종료이벤트 송신 함수
         {
+            
             int _gold2win = (int)(playerNum*0.43);
             int _goldSavedPlayer = 0;
             int _winPlayer = 0;
@@ -372,7 +391,7 @@ namespace DoMine
             bool _crash;
             int _gold = (int)(playerNum * 0.43) + UnityEngine.Random.Range(0, 2);
             goldAmount = _gold;
-            for (int i = 0; i < _gold*3; i++)
+            for (int i = 0; i < _gold*5; i++)
             {
                 do
                 {

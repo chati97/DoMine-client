@@ -33,6 +33,9 @@ namespace DoMine
         int lookingAt = -1;//왼쪽부터 시계방향으로 0123
         SpriteRenderer spr;
         public Animator playerAnimator;
+
+        int pickaxeAmountBase = 20;
+            
         public void MovePlayer(GameObject player, Vector2 location)
         {
             player.transform.position = location;
@@ -51,11 +54,11 @@ namespace DoMine
             itemCtrl = GameObject.Find("GameController").GetComponent<ItemController>();
             gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
             gameCtrl.players.Add(entity);
-            spr = player.gameObject.GetComponent<SpriteRenderer>();
+            spr = player.gameObject.GetComponentInChildren<SpriteRenderer>();
             state.headRight = false;
             if (entity.IsOwner)
             {
-                state.Inventory[0] = 15;
+                state.Inventory[0] = pickaxeAmountBase;
                 state.Color = new Color(0, 0, 0, 255);
                 aimIndicator = GameObject.Find("AimIndicator");
                 state.PlayerName = PlayerPrefs.GetString("nick");
@@ -89,7 +92,7 @@ namespace DoMine
             }
             else
             {
-                state.Color = new Color(0, 0, 0, 255);
+                state.Color = new Color(255, 255, 255, 255);//시껌댕이 탈출
             }
             if(!state.Paralyzed)
             {
@@ -202,7 +205,7 @@ namespace DoMine
                     Debug.LogError("Cannot Use Now");
                 }
             }
-            if (Input.GetKeyUp(KeyCode.D) == true) // 사보타지 색출
+            if (Input.GetKeyUp(KeyCode.D) == true) // 사보타지 색출,  윈드웤(은신)
             {
                 if (!GameController.isSabotage)
                 {
@@ -279,7 +282,7 @@ namespace DoMine
         void FixedUpdate()
         {
             //플레이어 은신에 관한 내용
-            entity.GetComponent<SpriteRenderer>().color = state.Color;
+            entity.GetComponentInChildren<SpriteRenderer>().color = state.Color;
             if(state.Color == new Color(0,0,0,0))
             {
                 playerName.SetActive(false);
@@ -354,7 +357,7 @@ namespace DoMine
                 }
                 else
                 {
-                    playerView.spotAngle = 50;
+                    playerView.spotAngle = 75;
                 }
 
                 mapCtrl.FindWall(mapCtrl.mapObject);
@@ -364,9 +367,9 @@ namespace DoMine
 
                 if (Vector2.Distance(entity.transform.position, new Vector2(49.5f,49.5f)) < 1)
                 {
-                    if(state.Inventory[0] < 15)
+                    if(state.Inventory[0] < pickaxeAmountBase)
                     {
-                        state.Inventory[0] = 15;
+                        state.Inventory[0] = pickaxeAmountBase;
                         Debug.LogWarning("Pickaxe Recharged");//중앙 안전지대 이동시 곡괭이 회복
                     }
                     if (state.Inventory[1] == 1 && gameCtrl.playerList[GameController.playerCode] == 0)
