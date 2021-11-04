@@ -15,7 +15,6 @@ namespace DoMine
         public GameController gameCtrl;
         BoltEntity targetPlayer = null;
         Light playerView = null;
-        Animator ani;
         public static bool canFindSabotage = true;
         public static float paralyzeCool;
         public static float paralyzeCoolBase = 10f;
@@ -32,8 +31,8 @@ namespace DoMine
         public bool canCreateWall = true;
         public Vector2 aim;
         int lookingAt = -1;//왼쪽부터 시계방향으로 0123
-        bool isRight = false;
         SpriteRenderer spr;
+        public Animator playerAnimator;
         public void MovePlayer(GameObject player, Vector2 location)
         {
             player.transform.position = location;
@@ -42,6 +41,7 @@ namespace DoMine
         public override void Attached()
         {
             state.SetTransforms(state.Location, transform);
+            state.SetAnimator(playerAnimator);
         }
 
         // Start is called before the first frame update
@@ -51,8 +51,8 @@ namespace DoMine
             itemCtrl = GameObject.Find("GameController").GetComponent<ItemController>();
             gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
             gameCtrl.players.Add(entity);
-            ani = player.gameObject.GetComponent<Animator>();
             spr = player.gameObject.GetComponent<SpriteRenderer>();
+            state.headRight = false;
             if (entity.IsOwner)
             {
                 state.Inventory[0] = 15;
@@ -95,20 +95,18 @@ namespace DoMine
             {
                 if (Input.GetKey(KeyCode.LeftArrow) == true)
                 {
-                    if(isRight)
+                    if(state.headRight)
                     {
-                        spr.flipX = false;
-                        isRight = false;
+                        state.headRight = false;
                     }
                     movement.x -= 1f;
                     lookingAt = 0;
                 }
                 if (Input.GetKey(KeyCode.RightArrow) == true)
                 {
-                    if(!isRight)
+                    if(!state.headRight)
                     {
-                        spr.flipX = true;
-                        isRight = true;
+                        state.headRight = true;
                     }
                     movement.x += 1f;
                     lookingAt = 2;
@@ -144,14 +142,15 @@ namespace DoMine
             }
             if (movement != Vector3.zero)
             {
-                ani.SetBool("Walking", true);
+                //ani.SetBool("Walking", true);
                 transform.position = transform.position + (movement.normalized * speed * BoltNetwork.FrameDeltaTime);
+                state.isMoving = true;
             }
             else
             {
-                ani.SetBool("Walking", false);
+                //ani.SetBool("Walking", false);
+                state.isMoving = false;
             }
-
             //벽 파괴
             if (Input.GetKey(KeyCode.A) == true)
             {
@@ -257,7 +256,25 @@ namespace DoMine
                 }
             }
         }
-
+        void Update()
+        {
+            if (state.isMoving)
+            {
+                state.Animator.Play("walk_side");
+            }
+            else
+            {
+                state.Animator.Play("Idle");
+            }
+            if(state.headRight)
+            {
+                spr.flipX = true;
+            }
+            else
+            {
+                spr.flipX = false;
+            }
+        }
         // Update is called once per frame
         void FixedUpdate()
         {

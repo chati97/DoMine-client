@@ -339,6 +339,7 @@ MonoBehaviour:
   returnCool: 0
   canCreateWall: 1
   aim: {x: 0, y: 0}
+  playerAnimator: {fileID: 8608854992370373456}
 --- !u!114 &7664376511355177180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -391,7 +392,7 @@ Animator:
   m_GameObject: {fileID: 9087986202235492200}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: e1c1b77c71030894e837e9ba2c627fae, type: 2}
+  m_Controller: {fileID: 9100000, guid: 8ce4e0c6a67914d78acf35cddcb3b5ea, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
