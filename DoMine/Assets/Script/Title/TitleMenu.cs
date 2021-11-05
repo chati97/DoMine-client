@@ -92,6 +92,7 @@ namespace Photon.Bolt
                 roomData.roomName.text = photonSession.HostName;
                 roomData.maxPlayer = photonSession.ConnectionsMax;
                 roomData.currentPlayer = photonSession.ConnectionsCurrent;
+                roomData.playerCount.text = string.Format("{0}/{1}", roomData.currentPlayer, roomData.maxPlayer);
                 //roomData.UpdateInfo(photonSession, click);
                 Button join = roomData.GetComponentInChildren<Button>();
                 join.onClick.AddListener(() => OnClickRoom(roomData.roomName.text));

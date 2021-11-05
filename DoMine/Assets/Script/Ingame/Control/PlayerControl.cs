@@ -124,7 +124,7 @@ namespace DoMine
                     movement.y -= 1f;
                     lookingAt = 3;
                 }
-                if (Input.GetKey(KeyCode.R) == true)//귀환 - 금을 내려놓고 기지로 귀환
+                if (Input.GetKey(KeyCode.R) == true || JoystickControl.btnNum == 5)//귀환 - 금을 내려놓고 기지로 귀환
                 {
                     if (returnCool == 0)
                     {
@@ -140,7 +140,7 @@ namespace DoMine
                     {
                         //Debug.Log("in Return-Cooltime");
                     }
-
+                    JoystickControl.btnNum = 0;
                 }
             }
             if (movement != Vector3.zero)
@@ -155,7 +155,7 @@ namespace DoMine
                 state.isMoving = false;
             }
             //벽 파괴
-            if (Input.GetKey(KeyCode.A) == true)
+            if (Input.GetKey(KeyCode.A) == true || JoystickControl.btnNum == 1)
             {
                 if (breakCool == 0 && mapCtrl.nearestWall != null)
                 {
@@ -170,11 +170,11 @@ namespace DoMine
                 {
                     //Debug.Log("in Breaking-Cooltime");
                 }
-
+                JoystickControl.btnNum = 0;
             }
 
             //파괴가능 벽 생성(바리케이드)
-            if (Input.GetKey(KeyCode.S) == true)
+            if (Input.GetKey(KeyCode.S) == true || JoystickControl.btnNum == 2)
             {
                 if (state.Inventory[2] > 0 && canCreateWall)
                 {
@@ -186,10 +186,11 @@ namespace DoMine
                 {
                     Debug.Log("Cannot Create Barricade");
                 }
+                JoystickControl.btnNum = 0;
             }
 
             // 플레이어에게 스킬을 사용하는 파트
-            if (Input.GetKeyUp(KeyCode.Q) == true) // 방해
+            if (Input.GetKeyUp(KeyCode.Q) == true || JoystickControl.btnNum == 4) // 방해
             {
                 if(targetPlayer != null /*&& GameController.time < 600 */) //현재는 시간대별로 사용하는거 막아놓음
                 {
@@ -204,10 +205,11 @@ namespace DoMine
                 {
                     Debug.LogError("Cannot Use Now");
                 }
+                JoystickControl.btnNum = 0;
             }
-            if (Input.GetKeyUp(KeyCode.D) == true) // 사보타지 색출,  윈드웤(은신)
+            if (Input.GetKeyUp(KeyCode.D) == true || JoystickControl.btnNum == 6 || JoystickControl.btnNum == 7) // 사보타지 색출,  윈드웤(은신)
             {
-                if (!GameController.isSabotage)
+                if (!GameController.isSabotage || JoystickControl.btnNum == 7)
                 {
                     if (targetPlayer != null && canFindSabotage == true/* && GameController.time < 600*/)
                     {
@@ -233,8 +235,9 @@ namespace DoMine
                         state.WindWalking = true;
                     }
                 }
+                JoystickControl.btnNum = 0;
             }
-            if (Input.GetKeyUp(KeyCode.E) == true) // 회복
+            if (Input.GetKeyUp(KeyCode.E) == true || JoystickControl.btnNum == 3) // 회복
             {
                 if (targetPlayer != null)
                 {
@@ -249,6 +252,7 @@ namespace DoMine
                 {
                     Debug.LogError("Cannot Use Now");
                 }
+                JoystickControl.btnNum = 0;
             }
                 //아이템 획득 코드
             if (itemCtrl.nearestItem != null)

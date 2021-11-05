@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -13,20 +11,36 @@ namespace DoMine
         [SerializeField] private RectTransform joyStick;
 
         private Image bgimg;
-
         private float radius;
-
-        [SerializeField] GameObject player;
-        [SerializeField] private float speed;
 
         private Vector3 moveVec;
 
-        PlayerControl playerControl;
+        public Button sabotageSkill;
+        public Button minerSkill;
+        public Button heal;
+        public Button barricade;
+        public Button noPick;
+        public Button pick;
+        public Button baseCamp;
+
+        public static int btnNum = 0;
 
         void Start()
         {
             bgimg = GetComponent<Image>();
             radius = background.rect.width * 0.29f;
+            pick.onClick.AddListener(onclickPick);
+            barricade.onClick.AddListener(onClickBarricade);
+            heal.onClick.AddListener(onClickHeal);
+            noPick.onClick.AddListener(onClickNoPick);
+            baseCamp.onClick.AddListener(onClickBaseCamp);
+            sabotageSkill.onClick.AddListener(onClickSabSkill);
+            minerSkill.onClick.AddListener(onClickMinSkill);
+            if (GameController.isSabotage)
+            {
+                minerSkill.gameObject.SetActive(false);
+                sabotageSkill.gameObject.SetActive(true);
+            }
         }
 
         public void OnPointerDown(PointerEventData eventData)
@@ -66,6 +80,41 @@ namespace DoMine
         public float GetVertical()
         {
             return moveVec.y;
+        }
+
+        void onclickPick()
+        {
+            btnNum = 1;
+        }
+
+        void onClickBarricade()
+        {
+            btnNum = 2;
+        }
+
+        void onClickHeal()
+        {
+            btnNum = 3;
+        }
+
+        void onClickNoPick()
+        {
+            btnNum = 4;
+        }
+
+        void onClickBaseCamp()
+        {
+            btnNum = 5;
+        }
+
+        void onClickSabSkill()
+        {
+            btnNum = 6;
+        }
+
+        void onClickMinSkill()
+        {
+            btnNum = 7;
         }
     }
 }
