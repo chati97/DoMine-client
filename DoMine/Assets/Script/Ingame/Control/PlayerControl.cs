@@ -33,6 +33,7 @@ namespace DoMine
         int lookingAt = -1;//왼쪽부터 시계방향으로 0123
         SpriteRenderer spr;
         public Animator playerAnimator;
+        public JoystickControl joystick = new JoystickControl();
 
         int pickaxeAmountBase = 20;
             
@@ -96,7 +97,7 @@ namespace DoMine
             }
             if(!state.Paralyzed)
             {
-                if (Input.GetKey(KeyCode.LeftArrow) == true)
+                if (Input.GetKey(KeyCode.LeftArrow) == true || JoystickControl.directionX == 1)
                 {
                     if(state.headRight)
                     {
@@ -105,7 +106,7 @@ namespace DoMine
                     movement.x -= 1f;
                     lookingAt = 0;
                 }
-                if (Input.GetKey(KeyCode.RightArrow) == true)
+                if (Input.GetKey(KeyCode.RightArrow) == true || JoystickControl.directionX == 2)
                 {
                     if(!state.headRight)
                     {
@@ -114,12 +115,12 @@ namespace DoMine
                     movement.x += 1f;
                     lookingAt = 2;
                 }
-                if (Input.GetKey(KeyCode.UpArrow) == true)
+                if (Input.GetKey(KeyCode.UpArrow) == true || JoystickControl.directionY == 1)
                 {
                     movement.y += 1f;
                     lookingAt = 1;
                 }
-                if (Input.GetKey(KeyCode.DownArrow) == true)
+                if (Input.GetKey(KeyCode.DownArrow) == true || JoystickControl.directionY == 2)
                 {
                     movement.y -= 1f;
                     lookingAt = 3;

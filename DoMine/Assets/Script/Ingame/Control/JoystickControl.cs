@@ -13,7 +13,7 @@ namespace DoMine
         private Image bgimg;
         private float radius;
 
-        private Vector3 moveVec;
+        private Vector3 moveVec = Vector3.zero;
 
         public Button sabotageSkill;
         public Button minerSkill;
@@ -24,6 +24,9 @@ namespace DoMine
         public Button baseCamp;
 
         public static int btnNum = 0;
+        public static int directionX = 0;
+        public static int directionY = 0;
+        public static float speed = 0;
 
         void Start()
         {
@@ -63,6 +66,29 @@ namespace DoMine
 
                 moveVec = new Vector3(pos.x * 2 + 1, pos.y * 2 - 1, 0);
                 moveVec = (moveVec.magnitude > 1.0f) ? moveVec.normalized : moveVec;
+                
+                if(moveVec.x == 0 && moveVec.y == 0)
+                {
+                    directionX = 0; directionY = 0;
+                }
+                if(moveVec.x >= -1 && moveVec.x < 0)
+                {
+                    directionX = 1;
+                }
+
+                if(moveVec.x <= 1 && moveVec.x > 0)
+                {
+                    directionX = 2;
+                }
+                if(moveVec.y <= 1 && moveVec.y > 0)
+                {
+                    directionY = 1;
+                }
+                if(moveVec.y >= -1 && moveVec.y < 0)
+                {
+                    directionY = 2;
+                }
+
             }
         }
 
@@ -70,16 +96,9 @@ namespace DoMine
         {
             joyStick.localPosition = Vector3.zero;
             moveVec = Vector3.zero;
-        }
-
-        public float GetHorizontal()
-        {
-            return moveVec.x;
-        }
-
-        public float GetVertical()
-        {
-            return moveVec.y;
+            directionX = 0;
+            directionY = 0;
+            speed = 0;
         }
 
         void onclickPick()
