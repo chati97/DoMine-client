@@ -8,6 +8,7 @@ namespace DoMine
     public class PlayerControl : EntityBehaviour<IPlayerState>
     {
         [SerializeField] GameObject player = null;
+        Rigidbody2D playerRB;
         [SerializeField] GameObject aimIndicator = null;
         [SerializeField] GameObject playerName = null;
         public MapController mapCtrl;
@@ -51,6 +52,7 @@ namespace DoMine
         // Start is called before the first frame update
         void Start()
         {
+            playerRB = player.GetComponent<Rigidbody2D>();
             mapCtrl = GameObject.Find("GameController").GetComponent<MapController>();
             itemCtrl = GameObject.Find("GameController").GetComponent<ItemController>();
             gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
@@ -97,16 +99,43 @@ namespace DoMine
             }
             if(!state.Paralyzed)
             {
-                if (Input.GetKey(KeyCode.LeftArrow) == true || JoystickControl.directionX == 1)
+                //조이스틱 컨트롤 부분(현재 xy 단순값 입력되어서 lookingAt변수에 오류가있음, 이는 나중에 xy값계산해서 제일 가까운 값으로 배정하는식으로 변경해야할듯.)
+                if (JoystickControl.directionX == 1)
                 {
-                    if(state.headRight)
+                    if (state.headRight)
+                    {
+                        state.headRight = false;
+                    }
+                    movement.x -= 1f;
+                }
+                if (JoystickControl.directionX == 2)
+                {
+                    if (!state.headRight)
+                    {
+                        state.headRight = true;
+                    }
+                    movement.x += 1f;
+                }
+                if (JoystickControl.directionY == 1)
+                {
+                    movement.y += 1f;
+                }
+                if (JoystickControl.directionY == 2)
+                {
+                    movement.y -= 1f;
+                }
+
+                //키보드컨트롤 기존방식과 동일 lookingAt제대로 동작
+                if (Input.GetKey(KeyCode.LeftArrow) == true)
+                {
+                    if (state.headRight)
                     {
                         state.headRight = false;
                     }
                     movement.x -= 1f;
                     lookingAt = 0;
                 }
-                if (Input.GetKey(KeyCode.RightArrow) == true || JoystickControl.directionX == 2)
+                if (Input.GetKey(KeyCode.RightArrow) == true)
                 {
                     if(!state.headRight)
                     {
@@ -115,16 +144,17 @@ namespace DoMine
                     movement.x += 1f;
                     lookingAt = 2;
                 }
-                if (Input.GetKey(KeyCode.UpArrow) == true || JoystickControl.directionY == 1)
+                if (Input.GetKey(KeyCode.UpArrow) == true)
                 {
                     movement.y += 1f;
                     lookingAt = 1;
                 }
-                if (Input.GetKey(KeyCode.DownArrow) == true || JoystickControl.directionY == 2)
+                if (Input.GetKey(KeyCode.DownArrow) == true)
                 {
                     movement.y -= 1f;
                     lookingAt = 3;
                 }
+
                 if (Input.GetKey(KeyCode.R) == true || JoystickControl.btnNum == 5)//귀환 - 금을 내려놓고 기지로 귀환
                 {
                     if (returnCool == 0)
@@ -147,7 +177,7 @@ namespace DoMine
             if (movement != Vector3.zero)
             {
                 //ani.SetBool("Walking", true);
-                transform.position = transform.position + (movement.normalized * speed * BoltNetwork.FrameDeltaTime);
+                playerRB.position = playerRB.position + (Vector2)(movement.normalized * speed * BoltNetwork.FrameDeltaTime);
                 state.isMoving = true;
             }
             else
