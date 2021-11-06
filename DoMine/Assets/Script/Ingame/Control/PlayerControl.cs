@@ -188,6 +188,14 @@ namespace DoMine
                 playerRB.position = playerRB.position + (Vector2)(movement.normalized * speed * BoltNetwork.FrameDeltaTime);
                 state.isMoving = true;
             }
+            else if (joystick.Horizontal != 0 || joystick.Vertical != 0)
+            {
+                Vector3 upMovement = Vector3.up * speed * JoystickControl.distance * Time.deltaTime * joystick.Vertical;
+                Vector3 rightMovement = Vector3.right * speed * JoystickControl.distance * Time.deltaTime * joystick.Horizontal;
+                playerRB.position += (Vector2)upMovement;
+                playerRB.position += (Vector2)rightMovement;
+                state.isMoving = true;
+            }
             else
             {
                 //ani.SetBool("Walking", false);
@@ -424,15 +432,6 @@ namespace DoMine
                     
                 }
             }
-            if(joystick.Horizontal != 0 || joystick.Vertical != 0)
-            {
-                MoveControl();
-                state.isMoving = true;
-            }
-            else if(joystick.Horizontal == 0 && joystick.Vertical == 0)
-            {
-                state.isMoving = false;
-            }
         }
 
         void Aiming()//조준방향에 대한 함수 현재는 바리케이트 설치에만 관련, 유저 조준하는 기능도 추후 추가
@@ -506,14 +505,6 @@ namespace DoMine
             }
         }
 
-        void MoveControl()
-        {
-            float speed = 4f;
-            Vector3 upMovement = Vector3.up * speed *JoystickControl.distance * Time.deltaTime * joystick.Vertical;
-            Vector3 rightMovement = Vector3.right * speed *JoystickControl.distance * Time.deltaTime * joystick.Horizontal;
-            playerRB.position += (Vector2)upMovement;
-            playerRB.position += (Vector2)rightMovement;
-        }
     }
 }
 
