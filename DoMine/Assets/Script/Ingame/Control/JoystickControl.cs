@@ -27,7 +27,7 @@ namespace DoMine
         public float Vertical { get { return moveVec.y; } }
 
         public static int btnNum = 0;
-        public static int directionX = 0;
+        public static bool headRight;
         public static int lookAt = 0;
         public static float distance = 0;
 
@@ -67,40 +67,41 @@ namespace DoMine
                 pos.x = pos.x / bgimg.rectTransform.sizeDelta.x;
                 pos.y = pos.y / bgimg.rectTransform.sizeDelta.y;
 
-                moveVec = new Vector3(pos.x * 2 + 1, pos.y * 2 - 1, 0);
+                moveVec = new Vector3(pos.x * 2, pos.y * 2, 0);//+1 -1빼니까 상하로 속도쏠림 없어짐
                 moveVec = (moveVec.magnitude > 1.0f) ? moveVec.normalized : moveVec;
 
                 distance = Vector2.Distance(background.position, joyStick.position) / (radius * 0.4f);
 
-                if (moveVec.x == 0 && moveVec.y == 0)
+                //먼 영문인진 모르겠지만 각도도 반대로 찍히고 각도도 45도 더 돌아가는터라 보정치넣고 각도 그냥 움직일방향맞춰서 때려넣었음 작동엔 문제없음
+                Vector3 direction = new Vector3(moveVec.x, moveVec.y, 0);
+                float angle = Quaternion.FromToRotation(background.position, direction).eulerAngles.z;
+                angle -= 45;//보정치 삽입하는용도 얘 안넣으면 45도와 225도에서 좌우가 바뀌는 기현상일어남 45를 빼줄시 정상작동         
+                if (angle >= 0 && angle < 180) 
                 {
-                    directionX = 0;
+                    headRight = false;
                 }
                 else
                 {
-                    Vector3 direction = new Vector3(moveVec.x, moveVec.y, 0);
-                    float angle = Quaternion.FromToRotation(new Vector3(1, 0, 0), direction).eulerAngles.z;
-
-                    if (angle >= 135 && angle < 225)
-                    {
-                        directionX = 1;
-                        lookAt = 1;
-                    }
-
-                    if ((angle >= 315 && angle <= 360) || (angle <= 45 && angle >= 0))
-                    {
-                        directionX = 2;
-                        lookAt = 2;
-                    }
-                    if (angle < 135 && angle >= 45)
-                    {
-                        lookAt = 3;
-                    }
-                    if (angle >= 225 && angle < 315)
-                    {
-                        lookAt = 4;
-                    }
+                    headRight = true;
                 }
+
+                if (angle >= 180 && angle < 270)
+                {
+                    lookAt = 3;
+                }
+                else if ((angle < 90 && angle >= 0))
+                {
+                    lookAt = 1;
+                }
+                else if (angle < 180 && angle >= 90)
+                {
+                    lookAt = 0;
+                }
+                else if (angle >= 270 && angle < 360)
+                {
+                    lookAt = 2;
+                }
+
             }
         }
 
@@ -108,7 +109,6 @@ namespace DoMine
         {
             joyStick.localPosition = Vector3.zero;
             moveVec = Vector3.zero;
-            directionX = 0;
         }
 
         void onclickPick()

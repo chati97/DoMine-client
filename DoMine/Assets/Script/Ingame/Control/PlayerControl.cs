@@ -101,37 +101,9 @@ namespace DoMine
             if(!state.Paralyzed)
             {
                 //조이스틱 컨트롤 부분(현재 xy 단순값 입력되어서 lookingAt변수에 오류가있음, 이는 나중에 xy값계산해서 제일 가까운 값으로 배정하는식으로 변경해야할듯.)
-                if (JoystickControl.directionX == 1)
-                {
-                    if (state.headRight)
-                    {
-                        state.headRight = false;
-                    }
-                }
-                if (JoystickControl.directionX == 2)
-                {
-                    if (!state.headRight)
-                    {
-                        state.headRight = true;
-                    }
-                }
 
-                if(JoystickControl.lookAt == 1)
-                {
-                    lookingAt = 0;
-                }
-                if(JoystickControl.lookAt == 2)
-                {
-                    lookingAt = 2;
-                }
-                if(JoystickControl.lookAt == 3)
-                {
-                    lookingAt = 1;
-                }
-                if(JoystickControl.lookAt == 4)
-                {
-                    lookingAt = 3;
-                }
+                lookingAt = JoystickControl.lookAt; // joystickcontrol의 방향번호랑 그냥 동기화시켜버림 if문 필요없게 바꿈
+                state.headRight = JoystickControl.headRight; // 머리돌리기도 그대로 동기화
 
                 //키보드컨트롤 기존방식과 동일 lookingAt제대로 동작
                 if (Input.GetKey(KeyCode.LeftArrow) == true)
@@ -182,18 +154,19 @@ namespace DoMine
                     JoystickControl.btnNum = 0;
                 }
             }
+            /*
             if (movement != Vector3.zero)
             {
                 //ani.SetBool("Walking", true);
                 playerRB.position = playerRB.position + (Vector2)(movement.normalized * speed * BoltNetwork.FrameDeltaTime);
                 state.isMoving = true;
             }
-            else if (joystick.Horizontal != 0 || joystick.Vertical != 0)
+            }*/
+            if (joystick.Horizontal != 0 || joystick.Vertical != 0)
             {
-                Vector3 upMovement = Vector3.up * speed * JoystickControl.distance * Time.deltaTime * joystick.Vertical;
-                Vector3 rightMovement = Vector3.right * speed * JoystickControl.distance * Time.deltaTime * joystick.Horizontal;
-                playerRB.position += (Vector2)upMovement;
-                playerRB.position += (Vector2)rightMovement;
+                Vector3 upMovement = Vector3.up * joystick.Vertical;
+                Vector3 rightMovement = Vector3.right * joystick.Horizontal;
+                playerRB.position += ((Vector2)upMovement + (Vector2)rightMovement) * speed * JoystickControl.distance * BoltNetwork.FrameDeltaTime;
                 state.isMoving = true;
             }
             else
