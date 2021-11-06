@@ -34,7 +34,7 @@ namespace DoMine
         int lookingAt = -1;//왼쪽부터 시계방향으로 0123
         SpriteRenderer spr;
         public Animator playerAnimator;
-        public JoystickControl joystick = new JoystickControl();
+        public JoystickControl joystick;
 
         int pickaxeAmountBase = 20;
             
@@ -56,6 +56,7 @@ namespace DoMine
             mapCtrl = GameObject.Find("GameController").GetComponent<MapController>();
             itemCtrl = GameObject.Find("GameController").GetComponent<ItemController>();
             gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
+            joystick = GameObject.FindObjectOfType<JoystickControl>();
             gameCtrl.players.Add(entity);
             spr = player.gameObject.GetComponentInChildren<SpriteRenderer>();
             state.headRight = false;
@@ -106,7 +107,6 @@ namespace DoMine
                     {
                         state.headRight = false;
                     }
-                    movement.x -= 1f;
                 }
                 if (JoystickControl.directionX == 2)
                 {
@@ -114,15 +114,23 @@ namespace DoMine
                     {
                         state.headRight = true;
                     }
-                    movement.x += 1f;
                 }
-                if (JoystickControl.directionY == 1)
+
+                if(JoystickControl.lookAt == 1)
                 {
-                    movement.y += 1f;
+                    lookingAt = 0;
                 }
-                if (JoystickControl.directionY == 2)
+                if(JoystickControl.lookAt == 2)
                 {
-                    movement.y -= 1f;
+                    lookingAt = 2;
+                }
+                if(JoystickControl.lookAt == 3)
+                {
+                    lookingAt = 1;
+                }
+                if(JoystickControl.lookAt == 4)
+                {
+                    lookingAt = 3;
                 }
 
                 //키보드컨트롤 기존방식과 동일 lookingAt제대로 동작
@@ -416,6 +424,15 @@ namespace DoMine
                     
                 }
             }
+            if(joystick.Horizontal != 0 || joystick.Vertical != 0)
+            {
+                MoveControl();
+                state.isMoving = true;
+            }
+            else if(joystick.Horizontal == 0 && joystick.Vertical == 0)
+            {
+                state.isMoving = false;
+            }
         }
 
         void Aiming()//조준방향에 대한 함수 현재는 바리케이트 설치에만 관련, 유저 조준하는 기능도 추후 추가
@@ -487,6 +504,15 @@ namespace DoMine
             {
                 aimIndicator.transform.position = aim;
             }
+        }
+
+        void MoveControl()
+        {
+            float speed = 4f;
+            Vector3 upMovement = Vector3.up * speed *JoystickControl.distance * Time.deltaTime * joystick.Vertical;
+            Vector3 rightMovement = Vector3.right * speed *JoystickControl.distance * Time.deltaTime * joystick.Horizontal;
+            playerRB.position += (Vector2)upMovement;
+            playerRB.position += (Vector2)rightMovement;
         }
     }
 }

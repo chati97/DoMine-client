@@ -23,10 +23,14 @@ namespace DoMine
         public Button pick;
         public Button baseCamp;
 
+        public float Horizontal { get { return moveVec.x; } }
+        public float Vertical { get { return moveVec.y; } }
+
         public static int btnNum = 0;
         public static int directionX = 0;
-        public static int directionY = 0;
-        public static float speed = 0;
+        public static int lookAt = 0;
+        public static float distance = 0;
+
 
         void Start()
         {
@@ -54,41 +58,49 @@ namespace DoMine
         public void OnDrag(PointerEventData eventData)
         {
             Vector2 stickVec = eventData.position - (Vector2)background.position;
-            Vector2 pos;
 
             stickVec = Vector2.ClampMagnitude(stickVec, radius);
             joyStick.localPosition = stickVec;
 
-            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(bgimg.rectTransform, eventData.position, eventData.pressEventCamera, out pos))
+            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(bgimg.rectTransform, eventData.position, eventData.pressEventCamera, out Vector2 pos))
             {
                 pos.x = pos.x / bgimg.rectTransform.sizeDelta.x;
                 pos.y = pos.y / bgimg.rectTransform.sizeDelta.y;
 
                 moveVec = new Vector3(pos.x * 2 + 1, pos.y * 2 - 1, 0);
                 moveVec = (moveVec.magnitude > 1.0f) ? moveVec.normalized : moveVec;
-                
-                if(moveVec.x == 0 && moveVec.y == 0)
-                {
-                    directionX = 0; directionY = 0;
-                }
-                if(moveVec.x >= -1 && moveVec.x < 0)
-                {
-                    directionX = 1;
-                }
 
-                if(moveVec.x <= 1 && moveVec.x > 0)
-                {
-                    directionX = 2;
-                }
-                if(moveVec.y <= 1 && moveVec.y > 0)
-                {
-                    directionY = 1;
-                }
-                if(moveVec.y >= -1 && moveVec.y < 0)
-                {
-                    directionY = 2;
-                }
+                distance = Vector2.Distance(background.position, joyStick.position) / (radius * 0.4f);
 
+                if (moveVec.x == 0 && moveVec.y == 0)
+                {
+                    directionX = 0;
+                }
+                else
+                {
+                    Vector3 direction = new Vector3(moveVec.x, moveVec.y, 0);
+                    float angle = Quaternion.FromToRotation(new Vector3(1, 0, 0), direction).eulerAngles.z;
+
+                    if (angle >= 135 && angle < 225)
+                    {
+                        directionX = 1;
+                        lookAt = 1;
+                    }
+
+                    if ((angle >= 315 && angle <= 360) || (angle <= 45 && angle >= 0))
+                    {
+                        directionX = 2;
+                        lookAt = 2;
+                    }
+                    if (angle < 135 && angle >= 45)
+                    {
+                        lookAt = 3;
+                    }
+                    if (angle >= 225 && angle < 315)
+                    {
+                        lookAt = 4;
+                    }
+                }
             }
         }
 
@@ -97,8 +109,6 @@ namespace DoMine
             joyStick.localPosition = Vector3.zero;
             moveVec = Vector3.zero;
             directionX = 0;
-            directionY = 0;
-            speed = 0;
         }
 
         void onclickPick()
