@@ -19,6 +19,8 @@ namespace Photon.Bolt
         public GameObject namePanel;
         public GameObject roomNameError;
         public GameObject nicknameError;
+        public Button Apply;
+        public Button Host;
         public Transform gridTr;
         public OptionSetting op;
         public Action click;
@@ -39,6 +41,7 @@ namespace Photon.Bolt
             if (RoomInput.text == "" || PlayerPrefs.GetString("nick") == "")
             {
                 roomNameError.gameObject.SetActive(true);
+                Host.GetComponent<Button>().interactable = false;
                 Debug.LogError("Please check your input");
                 return;
             }
@@ -105,6 +108,7 @@ namespace Photon.Bolt
             if(NameInput.text == "") 
             { 
                 nicknameError.gameObject.SetActive(true);
+                Apply.GetComponent<Button>().interactable = false;
             }
             else
             {            
