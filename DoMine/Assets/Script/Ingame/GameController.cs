@@ -80,11 +80,20 @@ namespace DoMine
                 case 0 ://방해 공작 통일
                     if (playerCode == evnt.TargetPlayer)
                     {
-                        mystate.Inventory[0] = 0;
-                        mystate.Blinded = true;
-                        PlayerControl.blindCool = PlayerControl.blindCoolBase;
-                        mystate.Paralyzed = true;
-                        PlayerControl.paralyzeCool = PlayerControl.paralyzeCoolBase;
+                        if(mystate.Inventory[4] > 0)//본인이 힐 아이템 소지시
+                        {
+                            Debug.LogWarning("Blocked!");//힐아이템을 소진해서 방어
+                            mystate.Inventory[4]--;
+                        }
+                        else//아니면 맞음
+                        {
+                            Debug.LogWarning("You are attacked!");
+                            mystate.Inventory[0] = 0;
+                            mystate.Blinded = true;
+                            PlayerControl.blindCool = PlayerControl.blindCoolBase;
+                            mystate.Paralyzed = true;
+                            PlayerControl.paralyzeCool = PlayerControl.paralyzeCoolBase;
+                        }
                     }
                     break;
                 case 1://사보타지 색출
@@ -434,17 +443,17 @@ namespace DoMine
                     Debug.LogWarning("gold" + item);
                     IC.CreateItem(item / 100, item % 100, 1, false);
                 }
-                else if (i < goldAmount * 3)
+                else if (i < goldAmount * 4)
                 {
                     Debug.LogWarning("hit" + item);
                     IC.CreateItem(item / 100, item % 100, 3, false);
                 }
-                else if (i < goldAmount * 5)
+                else if (i < goldAmount * 6)
                 {
                     Debug.LogWarning("heal" + item);
                     IC.CreateItem(item / 100, item % 100, 4, false);
                 }
-                else if (i < goldAmount * 6) 
+                else if (i < goldAmount * 7) 
                 {
                     Debug.LogWarning("telescope" + item);
                     IC.CreateItem(item / 100, item % 100, 5, false);
