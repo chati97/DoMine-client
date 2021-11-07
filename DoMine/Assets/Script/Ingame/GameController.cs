@@ -184,7 +184,7 @@ namespace DoMine
                 do
                 {
                     playerList[_sabotage % 10] = 1;//해당 인덱스값을 받아서 1로만듬
-                    Debug.LogWarning("Player" + _sabotage % 10 + "is Sabotage");
+                    //Debug.LogWarning("Player" + _sabotage % 10 + "is Sabotage");
                     _sabotage = _sabotage / 10;
                     sabotages++;
                 } while (_sabotage != 0);
@@ -309,7 +309,7 @@ namespace DoMine
             {
                 _sabotage = 0;
             }
-            Debug.LogWarning("총 사보타지" + _sabotage);
+            //Debug.LogWarning("총 사보타지" + _sabotage);
             if (_sabotage != 0)
             {
                 for (int i = 0; i < _sabotage; i++)
@@ -400,6 +400,10 @@ namespace DoMine
             int _temp;
             bool _crash;
             int _gold = (int)(playerNum * 0.43) + UnityEngine.Random.Range(0, 2);
+            if(playerNum<3)
+            {
+                _gold = 1;//1,2인 플레이용으로 일단 넣어놓음
+            }
             goldAmount = _gold;
             for (int i = 0; i < _gold * 7; i++) 
             {
@@ -440,27 +444,27 @@ namespace DoMine
             {
                 if (i < goldAmount) // 금생성
                 {
-                    Debug.LogWarning("gold" + item);
+                    //Debug.LogWarning("gold" + item);
                     IC.CreateItem(item / 100, item % 100, 1, false);
                 }
                 else if (i < goldAmount * 4)
                 {
-                    Debug.LogWarning("hit" + item);
+                    //Debug.LogWarning("hit" + item);
                     IC.CreateItem(item / 100, item % 100, 3, false);
                 }
                 else if (i < goldAmount * 6)
                 {
-                    Debug.LogWarning("heal" + item);
+                    //Debug.LogWarning("heal" + item);
                     IC.CreateItem(item / 100, item % 100, 4, false);
                 }
                 else if (i < goldAmount * 7) 
                 {
-                    Debug.LogWarning("telescope" + item);
+                    //Debug.LogWarning("telescope" + item);
                     IC.CreateItem(item / 100, item % 100, 5, false);
                 }
                 else
                 {
-                    Debug.LogWarning("empty" + item);
+                    //Debug.LogWarning("empty" + item);
                 }
                 i++;
             }

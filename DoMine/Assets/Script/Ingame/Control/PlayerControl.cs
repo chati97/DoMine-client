@@ -150,20 +150,18 @@ namespace DoMine
                     }
                     else
                     {
-                        //Debug.Log("in Return-Cooltime");
+                        Debug.Log("in Return-Cooltime");
                     }
                     JoystickControl.btnNum = 0;
                 }
             }
-            /*
             if (movement != Vector3.zero)
             {
                 //ani.SetBool("Walking", true);
                 playerRB.position = playerRB.position + (Vector2)(movement.normalized * speed * BoltNetwork.FrameDeltaTime);
                 state.isMoving = true;
             }
-            }*/
-            if (joystick.Horizontal != 0 || joystick.Vertical != 0)
+            else if (joystick.Horizontal != 0 || joystick.Vertical != 0)
             {
                 Vector3 upMovement = Vector3.up * joystick.Vertical;
                 Vector3 rightMovement = Vector3.right * joystick.Horizontal;
