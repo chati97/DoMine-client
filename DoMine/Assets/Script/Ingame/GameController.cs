@@ -471,7 +471,7 @@ namespace DoMine
             //부쉈던 벽들 보물상자 벽으로 새로 다 덮어버림
             foreach (int item in list)
             {
-                MC.CreateWall(3, item / 100, item % 100, true);
+                MC.CreateWall(3, item / 100, item % 100, false);
             }
         }
 
