@@ -85,14 +85,14 @@ namespace DoMine
 
         public override void SimulateOwner()//플레이어 조작 관련 코드
         {
-            var speed = 4f;
+            var speed = 2f;
             var movement = Vector3.zero;
             int output = -1;
             // 이동 관련 코드
 
             if (state.WindWalking)
             {
-                speed = 8f;
+                speed = 4f;
                 state.Color = new Color(0, 0, 0, 0);
             }
             else
