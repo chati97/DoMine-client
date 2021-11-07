@@ -11,6 +11,8 @@ namespace DoMine
         Rigidbody2D playerRB;
         [SerializeField] GameObject aimIndicator = null;
         [SerializeField] GameObject playerName = null;
+        [SerializeField] GameObject arm = null;
+        [SerializeField] GameObject hammer = null;
         public MapController mapCtrl;
         public ItemController itemCtrl;
         public GameController gameCtrl;
@@ -33,7 +35,10 @@ namespace DoMine
         public Vector2 aim;
         int lookingAt = -1;//왼쪽부터 시계방향으로 0123
         SpriteRenderer spr;
+        SpriteRenderer spr_arm;
+        SpriteRenderer spr_hammer;
         public Animator playerAnimator;
+        public Animator hammerAnimator;
         public JoystickControl joystick;
 
         int pickaxeAmountBase = 20;
@@ -60,6 +65,8 @@ namespace DoMine
             joystick = GameObject.FindObjectOfType<JoystickControl>();
             gameCtrl.players.Add(entity);
             spr = player.gameObject.GetComponentInChildren<SpriteRenderer>();
+            spr_arm = arm.gameObject.GetComponentInChildren<SpriteRenderer>();
+            spr_hammer = hammer.gameObject.GetComponentInChildren<SpriteRenderer>();
             state.headRight = false;
             if (entity.IsOwner)
             {
@@ -136,23 +143,25 @@ namespace DoMine
                     lookingAt = 3;
                 }
 
-                if (movement != Vector3.zero)
+                /*if (movement != Vector3.zero)
                 {
                     //ani.SetBool("Walking", true);
                     playerRB.position = playerRB.position + (Vector2)(movement.normalized * speed * 2 * BoltNetwork.FrameDeltaTime);
                     state.isMoving = true;
-                }
-                else if (joystick.Horizontal != 0 || joystick.Vertical != 0)
+                }*/
+                if (joystick.Horizontal != 0 || joystick.Vertical != 0)
                 {
                     Vector3 upMovement = Vector3.up * joystick.Vertical;
                     Vector3 rightMovement = Vector3.right * joystick.Horizontal;
                     playerRB.position += ((Vector2)upMovement + (Vector2)rightMovement) * speed * JoystickControl.distance * BoltNetwork.FrameDeltaTime;
-                    state.isMoving = true;
+                    //state.isMoving = true;
+                    state.Act = 1; //플레이어 이동시 애니메이션
                 }
                 else
                 {
                     //ani.SetBool("Walking", false);
-                    state.isMoving = false;
+                    //state.isMoving = false;
+                    state.Act = 0; //정지시 애니메이션
                 }
 
                 if (Input.GetKey(KeyCode.R) == true || JoystickControl.btnNum == 5)//귀환 - 금을 내려놓고 기지로 귀환
@@ -172,6 +181,7 @@ namespace DoMine
                         Debug.Log("in Return-Cooltime");
                     }
                     JoystickControl.btnNum = 0;
+                    state.Act = 0; //기존 상태로 복귀
                 }
             }
             
@@ -180,15 +190,21 @@ namespace DoMine
             {
                 if (breakCool == 0 && mapCtrl.nearestWall != null)
                 {
+                    state.Act = 3;
                     if (Vector2.Distance(player.transform.position, mapCtrl.nearestWall.transform.position) < 0.8 && state.Inventory[0] > 0)
                     {
+                        state.SetAnimator(hammerAnimator);
+                        state.Animator.Play("weapon_hammer_side");
+                        state.Animator.Play("noAct");
                         mapCtrl.DestroyWall(mapCtrl.nearestWallX, mapCtrl.nearestWallY, false, false, -1);
                         breakCool = breakCoolBase;
                         state.Inventory[0]--;//곡괭이 갯수 소진
+                        state.SetAnimator(playerAnimator);
                     }
                 }
                 else
                 {
+                    state.Act = 0;
                     //Debug.Log("in Breaking-Cooltime");
                 }
                 JoystickControl.btnNum = 0;
@@ -199,17 +215,19 @@ namespace DoMine
             {
                 if (state.Inventory[2] > 0 && canCreateWall)
                 {
+                    state.Act = 2;
                     output = mapCtrl.CreateWall(1, (int)aim.x, (int)aim.y, false);
                     if (output == 0)
                         --state.Inventory[2];
                 }
                 else
                 {
+                    state.Act = 0;
                     Debug.Log("Cannot Create Barricade");
                 }
                 JoystickControl.btnNum = 0;
             }
-
+            
             // 플레이어에게 스킬을 사용하는 파트
             if (Input.GetKeyUp(KeyCode.Q) == true || JoystickControl.btnNum == 4) // 방해
             {
@@ -291,21 +309,53 @@ namespace DoMine
         }
         void Update()
         {
-            if (state.isMoving)
+            switch(state.Act)
+            {
+                case 0:
+
+                    arm.SetActive(true);
+                    hammer.SetActive(true);
+                    state.Animator.Play("Idle");
+                    break;
+                case 1:
+                    arm.SetActive(false);
+                    hammer.SetActive(false);
+                    state.Animator.Play("walk_side");
+                    break;
+                case 2:
+                    arm.SetActive(false);
+                    hammer.SetActive(false);
+                    state.Animator.Play("duck_side");
+                    break;
+                case 3:
+                    arm.SetActive(false);
+                    state.Animator.Play("hammer_side");
+                    
+                    break;
+                case 4:
+                    break;
+                default:
+                    break;
+            }
+            /*if (state.isMoving)
             {
                 state.Animator.Play("walk_side");
             }
             else
             {
                 state.Animator.Play("Idle");
-            }
+            }*/
             if(state.headRight)
             {
                 spr.flipX = true;
+                spr_arm.flipX = true;
+                spr_hammer.flipX = true;
             }
             else
             {
                 spr.flipX = false;
+                spr_arm.flipX = false;
+                spr_hammer.flipX = false;
             }
         }
         // Update is called once per frame
