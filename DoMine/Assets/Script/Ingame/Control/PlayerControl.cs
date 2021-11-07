@@ -158,7 +158,7 @@ namespace DoMine
             if (movement != Vector3.zero)
             {
                 //ani.SetBool("Walking", true);
-                playerRB.position = playerRB.position + (Vector2)(movement.normalized * speed * BoltNetwork.FrameDeltaTime);
+                playerRB.position = playerRB.position + (Vector2)(movement.normalized * speed * 2 * BoltNetwork.FrameDeltaTime);
                 state.isMoving = true;
             }
             else if (joystick.Horizontal != 0 || joystick.Vertical != 0)
