@@ -19,6 +19,8 @@ namespace Photon.Bolt
         public GameObject namePanel;
         public GameObject roomNameError;
         public GameObject nicknameError;
+        public Button NoRoomName;
+        public Button NoNickName;
         public Button Apply;
         public Button Host;
         public Transform gridTr;
@@ -34,6 +36,18 @@ namespace Photon.Bolt
             {
                 namePanel.gameObject.SetActive(false);
             }
+            NoRoomName.onClick.AddListener(onClickNoRoom);
+            NoNickName.onClick.AddListener(onClickNoNick);
+        }
+
+        private void onClickNoNick()
+        {
+            Apply.GetComponent<Button>().interactable = true;
+        }
+
+        private void onClickNoRoom()
+        {
+            Host.GetComponent<Button>().interactable = true;
         }
 
         public void StartServer()

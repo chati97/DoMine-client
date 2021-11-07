@@ -907,18 +907,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 499192943}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &277527609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5456,18 +5444,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 181563947}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &1778787478
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5545,6 +5521,8 @@ MonoBehaviour:
   namePanel: {fileID: 379303234}
   roomNameError: {fileID: 1543451819}
   nicknameError: {fileID: 494274583}
+  NoRoomName: {fileID: 277527608}
+  NoNickName: {fileID: 1778787477}
   Apply: {fileID: 181563947}
   Host: {fileID: 499192943}
   gridTr: {fileID: 1340419729}
