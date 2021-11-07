@@ -184,17 +184,18 @@ namespace DoMine
             {
                 isSabotage = true;
                 Debug.LogWarning("you are Sabotage");
-                mystate.Inventory[2] = 20;//사보타지일 경우엔 바리케이트 10개 지급
             }
             else
             {
                 Debug.LogWarning("you are Miner");
-                mystate.Inventory[2] = 10;//일반유저일시바리케이트 10개지급
             }
             var name = PlayerName.Create();
             name.Code = playerCode;
             name.Name = mystate.PlayerName;
             name.Send();
+            mystate.Inventory[3] = 0;
+            mystate.Inventory[4] = 0;
+            mystate.Inventory[5] = 0;
         }
 
         public override void OnEvent(WallCreated evnt)// 최초 생성이후 자잘한 바리케이트나 맵이벤트시 호출
@@ -391,7 +392,7 @@ namespace DoMine
             bool _crash;
             int _gold = (int)(playerNum * 0.43) + UnityEngine.Random.Range(0, 2);
             goldAmount = _gold;
-            for (int i = 0; i < _gold*5; i++)
+            for (int i = 0; i < _gold * 7; i++) 
             {
                 do
                 {
@@ -418,34 +419,43 @@ namespace DoMine
         } 
         public void GoldCreate(List<int> list) // 입력 받은 리스트로 금을 생성하는 함수
         {
-            List<int> _goldList = new List<int>();
-            List<int> _emptyList = new List<int>();
             int i = 0;
-            foreach(int item in list)
-            {
-                if (i < goldAmount)
-                {
-                    _goldList.Add(item);
-                }
-                else
-                {
-                    _emptyList.Add(item);
-                }
-                i++;
-            }
-            foreach(int item in list)
+            //먼저 해당 리스트에 있는 벽들 다 부숨
+            foreach (int item in list)
             {
                 MC.DestroyWall(item / 100, item % 100, false, true, -1);
             }
-            foreach (int item in _goldList)//위는 금 생성, 밑은 빈깡통생성
+
+            
+            foreach (int item in list)
             {
-                Debug.LogWarning("gold" + item);
-                IC.CreateItem(item / 100, item % 100, 1, false);
+                if (i < goldAmount) // 금생성
+                {
+                    Debug.LogWarning("gold" + item);
+                    IC.CreateItem(item / 100, item % 100, 1, false);
+                }
+                else if (i < goldAmount * 3)
+                {
+                    Debug.LogWarning("hit" + item);
+                    IC.CreateItem(item / 100, item % 100, 3, false);
+                }
+                else if (i < goldAmount * 5)
+                {
+                    Debug.LogWarning("heal" + item);
+                    IC.CreateItem(item / 100, item % 100, 4, false);
+                }
+                else if (i < goldAmount * 6) 
+                {
+                    Debug.LogWarning("telescope" + item);
+                    IC.CreateItem(item / 100, item % 100, 5, false);
+                }
+                else
+                {
+                    Debug.LogWarning("empty" + item);
+                }
+                i++;
             }
-            foreach (int item in _emptyList)
-            {
-                Debug.LogWarning("empty" + item);
-            }
+            //부쉈던 벽들 보물상자 벽으로 새로 다 덮어버림
             foreach (int item in list)
             {
                 MC.CreateWall(3, item / 100, item % 100, true);

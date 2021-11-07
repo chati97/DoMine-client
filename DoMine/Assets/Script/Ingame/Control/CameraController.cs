@@ -16,6 +16,21 @@ namespace DoMine
                 entityCamera.gameObject.SetActive(true);
             }
         }
+        void Update()
+        {
+            //망원경획득시 카메라 원경 변경
+            Vector3 temp = entityCamera.transform.position;
+            if (state.Inventory[5] == 1 && state.Blinded == false)
+            {
+                temp.z = -7.5f;
+                entityCamera.transform.position = temp;
+            }
+            else if (temp.z == -15)
+            {
+                temp.z = temp.z / 2;
+                entityCamera.transform.position = temp;
+            }
+        }
     }
 }
 

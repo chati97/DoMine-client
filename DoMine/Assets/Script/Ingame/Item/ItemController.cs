@@ -11,14 +11,17 @@ namespace DoMine
         public GameObject player = null;
         public GameObject[] itemObject = new GameObject[10000];
         [SerializeField] GameObject gold = null;
+        [SerializeField] GameObject hit = null;
+        [SerializeField] GameObject heal = null;
+        [SerializeField] GameObject telescope = null;
         [SerializeField] Transform itemParent = null;
         [SerializeField] GameObject itemIndicator = null;
         public GameObject nearestItem = null;
         public int nearestItemX = -1;
         public int nearestItemY = -1;
 
-        // 인벤토리는 0=곡괭이, 1=금, 2=바리케이트, 3=뒤통수, 4=치료
-        // 맵정보에서 0=공백, 1=금, 2=바리케이트  
+        // 인벤토리는 0=곡괭이, 1=금, 2=바리케이트, 3=뒤통수, 4=치료, 5=망원경
+        // 맵정보에서 0=공백, 1=금, 2=바리케이트  , 3=뒤통수, 4=치료, 5=망원경
 
         // Start is called before the first frame update
         void Start()
@@ -57,6 +60,18 @@ namespace DoMine
                             return;
                         }
                         break;
+                    case 3:
+                        player.Inventory[3]++;
+                        Debug.LogWarning("Hit get");
+                        break;
+                    case 4:
+                        player.Inventory[4]++;
+                        Debug.LogWarning("Heal get");
+                        break;
+                    case 5:
+                        player.Inventory[5] = 1;
+                        Debug.LogWarning("Telescope get");
+                        break;
                 }
                 var evnt = ItemPicked.Create();
                 evnt.LocationX = x;
@@ -80,6 +95,20 @@ namespace DoMine
                 case 1:
                     _targetItem = gold;
                     itemArray[x * 100 + y] = 1;
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    _targetItem = hit;
+                    itemArray[x * 100 + y] = 3;
+                    break;
+                case 4:
+                    _targetItem = heal;
+                    itemArray[x * 100 + y] = 4;
+                    break;
+                case 5:
+                    _targetItem = telescope;
+                    itemArray[x * 100 + y] = 5;
                     break;
             }
             itemObject[x * 100 + y] = Instantiate(_targetItem, new Vector2(x, y), Quaternion.identity, itemParent);

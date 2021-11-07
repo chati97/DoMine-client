@@ -21327,6 +21327,9 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   gold: {fileID: 58971002468102234, guid: 1017e8a7fe6accc4ab47a0fa0337e38d, type: 3}
+  hit: {fileID: 58971002468102234, guid: dc5684f876782d9449cf70b7864de398, type: 3}
+  heal: {fileID: 58971002468102234, guid: 2e33e4fad197f6e4cb01f4a30a90068a, type: 3}
+  telescope: {fileID: 58971002468102234, guid: 912e5dd64421f024ba6ba2d1e93c2fad, type: 3}
   itemParent: {fileID: 606285559}
   itemIndicator: {fileID: 468849690}
   nearestItem: {fileID: 0}
@@ -122862,7 +122865,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.101, y: 0.19172975}
   m_AnchorMax: {x: 0.101, y: 0.19172975}
-  m_AnchoredPosition: {x: 0.0000071526, y: 0.00000453}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 280, y: 280}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1830592212

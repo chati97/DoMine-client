@@ -37,6 +37,7 @@ namespace DoMine
         public JoystickControl joystick;
 
         int pickaxeAmountBase = 20;
+        int barricadeBase = 5;
             
         public void MovePlayer(GameObject player, Vector2 location)
         {
@@ -212,7 +213,7 @@ namespace DoMine
             // 플레이어에게 스킬을 사용하는 파트
             if (Input.GetKeyUp(KeyCode.Q) == true || JoystickControl.btnNum == 4) // 방해
             {
-                if(targetPlayer != null /*&& GameController.time < 600 */) //현재는 시간대별로 사용하는거 막아놓음
+                if(state.Inventory[3]>0 && targetPlayer != null /*&& GameController.time < 600 */) //현재는 시간대별로 사용하는거 막아놓음
                 {
                     Debug.LogWarning("interrupt : " + targetPlayer.GetState<IPlayerState>().PlayerName);
                     var evnt = PlayerInteraction.Create();
@@ -220,6 +221,7 @@ namespace DoMine
                     evnt.TargetPlayer = targetPlayer.GetState<IPlayerState>().PlayerCode;
                     evnt.Action = 0;
                     evnt.Send();
+                    --state.Inventory[3];
                 }
                 else
                 {
@@ -259,14 +261,18 @@ namespace DoMine
             }
             if (Input.GetKeyUp(KeyCode.E) == true || JoystickControl.btnNum == 3) // 회복
             {
-                if (targetPlayer != null)
+                if (state.Inventory[4] > 0 && targetPlayer != null)
                 {
-                    Debug.LogWarning("heal : " + targetPlayer.GetState<IPlayerState>().PlayerName);
-                    var evnt = PlayerInteraction.Create();
-                    evnt.AttakingPlayer = GameController.playerCode;
-                    evnt.TargetPlayer = targetPlayer.GetState<IPlayerState>().PlayerCode;
-                    evnt.Action = 2;
-                    evnt.Send();
+                    if(targetPlayer.GetState<IPlayerState>().Blinded == true) // 대상이 시야가 축소된상태라면
+                    {
+                        Debug.LogWarning("heal : " + targetPlayer.GetState<IPlayerState>().PlayerName);
+                        var evnt = PlayerInteraction.Create();
+                        evnt.AttakingPlayer = GameController.playerCode;
+                        evnt.TargetPlayer = targetPlayer.GetState<IPlayerState>().PlayerCode;
+                        evnt.Action = 2;
+                        evnt.Send();
+                        --state.Inventory[4];
+                    }
                 }
                 else
                 {
@@ -379,7 +385,7 @@ namespace DoMine
                 {
                     playerView.spotAngle = 10;
                 }
-                else
+                else 
                 {
                     playerView.spotAngle = 75;
                 }
@@ -391,10 +397,11 @@ namespace DoMine
 
                 if (Vector2.Distance(entity.transform.position, new Vector2(49.5f,49.5f)) < 1)
                 {
-                    if(state.Inventory[0] < pickaxeAmountBase)
+                    if(state.Inventory[0] < pickaxeAmountBase || state.Inventory[2] < barricadeBase)
                     {
                         state.Inventory[0] = pickaxeAmountBase;
-                        Debug.LogWarning("Pickaxe Recharged");//중앙 안전지대 이동시 곡괭이 회복
+                        state.Inventory[2] = barricadeBase;
+                        Debug.LogWarning("Pickaxe and barricade Recharged");//중앙 안전지대 이동시 곡괭이 회복
                     }
                     if (state.Inventory[1] == 1 && gameCtrl.playerList[GameController.playerCode] == 0)
                     {
