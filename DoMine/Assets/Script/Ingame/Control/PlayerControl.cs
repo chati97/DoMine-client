@@ -136,6 +136,25 @@ namespace DoMine
                     lookingAt = 3;
                 }
 
+                if (movement != Vector3.zero)
+                {
+                    //ani.SetBool("Walking", true);
+                    playerRB.position = playerRB.position + (Vector2)(movement.normalized * speed * 2 * BoltNetwork.FrameDeltaTime);
+                    state.isMoving = true;
+                }
+                else if (joystick.Horizontal != 0 || joystick.Vertical != 0)
+                {
+                    Vector3 upMovement = Vector3.up * joystick.Vertical;
+                    Vector3 rightMovement = Vector3.right * joystick.Horizontal;
+                    playerRB.position += ((Vector2)upMovement + (Vector2)rightMovement) * speed * JoystickControl.distance * BoltNetwork.FrameDeltaTime;
+                    state.isMoving = true;
+                }
+                else
+                {
+                    //ani.SetBool("Walking", false);
+                    state.isMoving = false;
+                }
+
                 if (Input.GetKey(KeyCode.R) == true || JoystickControl.btnNum == 5)//귀환 - 금을 내려놓고 기지로 귀환
                 {
                     if (returnCool == 0)
@@ -155,24 +174,7 @@ namespace DoMine
                     JoystickControl.btnNum = 0;
                 }
             }
-            if (movement != Vector3.zero)
-            {
-                //ani.SetBool("Walking", true);
-                playerRB.position = playerRB.position + (Vector2)(movement.normalized * speed * 2 * BoltNetwork.FrameDeltaTime);
-                state.isMoving = true;
-            }
-            else if (joystick.Horizontal != 0 || joystick.Vertical != 0)
-            {
-                Vector3 upMovement = Vector3.up * joystick.Vertical;
-                Vector3 rightMovement = Vector3.right * joystick.Horizontal;
-                playerRB.position += ((Vector2)upMovement + (Vector2)rightMovement) * speed * JoystickControl.distance * BoltNetwork.FrameDeltaTime;
-                state.isMoving = true;
-            }
-            else
-            {
-                //ani.SetBool("Walking", false);
-                state.isMoving = false;
-            }
+            
             //벽 파괴
             if (Input.GetKey(KeyCode.A) == true || JoystickControl.btnNum == 1)
             {

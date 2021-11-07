@@ -260,7 +260,7 @@ namespace DoMine
         {
             if (time > 0 && time <= timeBase && gameStarted == false)
             {
-                time -= BoltNetwork.ServerTime;
+                time -= BoltNetwork.Time;
             }
             else if (gameStarted == false)//여기서 호스트가 게임 시작 요청을 보냄
             {
@@ -278,7 +278,7 @@ namespace DoMine
             }
             else if (time > 0 && time <= timeBase && gameStarted == true)//게임 시작했다는 이벤트를 호스트포함 모두가 받으면 실행
             {
-                time -= BoltNetwork.ServerTime;//실험때는 여기에 배수를 곱해서 게임 빠르게 진행
+                time -= BoltNetwork.Time;//실험때는 여기에 배수를 곱해서 게임 빠르게 진행
                 if (goldSaved == goldAmount)// 만약 생성된 모든 금이 입금되었다면게임종료
                 {
                     if (BoltNetwork.IsServer && goldAmount != 0)
