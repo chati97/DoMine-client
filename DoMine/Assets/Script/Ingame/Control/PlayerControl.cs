@@ -305,10 +305,12 @@ namespace DoMine
                 if (state.Inventory[1] == 1)
                     state.isMoving = false;
             }
+            joystick.compasscontrol(player, new Vector2(49, 49), 4f); //나침반 돌아가는 함수(JoystickControl에 구현)
+
         }
         void Update()
         {
-            joystick.compasscontrol(player, new Vector2(49, 49), joystick.compass, 4f); //나침반 돌아가는 함수(JoystickControl에 구현)
+           
 
             switch(state.Act)
             {
