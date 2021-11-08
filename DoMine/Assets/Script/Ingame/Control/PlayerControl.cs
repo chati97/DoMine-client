@@ -308,6 +308,8 @@ namespace DoMine
         }
         void Update()
         {
+            joystick.compasscontrol(player, new Vector2(49, 49), joystick.compass, 4f); //나침반 돌아가는 함수(JoystickControl에 구현)
+
             switch(state.Act)
             {
                 case 0:

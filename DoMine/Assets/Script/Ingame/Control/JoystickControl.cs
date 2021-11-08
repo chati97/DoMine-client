@@ -22,6 +22,7 @@ namespace DoMine
         public Button noPick;
         public Button pick;
         public Button baseCamp;
+        public GameObject compass;
 
         public float Horizontal { get { return moveVec.x; } }
         public float Vertical { get { return moveVec.y; } }
@@ -48,6 +49,20 @@ namespace DoMine
                 minerSkill.gameObject.SetActive(false);
                 sabotageSkill.gameObject.SetActive(true);
             }
+        }
+
+        public void compasscontrol(GameObject player, Vector2 home, GameObject com, float rotatespeed)
+        {
+            //basecamp 위치 나침반으로 가리키게 함
+            Vector2 direction = new Vector2(    //palyer가 basecamp와 떨어진 방향
+                player.transform.position.x - home.x,
+                player.transform.position.y - home.y
+            );
+
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            Quaternion angleAxis = Quaternion.AngleAxis(angle + 90f, Vector3.forward); //+90f 안하면 파란 바늘이 아니라 옆면이 가리킴
+            Quaternion rotation = Quaternion.Slerp(com.transform.rotation, angleAxis, rotatespeed * Time.deltaTime);
+            com.transform.rotation = rotation;
         }
 
         public void OnPointerDown(PointerEventData eventData)
