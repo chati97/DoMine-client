@@ -68,6 +68,7 @@ namespace DoMine
             spr_arm = arm.gameObject.GetComponentInChildren<SpriteRenderer>();
             spr_hammer = hammer.gameObject.GetComponentInChildren<SpriteRenderer>();
             state.headRight = false;
+            state.isMoving = true;
             if (entity.IsOwner)
             {
                 state.Inventory[0] = pickaxeAmountBase;
@@ -172,6 +173,7 @@ namespace DoMine
                         {
                             itemCtrl.CreateItem((int)player.transform.position.x, (int)player.transform.position.y, 1, false);
                             state.Inventory[1] = 0;
+                            state.isMoving = true;
                         }
                         MovePlayer(player, new Vector2(50, 50));
                         returnCool = returnCoolBase;
@@ -181,7 +183,6 @@ namespace DoMine
                         Debug.Log("in Return-Cooltime");
                     }
                     JoystickControl.btnNum = 0;
-                    state.Act = 0; //기존 상태로 복귀
                 }
             }
             
@@ -193,13 +194,9 @@ namespace DoMine
                     state.Act = 3;
                     if (Vector2.Distance(player.transform.position, mapCtrl.nearestWall.transform.position) < 0.8 && state.Inventory[0] > 0)
                     {
-                        state.SetAnimator(hammerAnimator);
-                        state.Animator.Play("weapon_hammer_side");
-                        state.Animator.Play("noAct");
                         mapCtrl.DestroyWall(mapCtrl.nearestWallX, mapCtrl.nearestWallY, false, false, -1);
                         breakCool = breakCoolBase;
                         state.Inventory[0]--;//곡괭이 갯수 소진
-                        state.SetAnimator(playerAnimator);
                     }
                 }
                 else
@@ -305,6 +302,8 @@ namespace DoMine
                 {
                     itemCtrl.GetItem(itemCtrl.nearestItemX, itemCtrl.nearestItemY, state, false);
                 }
+                if (state.Inventory[1] == 1)
+                    state.isMoving = false;
             }
         }
         void Update()
@@ -312,15 +311,23 @@ namespace DoMine
             switch(state.Act)
             {
                 case 0:
-
                     arm.SetActive(true);
                     hammer.SetActive(true);
                     state.Animator.Play("Idle");
                     break;
                 case 1:
-                    arm.SetActive(false);
-                    hammer.SetActive(false);
-                    state.Animator.Play("walk_side");
+                    if(state.isMoving)
+                    {
+                        arm.SetActive(false);
+                        hammer.SetActive(false);
+                        state.Animator.Play("walk_side");
+                    }
+                    else
+                    {
+                        arm.SetActive(false);
+                        hammer.SetActive(false);
+                        state.Animator.Play("carry_side");
+                    }
                     break;
                 case 2:
                     arm.SetActive(false);
@@ -333,6 +340,11 @@ namespace DoMine
                     
                     break;
                 case 4:
+                    break;
+                case 5:
+                    arm.SetActive(false);
+                    hammer.SetActive(false);
+                    state.Animator.Play("hit1_down");
                     break;
                 default:
                     break;
@@ -424,6 +436,7 @@ namespace DoMine
                 }
                 if (paralyzeCool > 0)
                 {
+                    state.Animator.Play("hi1_down");
                     paralyzeCool -= Time.deltaTime;
                 }
                 else
@@ -455,6 +468,7 @@ namespace DoMine
                     }
                     if (state.Inventory[1] == 1 && gameCtrl.playerList[GameController.playerCode] == 0)
                     {
+                        state.isMoving = true;
                         var evnt = SaveGold.Create();
                         evnt.Player = GameController.playerCode;//금을 들고 중앙으로 이동시 금 입금
                         evnt.Send();
