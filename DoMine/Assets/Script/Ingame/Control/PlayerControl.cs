@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.UI;
 using Photon.Bolt;
 using TMPro;
 
@@ -84,7 +85,11 @@ namespace DoMine
                 }
             }
             playerName.GetComponent<TextMeshPro>().text = state.PlayerName;
-
+            if (GameController.isSabotage)
+            {
+                joystick.minerSkill.gameObject.SetActive(false);
+                joystick.sabotageSkill.gameObject.SetActive(true);
+            }
         }
         void OnDestroy()
         {
@@ -197,6 +202,10 @@ namespace DoMine
                         mapCtrl.DestroyWall(mapCtrl.nearestWallX, mapCtrl.nearestWallY, false, false, -1);
                         breakCool = breakCoolBase;
                         state.Inventory[0]--;//곡괭이 갯수 소진
+                        if(state.Inventory[0] == 0)
+                        {
+                            joystick.pick.GetComponent<Button>().interactable = false; //곡괭이 갯수 전부 소진 시 버튼 비활성화
+                        }
                     }
                 }
                 else
@@ -257,6 +266,7 @@ namespace DoMine
                         evnt.Action = 1;
                         evnt.Send();
                         canFindSabotage = false;
+                        joystick.minerSkill.GetComponent<Button>().interactable = false;
                     }
                     else
                     {
@@ -306,12 +316,17 @@ namespace DoMine
                     state.isMoving = false;
             }
             joystick.compasscontrol(player, new Vector2(49, 49), 4f); //나침반 돌아가는 함수(JoystickControl에 구현)
-
+           
+            if (state.Inventory[0] != 0)
+            {
+                joystick.pick.GetComponent<Button>().interactable = true;   //곡괭이 회복하면 버튼 활성화
+            }
+            joystick.NumOfItem(0, state.Inventory[2]);
+            joystick.NumOfItem(1, state.Inventory[3]);
+            joystick.NumOfItem(2, state.Inventory[4]);
         }
         void Update()
         {
-           
-
             switch(state.Act)
             {
                 case 0:
@@ -401,18 +416,28 @@ namespace DoMine
                 if (returnCool > 0)
                 {
                     returnCool -= Time.deltaTime;
+                    joystick.home.gameObject.SetActive(true);
+                    joystick.baseCamp.GetComponent<Button>().interactable = false;
+                    joystick.CoolTimeUI(0, returnCool, returnCoolBase);
                 }
                 if (returnCool < 0)
                 {
                     returnCool = 0;
+                    joystick.baseCamp.GetComponent<Button>().interactable = true;
+                    joystick.home.gameObject.SetActive(false);
                 }
                 if (windWalkCool > 0)
                 {
                     windWalkCool -= Time.deltaTime;
+                    joystick.windWalk.gameObject.SetActive(true);
+                    joystick.sabotageSkill.GetComponent<Button>().interactable = false;
+                    joystick.CoolTimeUI(1, windWalkCool, windWalkCoolBase);
                 }
                 if (windWalkCool < 0)
                 {
                     windWalkCool = 0;
+                    joystick.sabotageSkill.GetComponent<Button>().interactable = true;
+                    joystick.windWalk.gameObject.SetActive(false);
                 }
                 if (windWalkDuration > 0)
                 {

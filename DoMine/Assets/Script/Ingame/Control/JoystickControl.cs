@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -23,6 +25,12 @@ namespace DoMine
         public Button pick;
         public Button baseCamp;
         public GameObject compass;
+        public Image home;
+        public Image windWalk;
+        public Text healNum;
+        public Text attackNum;
+        public Text barricadeNum;
+
 
         public float Horizontal { get { return moveVec.x; } }
         public float Vertical { get { return moveVec.y; } }
@@ -44,25 +52,6 @@ namespace DoMine
             baseCamp.onClick.AddListener(onClickBaseCamp);
             sabotageSkill.onClick.AddListener(onClickSabSkill);
             minerSkill.onClick.AddListener(onClickMinSkill);
-            if (GameController.isSabotage)
-            {
-                minerSkill.gameObject.SetActive(false);
-                sabotageSkill.gameObject.SetActive(true);
-            }
-        }
-
-        public void compasscontrol(GameObject player, Vector2 home, float rotatespeed)
-        {
-            //basecamp 위치 나침반으로 가리키게 함
-            Vector2 direction = new Vector2(    //palyer가 basecamp와 떨어진 방향
-                player.transform.position.x - home.x,
-                player.transform.position.y - home.y
-            );
-
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            Quaternion angleAxis = Quaternion.AngleAxis(angle + 90f, Vector3.forward); //+90f 안하면 파란 바늘이 아니라 옆면이 가리킴
-            Quaternion rotation = Quaternion.Slerp(compass.transform.rotation, angleAxis, rotatespeed * Time.deltaTime);
-            compass.transform.rotation = rotation;
         }
 
         public void OnPointerDown(PointerEventData eventData)
@@ -124,6 +113,61 @@ namespace DoMine
         {
             joyStick.localPosition = Vector3.zero;
             moveVec = Vector3.zero;
+        }
+
+       public void compasscontrol(GameObject player, Vector2 home, float rotatespeed)
+        {
+            //basecamp 위치 나침반으로 가리키게 함
+            Vector2 direction = new Vector2(    //player가 basecamp와 떨어진 방향
+                player.transform.position.x - home.x,
+                player.transform.position.y - home.y
+            );
+
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            Quaternion angleAxis = Quaternion.AngleAxis(angle + 90f, Vector3.forward); //+90f 안하면 파란 바늘이 아니라 옆면이 가리킴
+            Quaternion rotation = Quaternion.Slerp(compass.transform.rotation, angleAxis, rotatespeed * Time.deltaTime);
+            compass.transform.rotation = rotation;
+        }
+
+        public void CoolTimeUI(int imageNum, float cooltime, float cooltimebase)
+        {   //쿨타임 시각적으로 보여주기 위한 코드
+            Image skillImage = home;
+
+            switch (imageNum)
+            {
+                case 0:
+                    skillImage = home;
+                    break;
+                case 1:
+                    skillImage = windWalk;
+                    break;
+            }
+                skillImage.fillAmount = cooltime / cooltimebase; //남은 쿨타임과 비례해서 이미지 채워진 정도가 줄어듬
+        }
+
+        public void NumOfItem(int textNum, int ItemNum)
+        {
+            Text item = healNum;
+            switch (textNum)
+            {
+                case 0:
+                    item = barricadeNum;
+                    break;
+                case 1:
+                    item = attackNum;
+                    break;
+                case 2:
+                    item = healNum;
+                    break;
+            }
+            if (ItemNum > 0)
+            {
+                item.text = string.Format("{0}", ItemNum);
+            }
+            else
+            {
+                item.text = null;
+            }
         }
 
         void onclickPick()
