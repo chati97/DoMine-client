@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -30,6 +28,7 @@ namespace DoMine
         public Text healNum;
         public Text attackNum;
         public Text barricadeNum;
+        public float movedistance = 0;
 
 
         public float Horizontal { get { return moveVec.x; } }
@@ -44,7 +43,7 @@ namespace DoMine
         void Start()
         {
             bgimg = GetComponent<Image>();
-            radius = background.rect.width * 0.29f;
+            radius = background.rect.width * 0.5f - joyStick.rect.width * 0.5f;
             pick.onClick.AddListener(onclickPick);
             barricade.onClick.AddListener(onClickBarricade);
             heal.onClick.AddListener(onClickHeal);
@@ -71,10 +70,11 @@ namespace DoMine
                 pos.x = pos.x / bgimg.rectTransform.sizeDelta.x;
                 pos.y = pos.y / bgimg.rectTransform.sizeDelta.y;
 
+                distance = stickVec.magnitude / radius;
+                movedistance = distance; //distance 확인용
+
                 moveVec = new Vector3(pos.x * 2, pos.y * 2, 0);//+1 -1빼니까 상하로 속도쏠림 없어짐
                 moveVec = (moveVec.magnitude > 1.0f) ? moveVec.normalized : moveVec;
-
-                distance = Vector2.Distance(background.position, joyStick.position) / (radius * 0.4f);
 
                 //먼 영문인진 모르겠지만 각도도 반대로 찍히고 각도도 45도 더 돌아가는터라 보정치넣고 각도 그냥 움직일방향맞춰서 때려넣었음 작동엔 문제없음
                 Vector3 direction = new Vector3(moveVec.x, moveVec.y, 0);
