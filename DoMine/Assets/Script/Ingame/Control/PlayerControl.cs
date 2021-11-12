@@ -12,7 +12,6 @@ namespace DoMine
         Rigidbody2D playerRB;
         [SerializeField] GameObject aimIndicator = null;
         [SerializeField] GameObject playerName = null;
-        [SerializeField] GameObject arm = null;
         [SerializeField] GameObject hammer = null;
         public MapController mapCtrl;
         public ItemController itemCtrl;
@@ -36,7 +35,6 @@ namespace DoMine
         public Vector2 aim;
         int lookingAt = -1;//왼쪽부터 시계방향으로 0123
         SpriteRenderer spr;
-        SpriteRenderer spr_arm;
         SpriteRenderer spr_hammer;
         public Animator playerAnimator;
         public Animator hammerAnimator;
@@ -66,7 +64,6 @@ namespace DoMine
             joystick = GameObject.FindObjectOfType<JoystickControl>();
             gameCtrl.players.Add(entity);
             spr = player.gameObject.GetComponentInChildren<SpriteRenderer>();
-            spr_arm = arm.gameObject.GetComponentInChildren<SpriteRenderer>();
             spr_hammer = hammer.gameObject.GetComponentInChildren<SpriteRenderer>();
             state.headRight = false;
             state.isMoving = true;
@@ -190,6 +187,10 @@ namespace DoMine
                     JoystickControl.btnNum = 0;
                 }
             }
+            else
+            {
+                state.Act = 5;
+            }
             
             //벽 파괴
             if (Input.GetKey(KeyCode.A) == true || JoystickControl.btnNum == 1)
@@ -228,7 +229,6 @@ namespace DoMine
                 }
                 else
                 {
-                    state.Act = 0;
                     Debug.Log("Cannot Create Barricade");
                 }
                 JoystickControl.btnNum = 0;
@@ -330,38 +330,30 @@ namespace DoMine
             switch(state.Act)
             {
                 case 0:
-                    arm.SetActive(true);
-                    hammer.SetActive(true);
+                    hammer.SetActive(false);
                     state.Animator.Play("Idle");
                     break;
                 case 1:
                     if(state.isMoving)
                     {
-                        arm.SetActive(false);
-                        hammer.SetActive(false);
                         state.Animator.Play("walk_side");
                     }
                     else
                     {
-                        arm.SetActive(false);
-                        hammer.SetActive(false);
                         state.Animator.Play("carry_side");
                     }
                     break;
                 case 2:
-                    arm.SetActive(false);
-                    hammer.SetActive(false);
                     state.Animator.Play("duck_side");
                     break;
                 case 3:
-                    arm.SetActive(false);
+                    hammer.SetActive(true);
                     state.Animator.Play("hammer_side");
                     
                     break;
                 case 4:
                     break;
                 case 5:
-                    arm.SetActive(false);
                     hammer.SetActive(false);
                     state.Animator.Play("hit1_down");
                     break;
@@ -379,13 +371,11 @@ namespace DoMine
             if(state.headRight)
             {
                 spr.flipX = true;
-                spr_arm.flipX = true;
                 spr_hammer.flipX = true;
             }
             else
             {
                 spr.flipX = false;
-                spr_arm.flipX = false;
                 spr_hammer.flipX = false;
             }
         }
