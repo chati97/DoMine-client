@@ -202,10 +202,10 @@ namespace DoMine
             {
                 if (breakCool == 0 && mapCtrl.nearestWall != null)
                 {
-                    state.isMining = true;
                     
                     if (Vector2.Distance(player.transform.position, mapCtrl.nearestWall.transform.position) < 0.8 && state.Inventory[0] > 0)
                     {
+                        state.isMining = true;
                         //mapCtrl.DestroyWall(mapCtrl.nearestWallX, mapCtrl.nearestWallY, false, false, -1);
                         breakCool = breakCoolBase;
                         state.Inventory[0]--;//곡괭이 갯수 소진
@@ -418,6 +418,7 @@ namespace DoMine
                 {
                     state.isMining = false;
                     state.isBreak = true;
+                    hammer.SetActive(false);
                     breakCool = 0;
                 }
                 if (returnCool > 0)
