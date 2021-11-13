@@ -148,25 +148,31 @@ namespace DoMine
         public void NumOfItem(int textNum, int ItemNum)
         {
             Text item = healNum;
+            Button itembutton = heal;
             switch (textNum)
             {
                 case 0:
                     item = barricadeNum;
+                    itembutton = barricade;
                     break;
                 case 1:
                     item = attackNum;
+                    itembutton = noPick;
                     break;
                 case 2:
                     item = healNum;
+                    itembutton = heal;
                     break;
             }
             if (ItemNum > 0)
             {
                 item.text = string.Format("{0}", ItemNum);
+                itembutton.GetComponent<Button>().interactable = true;
             }
             else
             {
                 item.text = null;
+                itembutton.GetComponent<Button>().interactable = false;
             }
         }
 
