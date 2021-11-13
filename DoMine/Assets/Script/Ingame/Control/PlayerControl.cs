@@ -28,7 +28,7 @@ namespace DoMine
         float windWalkDurationBase = 10f;
         float windWalkCoolBase = 60f;
         public float breakCool;
-        float breakCoolBase = 0.5f;
+        float breakCoolBase = 0.8f;
         public float returnCool;
         float returnCoolBase = 60f;
         public bool canCreateWall = true;
@@ -39,10 +39,8 @@ namespace DoMine
         public Animator playerAnimator;
         public Animator hammerAnimator;
         public JoystickControl joystick;
-        bool check = false;
         int pickaxeAmountBase = 20;
         int barricadeBase = 5;
-            
         public void MovePlayer(GameObject player, Vector2 location)
         {
             player.transform.position = location;
@@ -67,6 +65,7 @@ namespace DoMine
             spr_hammer = hammer.gameObject.GetComponentInChildren<SpriteRenderer>();
             state.headRight = false;
             state.isMoving = true;
+            state.isMining = false;
             if (entity.IsOwner)
             {
                 state.Inventory[0] = pickaxeAmountBase;
@@ -92,11 +91,7 @@ namespace DoMine
         {
             gameCtrl.players.Remove(entity);
         }
-        void Playing()
-        {
-            state.Animator.Play("hammer_side");
-            StartCoroutine(Actdelay());
-        }
+
         public override void SimulateOwner()//플레이어 조작 관련 코드
         {
             var speed = 2f;
@@ -201,7 +196,7 @@ namespace DoMine
             {
                 if (breakCool == 0 && mapCtrl.nearestWall != null)
                 {
-                    state.Act = 3;
+                    state.isMining = true;
                     
                     if (Vector2.Distance(player.transform.position, mapCtrl.nearestWall.transform.position) < 0.8 && state.Inventory[0] > 0)
                     {
@@ -216,7 +211,6 @@ namespace DoMine
                 }
                 else
                 {
-                    state.Act = 0;
                     //Debug.Log("in Breaking-Cooltime");
                 }
                 JoystickControl.btnNum = 0;
@@ -334,33 +328,34 @@ namespace DoMine
         }
         void Update()
         {
-            switch(state.Act)
+            if(state.isMining)
             {
-                case 0:
-                    hammer.SetActive(false);
-                    state.Animator.Play("Idle");
-                    break;
-                case 1:
-                    if(state.isMoving)
-                    {
-                        state.Animator.Play("walk_side");
-                    }
-                    else
-                    {
-                        state.Animator.Play("carry_side");
-                    }
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    hammer.SetActive(true);
-                    state.Animator.Play("hammering_ham");
-                    break;
-                case 4:
-                    break;
-                default:
-                    break;
+                hammer.SetActive(true);
+                state.Animator.Play("hammring_ham");
             }
+            else
+            {
+                switch (state.Act)
+                {
+                    case 0:
+                        hammer.SetActive(false);
+                        state.Animator.Play("Idle");
+                        break;
+                    case 1:
+                        if (state.isMoving)
+                        {
+                            state.Animator.Play("walk_side");
+                        }
+                        else
+                        {
+                            state.Animator.Play("carry_side");
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+            
             /*if (state.isMoving)
             {
                 state.Animator.Play("walk_side");
@@ -402,6 +397,7 @@ namespace DoMine
                 }
                 if (breakCool < 0)
                 {
+                    state.isMining = false;
                     breakCool = 0;
                 }
                 if (returnCool > 0)
