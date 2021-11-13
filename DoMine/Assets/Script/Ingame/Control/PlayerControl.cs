@@ -347,10 +347,10 @@ namespace DoMine
             }
             else
             {
+                hammer.SetActive(false);
                 switch (state.Act)
                 {
                     case 0:
-                        hammer.SetActive(false);
                         state.Animator.Play("Idle");
                         break;
                     case 1:
@@ -418,7 +418,6 @@ namespace DoMine
                 {
                     state.isMining = false;
                     state.isBreak = true;
-                    hammer.SetActive(false);
                     breakCool = 0;
                 }
                 if (returnCool > 0)
