@@ -16,6 +16,9 @@ namespace DoMine
         [SerializeField] Text winPlayers = null;
         [SerializeField] Text winSide = null;
         [SerializeField] Button endExit = null;
+        [SerializeField] GameObject message = null;
+        [SerializeField] Transform messageParent = null;
+        List<GameObject> messageList = new List<GameObject>();
         private void Start()
         {
             panel.gameObject.SetActive(true);
@@ -105,6 +108,15 @@ namespace DoMine
         {
             BoltLauncher.Shutdown();
             SceneManager.LoadScene("Title");
+        }
+        public void MessagePrint(string input)
+        {
+            GameObject newMessage = Instantiate(message, messageParent);
+            newMessage.GetComponent<Text>().text = input;
+            if (messageParent.GetComponent<RectTransform>().sizeDelta.y > 0)
+            {
+                messageParent.GetComponent<RectTransform>().anchoredPosition = messageParent.GetComponent<RectTransform>().sizeDelta - new Vector2(350, -30);//걍 하드코딩때림 제일 메시지 밑으로 옮기는 코드
+            }
         }
 
     }

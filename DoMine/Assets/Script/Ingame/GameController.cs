@@ -82,12 +82,12 @@ namespace DoMine
                     {
                         if(mystate.Inventory[4] > 0)//본인이 힐 아이템 소지시
                         {
-                            Debug.LogWarning("Blocked!");//힐아이템을 소진해서 방어
+                            UC.MessagePrint("<color=green>방어!</color>");//힐아이템을 소진해서 방어
                             mystate.Inventory[4]--;
                         }
                         else//아니면 맞음
                         {
-                            Debug.LogWarning("You are attacked!");
+                            UC.MessagePrint("<color=red>공격당했습니다!</color>");
                             mystate.Inventory[0] = 0;
                             mystate.Blinded = true;
                             PlayerControl.blindCool = PlayerControl.blindCoolBase;
@@ -129,7 +129,7 @@ namespace DoMine
 
         public override void OnEvent(MessageToAll evnt)
         {
-            Debug.LogWarning(evnt.Message);
+            UC.MessagePrint(evnt.Message);
         }
         public override void OnEvent(SaveGold evnt)
         {
@@ -197,11 +197,11 @@ namespace DoMine
             if (playerList[playerCode] == 1)//본인이 사보타지인지 확인하고 반영 기능
             {
                 isSabotage = true;
-                Debug.LogWarning("you are Sabotage");
+                UC.MessagePrint("당신은 <color=red>사보타지</color>입니다");
             }
             else
             {
-                Debug.LogWarning("you are Miner");
+                UC.MessagePrint("당신은 <color=greed>광부</color>입니다");
             }
             var name = PlayerName.Create();
             name.Code = playerCode;

@@ -16,6 +16,7 @@ namespace DoMine
         public MapController mapCtrl;
         public ItemController itemCtrl;
         public GameController gameCtrl;
+        public UIController uiCtrl;
         BoltEntity targetPlayer = null;
         Light playerView = null;
         public static bool canFindSabotage = true;
@@ -59,6 +60,7 @@ namespace DoMine
             mapCtrl = GameObject.Find("GameController").GetComponent<MapController>();
             itemCtrl = GameObject.Find("GameController").GetComponent<ItemController>();
             gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
+            uiCtrl = GameObject.Find("GameController").GetComponent<UIController>();
             joystick = GameObject.FindObjectOfType<JoystickControl>();
             gameCtrl.players.Add(entity);
             spr = player.gameObject.GetComponentInChildren<SpriteRenderer>();
@@ -98,6 +100,7 @@ namespace DoMine
             var speed = 2f;
             var movement = Vector3.zero;
             int output = -1;
+            string output2 = null;
             // 이동 관련 코드
 
             if (state.WindWalking)
@@ -182,7 +185,7 @@ namespace DoMine
                     }
                     else
                     {
-                        Debug.Log("in Return-Cooltime");
+                        uiCtrl.MessagePrint("귀환 쿨타임 중입니다.");
                     }
                     JoystickControl.btnNum = 0;
                 }
@@ -231,7 +234,7 @@ namespace DoMine
                 }
                 else
                 {
-                    Debug.Log("Cannot Create Barricade");
+                    uiCtrl.MessagePrint("해당위치에 만들 수 없습니다");
                 }
                 JoystickControl.btnNum = 0;
             }
@@ -241,7 +244,7 @@ namespace DoMine
             {
                 if(state.Inventory[3]>0 && targetPlayer != null /*&& GameController.time < 600 */) //현재는 시간대별로 사용하는거 막아놓음
                 {
-                    Debug.LogWarning("interrupt : " + targetPlayer.GetState<IPlayerState>().PlayerName);
+                    uiCtrl.MessagePrint(("플레이어를 공격 : " + targetPlayer.GetState<IPlayerState>().PlayerName).ToString());
                     var evnt = PlayerInteraction.Create();
                     evnt.AttakingPlayer = GameController.playerCode;
                     evnt.TargetPlayer = targetPlayer.GetState<IPlayerState>().PlayerCode;
@@ -251,7 +254,7 @@ namespace DoMine
                 }
                 else
                 {
-                    Debug.LogError("Cannot Use Now");
+                    uiCtrl.MessagePrint("사용 할 수 없습니다.");
                 }
                 JoystickControl.btnNum = 0;
             }
@@ -261,7 +264,7 @@ namespace DoMine
                 {
                     if (targetPlayer != null && canFindSabotage == true/* && GameController.time < 600*/)
                     {
-                        Debug.LogWarning("FindSabotage : " + targetPlayer.GetState<IPlayerState>().PlayerName);
+                        uiCtrl.MessagePrint(("사보타지인지 확인합니다 : " + targetPlayer.GetState<IPlayerState>().PlayerName).ToString());
                         var evnt = PlayerInteraction.Create();
                         evnt.AttakingPlayer = GameController.playerCode;
                         evnt.TargetPlayer = targetPlayer.GetState<IPlayerState>().PlayerCode;
@@ -272,7 +275,7 @@ namespace DoMine
                     }
                     else
                     {
-                        Debug.LogError("Cannot Use Now");
+                        uiCtrl.MessagePrint("사용 할 수 없습니다.");
                     }
                 }
                 else
@@ -292,7 +295,7 @@ namespace DoMine
                 {
                     if(targetPlayer.GetState<IPlayerState>().Blinded == true) // 대상이 시야가 축소된상태라면
                     {
-                        Debug.LogWarning("heal : " + targetPlayer.GetState<IPlayerState>().PlayerName);
+                        uiCtrl.MessagePrint(("치료 : " + targetPlayer.GetState<IPlayerState>().PlayerName).ToString());
                         var evnt = PlayerInteraction.Create();
                         evnt.AttakingPlayer = GameController.playerCode;
                         evnt.TargetPlayer = targetPlayer.GetState<IPlayerState>().PlayerCode;
@@ -303,7 +306,7 @@ namespace DoMine
                 }
                 else
                 {
-                    Debug.LogError("Cannot Use Now");
+                    uiCtrl.MessagePrint("사용 할 수 없습니다.");
                 }
                 JoystickControl.btnNum = 0;
             }
@@ -312,7 +315,13 @@ namespace DoMine
             {
                 if (Vector2.Distance(player.transform.position, itemCtrl.nearestItem.transform.position) < 0.5)
                 {
-                    itemCtrl.GetItem(itemCtrl.nearestItemX, itemCtrl.nearestItemY, state, false);
+                    
+                    output2 = itemCtrl.GetItem(itemCtrl.nearestItemX, itemCtrl.nearestItemY, state, false);
+                    if(output2 != null)
+                    {
+                        uiCtrl.MessagePrint(output2);
+                    }
+
                 }
                 if (state.Inventory[1] == 1)
                     state.isMoving = false;
@@ -489,7 +498,7 @@ namespace DoMine
                     {
                         state.Inventory[0] = pickaxeAmountBase;
                         state.Inventory[2] = barricadeBase;
-                        Debug.LogWarning("Pickaxe and barricade Recharged");//중앙 안전지대 이동시 곡괭이 회복
+                        uiCtrl.MessagePrint("곡괭이와 바리케이드가 충전되었습니다");//중앙 안전지대 이동시 곡괭이 회복
                     }
                     if (state.Inventory[1] == 1 && gameCtrl.playerList[GameController.playerCode] == 0)
                     {

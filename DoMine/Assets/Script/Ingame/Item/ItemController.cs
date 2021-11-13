@@ -40,9 +40,10 @@ namespace DoMine
 
         
 
-        public void GetItem(int x, int y, IPlayerState player, bool callback)//playercontrol에서 호출시엔 인벤토리를 늘려주고 이벤트날리면서 받음, 콜백으로 GC에서 호출시엔 단순 아이템삭제
+        public string GetItem(int x, int y, IPlayerState player, bool callback)//playercontrol에서 호출시엔 인벤토리를 늘려주고 이벤트날리면서 받음, 콜백으로 GC에서 호출시엔 단순 아이템삭제
         {
             int _type = itemArray[x * 100 + y];
+            string output = null;
 
             if(callback == false)
             {
@@ -52,25 +53,25 @@ namespace DoMine
                         if (player.Inventory[1] == 0 && GameController.isSabotage == false)
                         {
                             player.Inventory[1] = 1;
-                            Debug.LogWarning("Gold get");
+                            output = "금을 획득했습니다.";
                         }
                         else
                         {
-                            Debug.LogWarning("you cannot pick gold");//추후 여기에서 이미 확보해둔상태라고 UI에서 메세지 보내는거로 호출
-                            return;
+                            //추후 여기에서 이미 확보해둔상태라고 UI에서 메세지 보내는거로 호출
+                            return "금을 획득할 수 없습니다.";
                         }
                         break;
                     case 3:
                         player.Inventory[3]++;
-                        Debug.LogWarning("Hit get");
+                        output = " 획득했습니다.";
                         break;
                     case 4:
                         player.Inventory[4]++;
-                        Debug.LogWarning("Heal get");
+                        output = "구급상자를 획득했습니다.";
                         break;
                     case 5:
                         player.Inventory[5] = 1;
-                        Debug.LogWarning("Telescope get");
+                        output = "지도를 획득했습니다.";
                         break;
                 }
                 var evnt = ItemPicked.Create();
@@ -82,6 +83,7 @@ namespace DoMine
 
             Destroy(itemObject[x * 100 + y]);
             itemArray[x * 100 + y] = 0;
+            return output;
         }
 
         // instantiate로 만들고 list에 삽입
