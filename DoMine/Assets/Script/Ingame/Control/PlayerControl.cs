@@ -28,7 +28,7 @@ namespace DoMine
         float windWalkDurationBase = 10f;
         float windWalkCoolBase = 60f;
         public float breakCool;
-        float breakCoolBase = 0.8f;
+        float breakCoolBase = 0.6f;
         public float returnCool;
         float returnCoolBase = 60f;
         public bool canCreateWall = true;
@@ -66,6 +66,7 @@ namespace DoMine
             state.headRight = false;
             state.isMoving = true;
             state.isMining = false;
+            state.isBreak = true;
             if (entity.IsOwner)
             {
                 state.Inventory[0] = pickaxeAmountBase;
@@ -200,7 +201,7 @@ namespace DoMine
                     
                     if (Vector2.Distance(player.transform.position, mapCtrl.nearestWall.transform.position) < 0.8 && state.Inventory[0] > 0)
                     {
-                        mapCtrl.DestroyWall(mapCtrl.nearestWallX, mapCtrl.nearestWallY, false, false, -1);
+                        //mapCtrl.DestroyWall(mapCtrl.nearestWallX, mapCtrl.nearestWallY, false, false, -1);
                         breakCool = breakCoolBase;
                         state.Inventory[0]--;//곡괭이 갯수 소진
                         if(state.Inventory[0] == 0)
@@ -394,10 +395,18 @@ namespace DoMine
                 if (breakCool > 0)
                 {
                     breakCool -= Time.deltaTime;
+                    if(breakCool < 0.3f && state.isBreak)
+                    {
+                        state.isBreak = false;
+                        mapCtrl.DestroyWall(mapCtrl.nearestWallX, mapCtrl.nearestWallY, false, false, -1);
+
+                    }
+
                 }
                 if (breakCool < 0)
                 {
                     state.isMining = false;
+                    state.isBreak = true;
                     breakCool = 0;
                 }
                 if (returnCool > 0)
