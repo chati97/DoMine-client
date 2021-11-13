@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Bolt;
 using TMPro;
-
+using System.Collections;
 namespace DoMine
 {
     public class PlayerControl : EntityBehaviour<IPlayerState>
@@ -39,7 +39,7 @@ namespace DoMine
         public Animator playerAnimator;
         public Animator hammerAnimator;
         public JoystickControl joystick;
-
+        bool check = false;
         int pickaxeAmountBase = 20;
         int barricadeBase = 5;
             
@@ -92,7 +92,11 @@ namespace DoMine
         {
             gameCtrl.players.Remove(entity);
         }
-
+        void Playing()
+        {
+            state.Animator.Play("hammer_side");
+            StartCoroutine(Actdelay());
+        }
         public override void SimulateOwner()//플레이어 조작 관련 코드
         {
             var speed = 2f;
@@ -198,6 +202,7 @@ namespace DoMine
                 if (breakCool == 0 && mapCtrl.nearestWall != null)
                 {
                     state.Act = 3;
+                    
                     if (Vector2.Distance(player.transform.position, mapCtrl.nearestWall.transform.position) < 0.8 && state.Inventory[0] > 0)
                     {
                         mapCtrl.DestroyWall(mapCtrl.nearestWallX, mapCtrl.nearestWallY, false, false, -1);
@@ -223,9 +228,11 @@ namespace DoMine
                 if (state.Inventory[2] > 0 && canCreateWall)
                 {
                     state.Act = 2;
+                   
                     output = mapCtrl.CreateWall(1, (int)aim.x, (int)aim.y, false);
                     if (output == 0)
                         --state.Inventory[2];
+                    
                 }
                 else
                 {
@@ -344,18 +351,12 @@ namespace DoMine
                     }
                     break;
                 case 2:
-                    state.Animator.Play("duck_side");
                     break;
                 case 3:
                     hammer.SetActive(true);
-                    state.Animator.Play("hammer_side");
-                    
+                    state.Animator.Play("hammering_ham");
                     break;
                 case 4:
-                    break;
-                case 5:
-                    hammer.SetActive(false);
-                    state.Animator.Play("hit1_down");
                     break;
                 default:
                     break;
@@ -567,7 +568,11 @@ namespace DoMine
                 aimIndicator.transform.position = aim;
             }
         }
-
+        IEnumerator Actdelay()
+        {
+            
+            yield return new WaitForSeconds(10f);
+        }
     }
 }
 
