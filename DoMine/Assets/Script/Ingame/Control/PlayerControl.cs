@@ -42,7 +42,7 @@ namespace DoMine
         public Animator playerAnimator;
         public Animator hammerAnimator;
         public JoystickControl joystick;
-        int pickaxeAmountBase = 20;
+        int pickaxeAmountBase = 2000;
         int barricadeBase = 5;
         public void MovePlayer(GameObject player, Vector2 location)
         {
@@ -343,7 +343,11 @@ namespace DoMine
         }
         void Update()
         {
-            if(state.isMining)
+            if (state.Paralyzed)
+            {
+                state.Animator.Play("hit1_down");
+            }
+            else if(state.isMining)
             {
                 hammer.SetActive(true);
                 state.Animator.Play("hammring_ham");
@@ -489,7 +493,6 @@ namespace DoMine
                 }
                 if (paralyzeCool > 0)
                 {
-                    state.Animator.Play("hi1_down");
                     paralyzeCool -= Time.deltaTime;
                 }
                 else
