@@ -33,6 +33,8 @@ namespace DoMine
         public float returnCool;
         float returnCoolBase = 60f;
         public bool canCreateWall = true;
+        public float createCool;
+        float createCoolBase = 0.1f;
         public Vector2 aim;
         int lookingAt = -1;//왼쪽부터 시계방향으로 0123
         SpriteRenderer spr;
@@ -69,6 +71,7 @@ namespace DoMine
             state.isMoving = true;
             state.isMining = false;
             state.isBreak = true;
+            state.makeWall = false;
             if (entity.IsOwner)
             {
                 state.Inventory[0] = pickaxeAmountBase;
@@ -227,8 +230,8 @@ namespace DoMine
             {
                 if (state.Inventory[2] > 0 && canCreateWall)
                 {
-                    state.Act = 2;
-                   
+                    state.makeWall = true;
+                    createCool = createCoolBase;
                     output = mapCtrl.CreateWall(1, (int)aim.x, (int)aim.y, false);
                     if (output == 0)
                         --state.Inventory[2];
@@ -345,6 +348,11 @@ namespace DoMine
                 hammer.SetActive(true);
                 state.Animator.Play("hammring_ham");
             }
+            else if(state.makeWall)
+            {
+                hammer.SetActive(false);
+                state.Animator.Play("duck_side");
+            }
             else
             {
                 hammer.SetActive(false);
@@ -454,6 +462,15 @@ namespace DoMine
                 {
                     windWalkDuration = 0;
                     state.WindWalking = false;
+                }
+                if(createCool > 0)
+                {
+                    createCool -= Time.deltaTime;
+                }
+                if(createCool < 0)
+                {
+                    state.makeWall = false;
+                    createCool = createCool = 0;
                 }
             }
 
