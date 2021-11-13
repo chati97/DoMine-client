@@ -42,7 +42,7 @@ namespace DoMine
         public Animator playerAnimator;
         public Animator hammerAnimator;
         public JoystickControl joystick;
-        int pickaxeAmountBase = 2000;
+        int pickaxeAmountBase = 20;
         int barricadeBase = 5;
         public void MovePlayer(GameObject player, Vector2 location)
         {
