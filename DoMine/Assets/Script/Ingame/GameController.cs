@@ -66,11 +66,11 @@ namespace DoMine
         {
             if (evnt.isSabotage == true)
             {
-                Debug.LogError(playerNameList[evnt.Player] + " is Sabotage");
+                MessageCreate((playerNameList[evnt.Player] + " is Sabotage").ToString());
             }
             else
             {
-                Debug.LogError(playerNameList[evnt.Player] + " is Miner");
+                MessageCreate((playerNameList[evnt.Player] + " is Miner").ToString());
             }
         }
         public override void OnEvent(PlayerInteraction evnt)
@@ -126,11 +126,16 @@ namespace DoMine
             
 
         }//유저끼리 시야방해, 이동불가, 곡괭이 파괴 등을 할때 콜백
+
+        public override void OnEvent(MessageToAll evnt)
+        {
+            Debug.LogWarning(evnt.Message);
+        }
         public override void OnEvent(SaveGold evnt)
         {
             playerList[evnt.Player] = 2;
             goldSaved++;
-            Debug.LogWarning("Player" + evnt.Player + " Saved Gold");
+            MessageCreate(("Player" + evnt.Player + " Saved Gold").ToString());
         }//금 입금 콜백
         public override void OnEvent(WallDestoryed evnt)
         {
@@ -145,7 +150,7 @@ namespace DoMine
             code.Send();
             playerList[playerNum] = 0;
             playerNum++;
-            Debug.LogWarning(playerNum + " : 현재 플레이어 수");
+            //Debug.LogWarning(playerNum + " : 현재 플레이어 수");
         }
 
         public override void OnEvent(PlayerCode evnt)//자신의 이름이 이벤트와 같다면 해당이벤트의 코드를 본인의 유저코드로설정(키값-이름)
@@ -297,6 +302,12 @@ namespace DoMine
             }
         }
 
+        public void MessageCreate(string message)
+        {
+            var evnt = MessageToAll.Create();
+            evnt.Message = message;
+            evnt.Send();
+        }
         int DividePlayer()//사보타지 코드를 리턴하는 함수 (ex 사보타지가 9, 4 ,3, 0 이면 9430 리턴, 없을시 -1)
         {
             int _sabotage = (int)(playerNum * 0.43) - UnityEngine.Random.Range(0,2); //현재 접속인원에 맞춰서 현재인원/ 0.43 에서 랜덤으로 1을 빼거나 더해서 사보타지수를 구함
@@ -339,7 +350,7 @@ namespace DoMine
             {
                 _code = -1;//사보타지가 0일때
             }
-            Debug.LogWarning("코드" + _code);
+            //Debug.LogWarning("코드" + _code); 사보타지코드
             return _code;
         }
 

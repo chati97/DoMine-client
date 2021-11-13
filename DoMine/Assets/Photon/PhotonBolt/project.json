@@ -965,6 +965,28 @@
       "Name": "SabotageCaptured",
       "Guid": "a343fb96-8669-46c7-b9d6-980a526771b0",
       "Groups": []
+    },
+    {
+      "$type": "Photon.Bolt.Compiler.EventDefinition, bolt.compiler",
+      "Properties": [
+        {
+          "Name": "Message",
+          "Enabled": true,
+          "Expanded": true,
+          "ReplicationMode": 1,
+          "Priority": 1,
+          "PropertyType": {
+            "$type": "Photon.Bolt.Compiler.PropertyTypeString, bolt.compiler",
+            "MaxLength": 1
+          },
+          "AssetSettings": {
+            "$type": "Photon.Bolt.Compiler.PropertyEventSettings, bolt.compiler"
+          }
+        }
+      ],
+      "Name": "MessageToAll",
+      "Guid": "cdb5a338-d07d-47e3-94b4-19fd1f35fb23",
+      "Groups": []
     }
   ],
   "ActiveGroup": "Everything"
