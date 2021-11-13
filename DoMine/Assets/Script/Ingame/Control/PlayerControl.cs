@@ -182,6 +182,8 @@ namespace DoMine
                         }
                         MovePlayer(player, new Vector2(50, 50));
                         returnCool = returnCoolBase;
+                        state.Paralyzed = true;
+                        paralyzeCool = paralyzeCoolBase/5; //귀환시 5초간 정지
                     }
                     else
                     {

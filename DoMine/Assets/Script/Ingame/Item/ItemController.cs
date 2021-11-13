@@ -63,7 +63,7 @@ namespace DoMine
                         break;
                     case 3:
                         player.Inventory[3]++;
-                        output = " 획득했습니다.";
+                        output = "무기를 획득했습니다.";
                         break;
                     case 4:
                         player.Inventory[4]++;

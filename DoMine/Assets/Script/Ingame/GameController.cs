@@ -66,11 +66,17 @@ namespace DoMine
         {
             if (evnt.isSabotage == true)
             {
-                MessageCreate((playerNameList[evnt.Player] + " is Sabotage").ToString());
+                MessageCreate((playerNameList[evnt.Player] + " 는 사보타지였습니다.").ToString());//본인이 사보타지임을 알리는 메시지 발송
+                UC.MessagePrint("<color=red>당신은 발각되었습니다!</color>");
+                myPlayer.transform.position = new Vector2(49.5f, 49.5f); // 시작위치로 보내버리기
+                mystate.Blinded = true;
+                PlayerControl.blindCool = PlayerControl.blindCoolBase;
+                mystate.Paralyzed = true;
+                PlayerControl.paralyzeCool = PlayerControl.paralyzeCoolBase; // 그리고 공격받은 상태로 만들기
             }
             else
             {
-                MessageCreate((playerNameList[evnt.Player] + " is Miner").ToString());
+                MessageCreate((playerNameList[evnt.Player] + " 는 광부였습니다.").ToString());
             }
         }
         public override void OnEvent(PlayerInteraction evnt)
@@ -184,7 +190,8 @@ namespace DoMine
             {
                 gameStarted = true;
             }
-            if(_sabotage != -1)
+            UC.MessagePrint("게임이 시작되었습니다.");
+            if (_sabotage != -1)
             {
                 do
                 {
@@ -201,7 +208,7 @@ namespace DoMine
             }
             else
             {
-                UC.MessagePrint("당신은 <color=greed>광부</color>입니다");
+                UC.MessagePrint("당신은 <color=green>광부</color>입니다");
             }
             var name = PlayerName.Create();
             name.Code = playerCode;
@@ -230,6 +237,10 @@ namespace DoMine
         public override void OnEvent(ItemPicked evnt) // 아이템 주운것에 대한 콜백
         {
             IC.GetItem(evnt.LocationX, evnt.LocationY, null , true);
+            if(evnt.Type == 1)
+            {
+                UC.MessagePrint((evnt.Player + "가 (" + evnt.LocationX + ", " + evnt.LocationY + ")에서 <color=yellow>금</color>을 획득했습니다").ToString());
+            }
         }
 
         public override void OnEvent(ItemUsed evnt)
@@ -484,6 +495,8 @@ namespace DoMine
             {
                 MC.CreateWall(3, item / 100, item % 100, false);
             }
+            UC.MessagePrint("금과 아이템들이 생성되었습니다.");
+            UC.MessagePrint(("금은 총 " + goldAmount + "개 입니다").ToString());
         }
 
 
