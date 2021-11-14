@@ -241,33 +241,33 @@ namespace DoMine
                     }
                     JoystickControl.btnNum = 0;
                 }
-            }
-            
-            // 플레이어에게 스킬을 사용하는 파트
-            if (Input.GetKeyUp(KeyCode.Q) == true || JoystickControl.btnNum == 4) // 방해
-            {
-                if(state.Inventory[3]>0 && targetPlayer != null /*&& GameController.time < 600 */) //현재는 시간대별로 사용하는거 막아놓음
+
+
+                // 플레이어에게 스킬을 사용하는 파트
+                if (Input.GetKeyUp(KeyCode.Q) == true || JoystickControl.btnNum == 4) // 방해
                 {
-                    if (targetPlayer.GetState<IPlayerState>().Inventory[1] == 1 && gameCtrl.playerList[GameController.playerCode] == 0)//만약 내가 입금안한 광부고 상대가 금을 가지고 있으면
+                    if (state.Inventory[3] > 0 && targetPlayer != null /*&& GameController.time < 600 */) //현재는 시간대별로 사용하는거 막아놓음
                     {
-                        state.Inventory[1] = 1;//금내꺼
-                        gameCtrl.MessageCreate((gameCtrl.playerNameList[GameController.playerCode]+ "가 "+ (int)Math.Round(state.Location.Position.x) + "," + (int)Math.Round(state.Location.Position.y) + ") 에서 <color=yellow>코인</color>을 획득했습니다.").ToString());
+                        if (targetPlayer.GetState<IPlayerState>().Inventory[1] == 1 && gameCtrl.playerList[GameController.playerCode] == 0)//만약 내가 입금안한 광부고 상대가 금을 가지고 있으면
+                        {
+                            state.Inventory[1] = 1;//금내꺼
+                            gameCtrl.MessageCreate((gameCtrl.playerNameList[GameController.playerCode] + "가 " + (int)Math.Round(state.Location.Position.x) + "," + (int)Math.Round(state.Location.Position.y) + ") 에서 <color=yellow>코인</color>을 획득했습니다.").ToString());
+                        }
+                        uiCtrl.MessagePrint((targetPlayer.GetState<IPlayerState>().PlayerName + "를 <color=red>공격</color>").ToString());
+                        var evnt = PlayerInteraction.Create();
+                        evnt.AttakingPlayer = GameController.playerCode;
+                        evnt.TargetPlayer = targetPlayer.GetState<IPlayerState>().PlayerCode;
+                        evnt.Action = 0;
+                        evnt.Send();
+                        --state.Inventory[3];
                     }
-                    uiCtrl.MessagePrint((targetPlayer.GetState<IPlayerState>().PlayerName + "를 <color=red>공격</color>").ToString());
-                    var evnt = PlayerInteraction.Create();
-                    evnt.AttakingPlayer = GameController.playerCode;
-                    evnt.TargetPlayer = targetPlayer.GetState<IPlayerState>().PlayerCode;
-                    evnt.Action = 0;
-                    evnt.Send();
-                    --state.Inventory[3];
+                    else
+                    {
+                        uiCtrl.MessagePrint("사용 할 수 없습니다.");
+                    }
+                    JoystickControl.btnNum = 0;
                 }
-                else
-                {
-                    uiCtrl.MessagePrint("사용 할 수 없습니다.");
-                }
-                JoystickControl.btnNum = 0;
-            }
-            if (Input.GetKeyUp(KeyCode.D) == true || JoystickControl.btnNum == 6 || JoystickControl.btnNum == 7) // 사보타지 색출,  윈드웤(은신)
+                if (Input.GetKeyUp(KeyCode.D) == true || JoystickControl.btnNum == 6 || JoystickControl.btnNum == 7) // 사보타지 색출,  윈드웤(은신)
                 {
                     if (!GameController.isSabotage || JoystickControl.btnNum == 7)
                     {
@@ -320,9 +320,6 @@ namespace DoMine
                     JoystickControl.btnNum = 0;
                 }
             }
-            
-            
-            
                 //아이템 획득 코드
             if (itemCtrl.nearestItem != null)
             {
