@@ -213,10 +213,6 @@ namespace DoMine
                             //mapCtrl.DestroyWall(mapCtrl.nearestWallX, mapCtrl.nearestWallY, false, false, -1);
                             breakCool = breakCoolBase;
                             state.Inventory[0]--;//곡괭이 갯수 소진
-                            if (state.Inventory[0] == 0)
-                            {
-                                joystick.pick.GetComponent<Button>().interactable = false; //곡괭이 갯수 전부 소진 시 버튼 비활성화
-                            }
                         }
                     }
                     else
@@ -364,13 +360,10 @@ namespace DoMine
             }
             joystick.compasscontrol(player, new Vector2(49, 49), 4f); //나침반 돌아가는 함수(JoystickControl에 구현)
            
-            if (state.Inventory[0] != 0)
-            {
-                joystick.pick.GetComponent<Button>().interactable = true;   //곡괭이 회복하면 버튼 활성화
-            }
-            joystick.NumOfItem(0, state.Inventory[2]);
-            joystick.NumOfItem(1, state.Inventory[3]);
-            joystick.NumOfItem(2, state.Inventory[4]);
+            joystick.NumOfItem(0, state.Inventory[2]);  //barricade
+            joystick.NumOfItem(1, state.Inventory[3]);  //attack
+            joystick.NumOfItem(2, state.Inventory[4]);  //heal
+            joystick.NumOfItem(3, state.Inventory[0]);  //pick
 
             joystick.Position.text = string.Format("({0}, {1})", (int)player.transform.position.x, (int)player.transform.position.y);
         }

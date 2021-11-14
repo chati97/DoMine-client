@@ -25,6 +25,7 @@ namespace DoMine
         public GameObject compass;
         public Image home;
         public Image windWalk;
+        public Text pickNum;
         public Text healNum;
         public Text attackNum;
         public Text barricadeNum;
@@ -163,6 +164,10 @@ namespace DoMine
                 case 2:
                     item = healNum;
                     itembutton = heal;
+                    break;
+                case 3:
+                    item = pickNum;
+                    itembutton = pick;
                     break;
             }
             if (ItemNum > 0)
