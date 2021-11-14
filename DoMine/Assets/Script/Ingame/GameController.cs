@@ -57,6 +57,17 @@ namespace DoMine
             MC.CreateMap(MC.mapArray = MC.MakeMapArr(), MC.mapObject);
         }
 
+        public override void Connected(BoltConnection connection)
+        {
+            if(BoltNetwork.IsServer)
+            {
+                if(gameStarted)
+                {
+                    connection.Disconnect();
+                }
+            }
+        }
+
         public override void BoltShutdownBegin(AddCallback registerDoneCallback, UdpConnectionDisconnectReason disconnectReason)//호스트가 튕겼을시
         {
             time = 1000;//게임 중단
@@ -154,10 +165,10 @@ namespace DoMine
             {
                 var code = PlayerCode.Create();
                 code.Code = playerNum;
-                if (gameStarted == true)
-                {
-                    code.Code = -1;
-                }
+              //  if (gameStarted == true)
+               // {
+              //      code.Code = -1;
+              //  }
                 code.Name = evnt.PlayerName;
                 code.Send();
                 playerList[playerNum] = 0;
@@ -170,12 +181,12 @@ namespace DoMine
         {
             if (mystate.PlayerName == evnt.Name)
             {
-                if (evnt.Code == -1)
-                {
-                    BoltNetwork.Destroy(myPlayer);
-                    UC.GameWinner(-3, false, false, playerNameList);
-                }
-                else
+                //if (evnt.Code == -1)
+              //  {
+               //     BoltNetwork.Destroy(myPlayer);
+               //     UC.GameWinner(-3, false, false, playerNameList);
+              //  }
+                //else
                 {
                     playerCode = evnt.Code;
                     mystate.PlayerCode = playerCode;
