@@ -271,54 +271,34 @@ namespace DoMine
             {
                 if (!GameController.isSabotage || JoystickControl.btnNum == 7)
                 {
-                    if (targetPlayer != null && canFindSabotage == true)
+                    if (targetPlayer != null && canFindSabotage == true/* && GameController.time < 600*/)
                     {
-                        uiCtrl.MessagePrint((targetPlayer.GetState<IPlayerState>().PlayerName + "를 <color=red>공격</color>").ToString());
+                        uiCtrl.MessagePrint(("사보타지인지 확인합니다 : " + targetPlayer.GetState<IPlayerState>().PlayerName).ToString());
                         var evnt = PlayerInteraction.Create();
                         evnt.AttakingPlayer = GameController.playerCode;
                         evnt.TargetPlayer = targetPlayer.GetState<IPlayerState>().PlayerCode;
-                        evnt.Action = 0;
+                        evnt.Action = 1;
                         evnt.Send();
-                        --state.Inventory[3];
+                        canFindSabotage = false;
+                        joystick.minerSkill.GetComponent<Button>().interactable = false;
                     }
                     else
                     {
                         uiCtrl.MessagePrint("사용 할 수 없습니다.");
                     }
-                    JoystickControl.btnNum = 0;
                 }
-                if (Input.GetKeyUp(KeyCode.D) == true || JoystickControl.btnNum == 6 || JoystickControl.btnNum == 7) // 사보타지 색출,  윈드웤(은신)
+                else
                 {
-                    if (!GameController.isSabotage || JoystickControl.btnNum == 7)
+                    if (windWalkCool == 0)
                     {
-                        if (targetPlayer != null && canFindSabotage == true/* && GameController.time < 600*/)
-                        {
-                            uiCtrl.MessagePrint(("사보타지인지 확인합니다 : " + targetPlayer.GetState<IPlayerState>().PlayerName).ToString());
-                            var evnt = PlayerInteraction.Create();
-                            evnt.AttakingPlayer = GameController.playerCode;
-                            evnt.TargetPlayer = targetPlayer.GetState<IPlayerState>().PlayerCode;
-                            evnt.Action = 1;
-                            evnt.Send();
-                            canFindSabotage = false;
-                            joystick.minerSkill.GetComponent<Button>().interactable = false;
-                        }
-                        else
-                        {
-                            uiCtrl.MessagePrint("사용 할 수 없습니다.");
-                        }
+                        windWalkDuration = windWalkDurationBase;
+                        windWalkCool = windWalkCoolBase;
+                        state.WindWalking = true;
                     }
-                    else
-                    {
-                        if (windWalkCool == 0)
-                        {
-                            windWalkDuration = windWalkDurationBase;
-                            windWalkCool = windWalkCoolBase;
-                            state.WindWalking = true;
-                        }
-                    }
-                    JoystickControl.btnNum = 0;
                 }
-                if (Input.GetKeyUp(KeyCode.E) == true || JoystickControl.btnNum == 3) // 회복
+                JoystickControl.btnNum = 0;
+            }
+            if (Input.GetKeyUp(KeyCode.E) == true || JoystickControl.btnNum == 3) // 회복
                 {
                     if (state.Inventory[4] > 0 && targetPlayer != null)
                     {
