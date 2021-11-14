@@ -358,11 +358,7 @@ namespace DoMine
                     }
 
                 }
-                if (state.Inventory[1] == 1)
-                {
-                    state.isMoving = false;
-                    state.carryGold = true;
-                }
+                
             }
             joystick.compasscontrol(player, new Vector2(49, 49), 4f); //나침반 돌아가는 함수(JoystickControl에 구현)
            
@@ -392,6 +388,15 @@ namespace DoMine
                 }
                 gold_R.SetActive(false);
                 gold_L.SetActive(false);
+            }
+            else if (state.Inventory[1] == 1)
+            {
+                if(entity.IsOwner)
+                {
+                    state.isMoving = false;
+                    state.carryGold = true;
+                }
+                
             }
             if (state.Paralyzed)
             {
