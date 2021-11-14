@@ -31,6 +31,7 @@ namespace Photon.Bolt
         public Action click;
         public Text loading;
         public Text playerName;
+        bool isNormal;
 
         public void Start()
         {
@@ -41,6 +42,7 @@ namespace Photon.Bolt
             }
             NoRoomName.onClick.AddListener(onClickNoRoom);
             NoNickName.onClick.AddListener(onClickNoNick);
+            isNormal = false;
         }
 
         private void onClickNoNick()
@@ -144,12 +146,16 @@ namespace Photon.Bolt
         }
         public void LeaveGame()
         {
+            isNormal = true;
             BoltLauncher.Shutdown();
         }
         public override void BoltShutdownBegin(AddCallback registerDoneCallback, UdpConnectionDisconnectReason disconnectReason)
         {
-            loadingPanel.gameObject.SetActive(false);
-            EnterRoomError.gameObject.SetActive(true);
+            if(isNormal==false)
+            {
+                loadingPanel.gameObject.SetActive(false);
+                EnterRoomError.gameObject.SetActive(true);
+            }
             // 게임 이미 시작했다고 메시지 날리기
             //SceneManager.LoadScene("Title");
         }
