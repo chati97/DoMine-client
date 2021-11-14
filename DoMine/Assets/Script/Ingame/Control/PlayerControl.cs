@@ -70,11 +70,15 @@ namespace DoMine
             spr = player.gameObject.GetComponentInChildren<SpriteRenderer>();
             spr_hammer = hammer.gameObject.GetComponentInChildren<SpriteRenderer>();
             spr_gold = gold.gameObject.GetComponentInChildren<SpriteRenderer>();
-            state.headRight = false;
-            state.isMoving = true;
-            state.isMining = false;
-            state.isBreak = true;
-            state.makeWall = false;
+            if(entity.IsOwner)
+            {
+                state.headRight = false;
+                state.isMoving = true;
+                state.isMining = false;
+                state.isBreak = true;
+                state.makeWall = false;
+            }
+            
             if (entity.IsOwner)
             {
                 state.Inventory[0] = pickaxeAmountBase;
@@ -343,61 +347,57 @@ namespace DoMine
         }
         void Update()
         {
-            if(entity.IsOwner)
+            if (state.Paralyzed)
             {
-                if (state.Paralyzed)
+                hammer.SetActive(false);
+                state.Animator.Play("hit1_down");
+            }
+            else if(state.isMining)
+            {
+                hammer.SetActive(true);
+                state.Animator.Play("hammring_ham");
+            }
+            else if(state.makeWall)
+            {
+                hammer.SetActive(false);
+                state.Animator.Play("duck_side");
+            }
+            else
+            {
+                hammer.SetActive(false);
+                switch (state.Act)
                 {
-                    hammer.SetActive(false);
-                    state.Animator.Play("hit1_down");
-                }
-                else if (state.isMining)
-                {
-                    hammer.SetActive(true);
-                    state.Animator.Play("hammring_ham");
-                }
-                else if (state.makeWall)
-                {
-                    hammer.SetActive(false);
-                    state.Animator.Play("duck_side");
-                }
-                else
-                {
-                    hammer.SetActive(false);
-                    switch (state.Act)
-                    {
-                        case 0:
-                            state.Animator.Play("Idle");
-                            break;
-                        case 1:
-                            if (state.isMoving)
-                            {
-                                state.Animator.Play("walk_side");
-                            }
-                            else
-                            {
-                                gold.SetActive(true);
-                                state.Animator.Play("carry_side");
-                            }
-                            break;
-                        default:
-                            break;
-                    }
-                }
-
-                if (state.headRight)
-                {
-                    spr.flipX = true;
-                    spr_hammer.flipX = true;
-                    spr_gold.flipX = true;
-                }
-                else
-                {
-                    spr.flipX = false;
-                    spr_hammer.flipX = false;
-                    spr_gold.flipX = false;
+                    case 0:
+                        state.Animator.Play("Idle");
+                        break;
+                    case 1:
+                        if (state.isMoving)
+                        {
+                            state.Animator.Play("walk_side");
+                        }
+                        else
+                        {
+                            gold.SetActive(true);
+                            state.Animator.Play("carry_side");
+                        }
+                        break;
+                    default:
+                        break;
                 }
             }
             
+            if(state.headRight)
+            {
+                spr.flipX = true;
+                spr_hammer.flipX = true;
+                spr_gold.flipX = true;
+            }
+            else
+            {
+                spr.flipX = false;
+                spr_hammer.flipX = false;
+                spr_gold.flipX = false;
+            }
         }
         // Update is called once per frame
         void FixedUpdate()
@@ -556,34 +556,28 @@ namespace DoMine
             
             i = 0;
             BoltEntity nearestPlayer = null;
-            foreach (BoltEntity target in gameCtrl.players)
+            foreach (BoltEntity player in gameCtrl.players)
             {
-                if (Vector2.Distance(target.GetState<IPlayerState>().Location.Transform.position,player.transform.position) < 0.5)//유저가 가까이있을시 유저를 조준하도록
+                if (Vector2.Distance(player.GetState<IPlayerState>().Location.Transform.position, aim) < 0.5)//유저위에 벽못깔게 하는코드, 유저가 가까이있을시 유저를 조준하도록
                 {
-                    if (target == gameCtrl.myPlayer)
+                    if (player == gameCtrl.myPlayer)
                     {
+                        //본인이면 스킵
                     }
                     else if(nearestPlayer == null)
                     {
-                        nearestPlayer = target;//처음 걸린유저
+                        nearestPlayer = player;//처음 걸린유저
                     }
-                    else if(Vector2.Distance(target.GetState<IPlayerState>().Location.Transform.position, aim)< Vector2.Distance(nearestPlayer.GetState<IPlayerState>().Location.Transform.position, player.transform.position))
+                    else if(Vector2.Distance(player.GetState<IPlayerState>().Location.Transform.position, aim)< Vector2.Distance(nearestPlayer.GetState<IPlayerState>().Location.Transform.position, aim))
                     {
-                        nearestPlayer = target;// 더 가까운 유저가 있을 시엔 그 유저를 우선시
+                        nearestPlayer = player;//만약 에임방향에 더 가까운 유저가 있을 시엔 바꿈
                     }
-                }
-            }
-            foreach (BoltEntity target in gameCtrl.players)
-            {
-                if (Vector2.Distance(target.GetState<IPlayerState>().Location.Transform.position, aim) < 0.5)//유저가 가까이있을시 유저를 조준하도록
-                { 
-
                 }
                 else
                     i++;
             }
 
-            if (i == gameCtrl.players.Count && Vector2.Distance(aim, new Vector2(49.5f, 49.5f)) > 5) // 중앙선에서 5칸 이내일시
+            if(i == gameCtrl.players.Count && Vector2.Distance(aim, new Vector2(49.5f, 49.5f)) > 5) // 중앙선에서 5칸 이내일시
             {
                 canCreateWall = true;
             }
