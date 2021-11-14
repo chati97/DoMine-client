@@ -157,7 +157,6 @@ RectTransform:
   - {fileID: 1926319112}
   - {fileID: 608402231}
   - {fileID: 1658820369}
-  - {fileID: 800200710}
   m_Father: {fileID: 346423090}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -881,6 +880,7 @@ RectTransform:
   - {fileID: 2146175702}
   - {fileID: 449743147}
   - {fileID: 1500198220}
+  - {fileID: 800200710}
   m_Father: {fileID: 346423090}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5213,8 +5213,8 @@ RectTransform:
   - {fileID: 2091975390}
   - {fileID: 1457917120}
   - {fileID: 2083585990}
-  m_Father: {fileID: 18073020}
-  m_RootOrder: 4
+  m_Father: {fileID: 143681982}
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -12489,6 +12489,8 @@ MonoBehaviour:
   op: {fileID: 1822080844}
   loading: {fileID: 608402232}
   playerName: {fileID: 449743148}
+  joinPanel: {fileID: 18073019}
+  mainPanel: {fileID: 143681981}
 --- !u!4 &1822080842
 Transform:
   m_ObjectHideFlags: 0

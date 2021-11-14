@@ -32,6 +32,8 @@ namespace Photon.Bolt
         public Text loading;
         public Text playerName;
         bool isNormal;
+        [SerializeField] GameObject joinPanel;
+        [SerializeField] GameObject mainPanel;
 
         public void Start()
         {
@@ -153,6 +155,8 @@ namespace Photon.Bolt
         {
             if(isNormal==false)
             {
+                mainPanel.SetActive(true);
+                joinPanel.SetActive(false);
                 loadingPanel.gameObject.SetActive(false);
                 EnterRoomError.gameObject.SetActive(true);
             }
