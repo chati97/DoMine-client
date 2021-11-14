@@ -556,28 +556,33 @@ namespace DoMine
             
             i = 0;
             BoltEntity nearestPlayer = null;
-            foreach (BoltEntity player in gameCtrl.players)
+            foreach (BoltEntity target in gameCtrl.players)
             {
-                if (Vector2.Distance(player.GetState<IPlayerState>().Location.Transform.position, aim) < 0.5)//유저위에 벽못깔게 하는코드, 유저가 가까이있을시 유저를 조준하도록
+                if (Vector2.Distance(target.GetState<IPlayerState>().Location.Transform.position, player.transform.position) < 0.5)//유저가 가까이있을시 유저를 조준하도록
                 {
-                    if (player == gameCtrl.myPlayer)
+                    if (target == gameCtrl.myPlayer)
                     {
-                        //본인이면 스킵
                     }
-                    else if(nearestPlayer == null)
+                    else if (nearestPlayer == null)
                     {
-                        nearestPlayer = player;//처음 걸린유저
+                        nearestPlayer = target;//처음 걸린유저
                     }
-                    else if(Vector2.Distance(player.GetState<IPlayerState>().Location.Transform.position, aim)< Vector2.Distance(nearestPlayer.GetState<IPlayerState>().Location.Transform.position, aim))
+                    else if (Vector2.Distance(target.GetState<IPlayerState>().Location.Transform.position, aim) < Vector2.Distance(nearestPlayer.GetState<IPlayerState>().Location.Transform.position, player.transform.position))
                     {
-                        nearestPlayer = player;//만약 에임방향에 더 가까운 유저가 있을 시엔 바꿈
+                        nearestPlayer = target;// 더 가까운 유저가 있을 시엔 그 유저를 우선시
                     }
+                }
+            }
+            foreach (BoltEntity target in gameCtrl.players)
+            {
+                if (Vector2.Distance(target.GetState<IPlayerState>().Location.Transform.position, aim) < 0.5)//유저가 가까이있을시 유저를 조준하도록
+                {
                 }
                 else
                     i++;
             }
 
-            if(i == gameCtrl.players.Count && Vector2.Distance(aim, new Vector2(49.5f, 49.5f)) > 5) // 중앙선에서 5칸 이내일시
+            if (i == gameCtrl.players.Count && Vector2.Distance(aim, new Vector2(49.5f, 49.5f)) > 5) // 중앙선에서 5칸 이내일시
             {
                 canCreateWall = true;
             }
