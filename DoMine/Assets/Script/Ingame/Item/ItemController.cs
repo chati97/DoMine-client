@@ -78,6 +78,7 @@ namespace DoMine
                 evnt.LocationX = x;
                 evnt.LocationY = y;
                 evnt.Type = _type;
+                evnt.Player = GameController.playerCode;
                 evnt.Send();
             }
 

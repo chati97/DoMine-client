@@ -84,6 +84,7 @@ namespace DoMine
                     myPlayer.transform.position = new Vector2(49.5f, 49.5f); // 시작위치로 보내버리기
                     mystate.Blinded = true;
                     PlayerControl.blindCool = PlayerControl.blindCoolBase;
+                    PlayerControl.blindCool = PlayerControl.blindCoolBase;
                     mystate.Paralyzed = true;
                     PlayerControl.paralyzeCool = PlayerControl.paralyzeCoolBase; // 그리고 공격받은 상태로 만들기
                 }
@@ -273,7 +274,7 @@ namespace DoMine
             IC.GetItem(evnt.LocationX, evnt.LocationY, null , true);
             if(evnt.Type == 1)
             {
-                UC.MessagePrint((playerNameList[evnt.Player] + "가 (" + evnt.LocationX + ", " + evnt.LocationY + ")에서 <color=yellow>금</color>을 획득했습니다").ToString());
+                UC.MessagePrint((playerNameList[evnt.Player] + "가 (" + evnt.LocationX + ", " + evnt.LocationY + ")에서 <color=yellow>코인</color>을 획득했습니다").ToString());
             }
         }
 
