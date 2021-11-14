@@ -75,19 +75,22 @@ namespace DoMine
         }
         public override void OnEvent(SabotageCaptured evnt)
         {
-            if (evnt.isSabotage == true)
+            if(evnt.Player == playerCode)
             {
-                MessageCreate((playerNameList[evnt.Player] + " 는 <color=red>사보타지</color>였습니다.").ToString());//본인이 사보타지임을 알리는 메시지 발송
-                UC.MessagePrint("<color=red>당신은 발각되었습니다!</color>");
-                myPlayer.transform.position = new Vector2(49.5f, 49.5f); // 시작위치로 보내버리기
-                mystate.Blinded = true;
-                PlayerControl.blindCool = PlayerControl.blindCoolBase;
-                mystate.Paralyzed = true;
-                PlayerControl.paralyzeCool = PlayerControl.paralyzeCoolBase; // 그리고 공격받은 상태로 만들기
-            }
-            else
-            {
-                MessageCreate((playerNameList[evnt.Player] + " 는 <color=green>광부</color>였습니다.").ToString());
+                if (evnt.isSabotage == true)
+                {
+                    MessageCreate((playerNameList[evnt.Player] + " 는 <color=red>사보타지</color>였습니다.").ToString());//본인이 사보타지임을 알리는 메시지 발송
+                    UC.MessagePrint("<color=red>당신은 발각되었습니다!</color>");
+                    myPlayer.transform.position = new Vector2(49.5f, 49.5f); // 시작위치로 보내버리기
+                    mystate.Blinded = true;
+                    PlayerControl.blindCool = PlayerControl.blindCoolBase;
+                    mystate.Paralyzed = true;
+                    PlayerControl.paralyzeCool = PlayerControl.paralyzeCoolBase; // 그리고 공격받은 상태로 만들기
+                }
+                else
+                {
+                    MessageCreate((playerNameList[evnt.Player] + " 는 <color=green>광부</color>였습니다.").ToString());
+                }
             }
         }
         public override void OnEvent(PlayerInteraction evnt)
