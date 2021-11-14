@@ -167,13 +167,13 @@ namespace DoMine
                     Vector3 rightMovement = Vector3.right * joystick.Horizontal;
                     playerRB.position += ((Vector2)upMovement + (Vector2)rightMovement) * speed * JoystickControl.distance * BoltNetwork.FrameDeltaTime;
                     //state.isMoving = true;
-                    state.Act = 1; //플레이어 이동시 애니메이션
+                    state.isMoving = true; //플레이어 이동시 애니메이션
                 }
                 else
                 {
                     //ani.SetBool("Walking", false);
                     //state.isMoving = false;
-                    state.Act = 0; //정지시 애니메이션
+                    state.isMoving = false; //정지시 애니메이션
                 }
 
                 if (Input.GetKey(KeyCode.R) == true || JoystickControl.btnNum == 5)//귀환 - 금을 내려놓고 기지로 귀환
@@ -418,24 +418,10 @@ namespace DoMine
                 hammer.SetActive(false);
                 if(!state.carryGold)
                 {
-                    switch (state.Act)
-                    {
-                        case 0:
-                            state.Animator.Play("Idle");
-                            break;
-                        case 1:
-                            if (state.isMoving)
-                            {
-                                state.Animator.Play("walk_side");
-                            }
-                            else
-                            {
-                                
-                            }
-                            break;
-                        default:
-                            break;
-                    }
+                    if (state.isMoving)
+                        state.Animator.Play("walk_side");
+                    else
+                        state.Animator.Play("Idle");
                 }
                 else
                 {
