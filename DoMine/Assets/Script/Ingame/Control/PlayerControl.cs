@@ -13,6 +13,7 @@ namespace DoMine
         [SerializeField] GameObject aimIndicator = null;
         [SerializeField] GameObject playerName = null;
         [SerializeField] GameObject hammer = null;
+        [SerializeField] GameObject gold = null;
         public MapController mapCtrl;
         public ItemController itemCtrl;
         public GameController gameCtrl;
@@ -39,10 +40,11 @@ namespace DoMine
         int lookingAt = -1;//왼쪽부터 시계방향으로 0123
         SpriteRenderer spr;
         SpriteRenderer spr_hammer;
+        SpriteRenderer spr_gold;
         public Animator playerAnimator;
         public Animator hammerAnimator;
         public JoystickControl joystick;
-        int pickaxeAmountBase = 20;
+        int pickaxeAmountBase = 2000;
         int barricadeBase = 5;
         public void MovePlayer(GameObject player, Vector2 location)
         {
@@ -67,6 +69,7 @@ namespace DoMine
             gameCtrl.players.Add(entity);
             spr = player.gameObject.GetComponentInChildren<SpriteRenderer>();
             spr_hammer = hammer.gameObject.GetComponentInChildren<SpriteRenderer>();
+            spr_gold = gold.gameObject.GetComponentInChildren<SpriteRenderer>();
             state.headRight = false;
             state.isMoving = true;
             state.isMining = false;
@@ -373,6 +376,7 @@ namespace DoMine
                         }
                         else
                         {
+                            gold.SetActive(true);
                             state.Animator.Play("carry_side");
                         }
                         break;
@@ -381,23 +385,17 @@ namespace DoMine
                 }
             }
             
-            /*if (state.isMoving)
-            {
-                state.Animator.Play("walk_side");
-            }
-            else
-            {
-                state.Animator.Play("Idle");
-            }*/
             if(state.headRight)
             {
                 spr.flipX = true;
                 spr_hammer.flipX = true;
+                spr_gold.flipX = true;
             }
             else
             {
                 spr.flipX = false;
                 spr_hammer.flipX = false;
+                spr_gold.flipX = false;
             }
         }
         // Update is called once per frame

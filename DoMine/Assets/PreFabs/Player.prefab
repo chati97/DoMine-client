@@ -100,7 +100,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &92544504095280130
 Transform:
   m_ObjectHideFlags: 0
@@ -109,7 +109,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3555411934783339177}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.186, y: 0.123, z: -2.6792073}
+  m_LocalPosition: {x: -0.058, y: 0.123, z: -2.6792073}
   m_LocalScale: {x: 0.4386, y: 0.4244, z: 2}
   m_Children: []
   m_Father: {fileID: 9087986202235492199}
@@ -538,6 +538,7 @@ MonoBehaviour:
   aimIndicator: {fileID: 0}
   playerName: {fileID: 9158129739901957007}
   hammer: {fileID: 8140108600616569505}
+  gold: {fileID: 3555411934783339177}
   mapCtrl: {fileID: 0}
   itemCtrl: {fileID: 0}
   gameCtrl: {fileID: 0}
