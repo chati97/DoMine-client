@@ -207,6 +207,7 @@ namespace DoMine
         {
             time = evnt.TimeLeft;
             int _sabotage = evnt.Sabotage;
+            playerNum = evnt.PlayerNum;
             PlayerControl.barricadeBase = (int)Math.Round((double)(10 / playerNum));
             PlayerControl.pickaxeAmountBase = (int)Math.Round((double)(150 / playerNum));
             if (gameStarted == false || BoltNetwork.IsServer)
