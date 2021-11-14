@@ -229,6 +229,10 @@ namespace DoMine
                 playerNum = evnt.PlayerNum;
             }
             UC.MessagePrint("게임이 시작되었습니다.");
+            for(int i = 0; i<playerNum; i++)
+            {
+                playerList[i] = 0;
+            }
             if (_sabotage != -1)
             {
                 do

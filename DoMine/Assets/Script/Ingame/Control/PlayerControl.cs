@@ -185,6 +185,7 @@ namespace DoMine
                             itemCtrl.CreateItem((int)Math.Round(state.Location.Position.x), (int)Math.Round(state.Location.Position.y), 1, false);
                             state.Inventory[1] = 0;
                             state.isMoving = true;
+                            gameCtrl.MessageCreate(("(" + (int)Math.Round(state.Location.Position.x)+ ","+ (int)Math.Round(state.Location.Position.y)+ ") 에서 <color=yellow>코인</color>이 떨어졌습니다").ToString());
                         }
                         MovePlayer(player, new Vector2(49.5f, 49.5f));
                         returnCool = returnCoolBase;
@@ -254,6 +255,7 @@ namespace DoMine
                     if (targetPlayer.GetState<IPlayerState>().Inventory[1] == 1 && gameCtrl.playerList[GameController.playerCode] == 0)//만약 내가 입금안한 광부고 상대가 금을 가지고 있으면
                     {
                         state.Inventory[1] = 1;//금내꺼
+                        gameCtrl.MessageCreate((gameCtrl.playerNameList[GameController.playerCode]+ "가 "+ (int)Math.Round(state.Location.Position.x) + "," + (int)Math.Round(state.Location.Position.y) + ") 에서 <color=yellow>코인</color>을 획득했습니다.").ToString());
                     }
                     uiCtrl.MessagePrint((targetPlayer.GetState<IPlayerState>().PlayerName + "를 <color=red>공격</color>").ToString());
                     var evnt = PlayerInteraction.Create();
