@@ -547,6 +547,7 @@ MonoBehaviour:
   breakCool: 0
   returnCool: 0
   canCreateWall: 1
+  createCool: 0
   aim: {x: 0, y: 0}
   playerAnimator: {fileID: 6362133108216636090}
   hammerAnimator: {fileID: 0}
