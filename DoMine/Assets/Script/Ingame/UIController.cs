@@ -66,6 +66,12 @@ namespace DoMine
             winSide.gameObject.SetActive(true);
             winPlayers.gameObject.SetActive(true);
             GameController.gameLoaded = false;
+            if (winPlayer == -3)
+            {
+                gameInfo.text = "Game Over";
+                winSide.text = "Game Already Started";
+                winPlayers.text = "";
+            }
             if (winPlayer == -2)
             {
                 gameInfo.text = "Game Over";

@@ -150,21 +150,36 @@ namespace DoMine
 
         public override void OnEvent(PlayerJoined evnt) // 플레이어 접속시 호출 접속한 플레이어에게 코드를 배정(키값-이름)
         {
-            var code = PlayerCode.Create();
-            code.Code = playerNum;
-            code.Name = evnt.PlayerName;
-            code.Send();
-            playerList[playerNum] = 0;
-            playerNum++;
-            //Debug.LogWarning(playerNum + " : 현재 플레이어 수");
+            if(BoltNetwork.IsServer == true)
+            {
+                var code = PlayerCode.Create();
+                code.Code = playerNum;
+                if (gameStarted == true)
+                {
+                    code.Code = -1;
+                }
+                code.Name = evnt.PlayerName;
+                code.Send();
+                playerList[playerNum] = 0;
+                playerNum++;
+                //Debug.LogWarning(playerNum + " : 현재 플레이어 수");
+            }
         }
 
         public override void OnEvent(PlayerCode evnt)//자신의 이름이 이벤트와 같다면 해당이벤트의 코드를 본인의 유저코드로설정(키값-이름)
         {
-            if(mystate.PlayerName == evnt.Name)
+            if (mystate.PlayerName == evnt.Name)
             {
-                playerCode = evnt.Code;
-                mystate.PlayerCode = playerCode;
+                if (evnt.Code == -1)
+                {
+                    BoltNetwork.Destroy(myPlayer);
+                    UC.GameWinner(-3, false, false, playerNameList);
+                }
+                else
+                {
+                    playerCode = evnt.Code;
+                    mystate.PlayerCode = playerCode;
+                }
             }
         }
 
