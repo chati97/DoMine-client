@@ -141,7 +141,7 @@ namespace DoMine
         {
             playerList[evnt.Player] = 2;
             goldSaved++;
-            MessageCreate(("Player" + evnt.Player + " Saved Gold").ToString());
+            MessageCreate((playerNameList[evnt.Player] + "가 코인을 입금했습니다.").ToString());
         }//금 입금 콜백
         public override void OnEvent(WallDestoryed evnt)
         {
@@ -239,7 +239,7 @@ namespace DoMine
             IC.GetItem(evnt.LocationX, evnt.LocationY, null , true);
             if(evnt.Type == 1)
             {
-                UC.MessagePrint((evnt.Player + "가 (" + evnt.LocationX + ", " + evnt.LocationY + ")에서 <color=yellow>금</color>을 획득했습니다").ToString());
+                UC.MessagePrint((playerNameList[evnt.Player] + "가 (" + evnt.LocationX + ", " + evnt.LocationY + ")에서 <color=yellow>금</color>을 획득했습니다").ToString());
             }
         }
 
