@@ -207,7 +207,9 @@ namespace DoMine
         {
             time = evnt.TimeLeft;
             int _sabotage = evnt.Sabotage;
-            if(gameStarted == false || BoltNetwork.IsServer)
+            PlayerControl.barricadeBase = (int)Math.Round((double)(10 / playerNum));
+            PlayerControl.pickaxeAmountBase = (int)Math.Round((double)(150 / playerNum));
+            if (gameStarted == false || BoltNetwork.IsServer)
             {
                 for (int i = -3; i < 3; i++)
                 {
@@ -225,8 +227,6 @@ namespace DoMine
             {
                 gameStarted = true;
                 playerNum = evnt.PlayerNum;
-                PlayerControl.barricadeBase = (int)Math.Round((double)(10 / playerNum));
-                PlayerControl.pickaxeAmountBase = (int)Math.Round((double)(150 / playerNum));
             }
             UC.MessagePrint("게임이 시작되었습니다.");
             if (_sabotage != -1)
