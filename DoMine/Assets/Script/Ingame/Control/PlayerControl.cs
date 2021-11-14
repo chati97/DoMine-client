@@ -268,37 +268,37 @@ namespace DoMine
                 JoystickControl.btnNum = 0;
             }
             if (Input.GetKeyUp(KeyCode.D) == true || JoystickControl.btnNum == 6 || JoystickControl.btnNum == 7) // 사보타지 색출,  윈드웤(은신)
-            {
-                if (!GameController.isSabotage || JoystickControl.btnNum == 7)
                 {
-                    if (targetPlayer != null && canFindSabotage == true/* && GameController.time < 600*/)
+                    if (!GameController.isSabotage || JoystickControl.btnNum == 7)
                     {
-                        uiCtrl.MessagePrint(("사보타지인지 확인합니다 : " + targetPlayer.GetState<IPlayerState>().PlayerName).ToString());
-                        var evnt = PlayerInteraction.Create();
-                        evnt.AttakingPlayer = GameController.playerCode;
-                        evnt.TargetPlayer = targetPlayer.GetState<IPlayerState>().PlayerCode;
-                        evnt.Action = 1;
-                        evnt.Send();
-                        canFindSabotage = false;
-                        joystick.minerSkill.GetComponent<Button>().interactable = false;
+                        if (targetPlayer != null && canFindSabotage == true/* && GameController.time < 600*/)
+                        {
+                            uiCtrl.MessagePrint(("사보타지인지 확인합니다 : " + targetPlayer.GetState<IPlayerState>().PlayerName).ToString());
+                            var evnt = PlayerInteraction.Create();
+                            evnt.AttakingPlayer = GameController.playerCode;
+                            evnt.TargetPlayer = targetPlayer.GetState<IPlayerState>().PlayerCode;
+                            evnt.Action = 1;
+                            evnt.Send();
+                            canFindSabotage = false;
+                            joystick.minerSkill.GetComponent<Button>().interactable = false;
+                        }
+                        else
+                        {
+                            uiCtrl.MessagePrint("사용 할 수 없습니다.");
+                        }
                     }
                     else
                     {
-                        uiCtrl.MessagePrint("사용 할 수 없습니다.");
+                        if (windWalkCool == 0)
+                        {
+                            windWalkDuration = windWalkDurationBase;
+                            windWalkCool = windWalkCoolBase;
+                            state.WindWalking = true;
+                        }
                     }
+                    JoystickControl.btnNum = 0;
                 }
-                else
-                {
-                    if (windWalkCool == 0)
-                    {
-                        windWalkDuration = windWalkDurationBase;
-                        windWalkCool = windWalkCoolBase;
-                        state.WindWalking = true;
-                    }
-                }
-                JoystickControl.btnNum = 0;
-            }
-            if (Input.GetKeyUp(KeyCode.E) == true || JoystickControl.btnNum == 3) // 회복
+                if (Input.GetKeyUp(KeyCode.E) == true || JoystickControl.btnNum == 3) // 회복
                 {
                     if (state.Inventory[4] > 0 && targetPlayer != null)
                     {
