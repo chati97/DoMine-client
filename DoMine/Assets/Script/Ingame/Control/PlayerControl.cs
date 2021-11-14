@@ -44,7 +44,7 @@ namespace DoMine
         public Animator playerAnimator;
         public Animator hammerAnimator;
         public JoystickControl joystick;
-        int pickaxeAmountBase = 2000;
+        int pickaxeAmountBase = 20;
         int barricadeBase = 5;
         public void MovePlayer(GameObject player, Vector2 location)
         {
@@ -94,11 +94,7 @@ namespace DoMine
                 }
             }
             playerName.GetComponent<TextMeshPro>().text = state.PlayerName;
-            if (GameController.isSabotage)
-            {
-                joystick.minerSkill.gameObject.SetActive(false);
-                joystick.sabotageSkill.gameObject.SetActive(true);
-            }
+
         }
         void OnDestroy()
         {
@@ -382,6 +378,12 @@ namespace DoMine
         }
         void Update()
         {
+            if (GameController.isSabotage)
+            {
+                joystick.minerSkill.gameObject.SetActive(false);
+                joystick.sabotageSkill.gameObject.SetActive(true);
+            }
+
             if (state.Inventory[1] == 0)
             {
                 if(entity.IsOwner)
