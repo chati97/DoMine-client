@@ -251,16 +251,16 @@ namespace DoMine
             {
                 if(state.Inventory[3]>0 && targetPlayer != null /*&& GameController.time < 600 */) //현재는 시간대별로 사용하는거 막아놓음
                 {
+                    if (targetPlayer.GetState<IPlayerState>().Inventory[1] == 1 && gameCtrl.playerList[GameController.playerCode] == 0)//만약 내가 입금안한 광부고 상대가 금을 가지고 있으면
+                    {
+                        state.Inventory[1] = 1;//금내꺼
+                    }
                     uiCtrl.MessagePrint((targetPlayer.GetState<IPlayerState>().PlayerName + "를 <color=red>공격</color>").ToString());
                     var evnt = PlayerInteraction.Create();
                     evnt.AttakingPlayer = GameController.playerCode;
                     evnt.TargetPlayer = targetPlayer.GetState<IPlayerState>().PlayerCode;
                     evnt.Action = 0;
                     evnt.Send();
-                    if(targetPlayer.GetState<IPlayerState>().Inventory[1] == 1 && gameCtrl.playerList[GameController.playerCode] == 0)//만약 내가 입금안한 광부고 상대가 금을 가지고 있으면
-                    {
-                        state.Inventory[1] = 1;//금내꺼
-                    }
                     --state.Inventory[3];
                 }
                 else
