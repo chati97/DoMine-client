@@ -139,8 +139,10 @@ namespace Photon.Bolt
         public void OnClickRoom(string roomName)
         {
             loadingPanel.gameObject.SetActive(true);
+            StartClient();
             BoltMatchmaking.JoinSession(roomName);
             //PlayerPrefs.SetString("nick", NameInput.text);
+
         }
         public void LeaveGame()
         {
