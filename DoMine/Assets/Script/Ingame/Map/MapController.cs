@@ -14,6 +14,7 @@ namespace DoMine
         [SerializeField] GameObject breakable = null;
         [SerializeField] GameObject unbreakable = null;
         [SerializeField] GameObject chest = null;
+        [SerializeField] GameObject barricade = null;
         [SerializeField] Transform wallParent = null;
         [SerializeField] Transform chestParent = null;
         [SerializeField] GameObject wallIndicator = null;
@@ -119,6 +120,11 @@ namespace DoMine
                         _targetItem = chest;
                         _targetParent = chestParent;
                         mapArray[x * 100 + y] = 3;
+                        break;
+                    case 4:
+                        _targetItem = barricade;
+                        _targetParent = wallParent;
+                        mapArray[x * 100 + y] = 4;
                         break;
                 }
                 mapObject[x * 100 + y] = Instantiate(_targetItem, new Vector2(x, y), Quaternion.identity, _targetParent);

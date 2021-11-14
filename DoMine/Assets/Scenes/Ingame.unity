@@ -11508,6 +11508,8 @@ MonoBehaviour:
   unbreakable: {fileID: 9181782051117040114, guid: 90827f91d1e984a4d8df89486ac941ff,
     type: 3}
   chest: {fileID: 2266946393070594806, guid: 98bd94e760e04a64294e52a8329d4025, type: 3}
+  barricade: {fileID: 4905593483511597039, guid: 66c7d5a6050c02b44b2a07315d35f63a,
+    type: 3}
   wallParent: {fileID: 681968454}
   chestParent: {fileID: 1513372197}
   wallIndicator: {fileID: 242872182}

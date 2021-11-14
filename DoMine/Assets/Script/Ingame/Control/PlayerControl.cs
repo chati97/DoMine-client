@@ -232,10 +232,11 @@ namespace DoMine
                 {
                     state.makeWall = true;
                     createCool = createCoolBase;
-                    output = mapCtrl.CreateWall(1, (int)aim.x, (int)aim.y, false);
+                    output = mapCtrl.CreateWall(4, (int)aim.x, (int)aim.y, false);
                     if (output == 0)
                         --state.Inventory[2];
-                    
+                    else
+                        uiCtrl.MessagePrint("해당위치에 만들 수 없습니다");
                 }
                 else
                 {
@@ -538,19 +539,19 @@ namespace DoMine
         {
             int i;
             
-            switch (lookingAt)//최초엔 보는방향을 기준으로 에임을 둠
+            switch (lookingAt)//최초엔 보는방향을 기준으로 에임을 둠 왼쪽부터 시계방향으로 0123
             {
                 case 0:
-                    aim = new Vector2((int)Math.Round(state.Location.Position.x) - 1, (int)Math.Round(state.Location.Position.y));
+                    aim = new Vector2((int)Math.Round(state.Location.Position.x - 1), (int)Math.Round(state.Location.Position.y));
                     break;
                 case 1:
-                    aim = new Vector2((int)Math.Round(state.Location.Position.x), (int)Math.Round(state.Location.Position.y) + 1);
+                    aim = new Vector2((int)Math.Round(state.Location.Position.x), (int)Math.Round(state.Location.Position.y + 1));
                     break;
                 case 2:
-                    aim = new Vector2((int)Math.Round(state.Location.Position.x) + 1, (int)Math.Round(state.Location.Position.y));
+                    aim = new Vector2((int)Math.Round(state.Location.Position.x + 1), (int)Math.Round(state.Location.Position.y));
                     break;
                 case 3:
-                    aim = new Vector2((int)Math.Round(state.Location.Position.x), (int)Math.Round(state.Location.Position.y) - 1);
+                    aim = new Vector2((int)Math.Round(state.Location.Position.x), (int)Math.Round(state.Location.Position.y - 1));
                     break;
             }
             
@@ -558,7 +559,7 @@ namespace DoMine
             BoltEntity nearestPlayer = null;
             foreach (BoltEntity player in gameCtrl.players)
             {
-                if (Vector2.Distance(player.GetState<IPlayerState>().Location.Transform.position, aim) < 0.8)//유저위에 벽못깔게 하는코드, 유저가 가까이있을시 유저를 조준하도록
+                if (Vector2.Distance(player.GetState<IPlayerState>().Location.Transform.position, aim) < 0.5)//유저위에 벽못깔게 하는코드, 유저가 가까이있을시 유저를 조준하도록
                 {
                     if (player == gameCtrl.myPlayer)
                     {
