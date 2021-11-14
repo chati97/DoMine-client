@@ -198,10 +198,6 @@ namespace DoMine
                     JoystickControl.btnNum = 0;
                 }
             }
-            else
-            {
-                state.Act = 5;
-            }
             
             //벽 파괴
             if (Input.GetKey(KeyCode.A) == true || JoystickControl.btnNum == 1)
@@ -347,57 +343,61 @@ namespace DoMine
         }
         void Update()
         {
-            if (state.Paralyzed)
+            if(entity.IsOwner)
             {
-                hammer.SetActive(false);
-                state.Animator.Play("hit1_down");
-            }
-            else if(state.isMining)
-            {
-                hammer.SetActive(true);
-                state.Animator.Play("hammring_ham");
-            }
-            else if(state.makeWall)
-            {
-                hammer.SetActive(false);
-                state.Animator.Play("duck_side");
-            }
-            else
-            {
-                hammer.SetActive(false);
-                switch (state.Act)
+                if (state.Paralyzed)
                 {
-                    case 0:
-                        state.Animator.Play("Idle");
-                        break;
-                    case 1:
-                        if (state.isMoving)
-                        {
-                            state.Animator.Play("walk_side");
-                        }
-                        else
-                        {
-                            gold.SetActive(true);
-                            state.Animator.Play("carry_side");
-                        }
-                        break;
-                    default:
-                        break;
+                    hammer.SetActive(false);
+                    state.Animator.Play("hit1_down");
+                }
+                else if (state.isMining)
+                {
+                    hammer.SetActive(true);
+                    state.Animator.Play("hammring_ham");
+                }
+                else if (state.makeWall)
+                {
+                    hammer.SetActive(false);
+                    state.Animator.Play("duck_side");
+                }
+                else
+                {
+                    hammer.SetActive(false);
+                    switch (state.Act)
+                    {
+                        case 0:
+                            state.Animator.Play("Idle");
+                            break;
+                        case 1:
+                            if (state.isMoving)
+                            {
+                                state.Animator.Play("walk_side");
+                            }
+                            else
+                            {
+                                gold.SetActive(true);
+                                state.Animator.Play("carry_side");
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+                if (state.headRight)
+                {
+                    spr.flipX = true;
+                    spr_hammer.flipX = true;
+                    spr_gold.flipX = true;
+                }
+                else
+                {
+                    spr.flipX = false;
+                    spr_hammer.flipX = false;
+                    spr_gold.flipX = false;
                 }
             }
             
-            if(state.headRight)
-            {
-                spr.flipX = true;
-                spr_hammer.flipX = true;
-                spr_gold.flipX = true;
-            }
-            else
-            {
-                spr.flipX = false;
-                spr_hammer.flipX = false;
-                spr_gold.flipX = false;
-            }
         }
         // Update is called once per frame
         void FixedUpdate()
