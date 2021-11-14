@@ -389,7 +389,10 @@ namespace DoMine
         {
             if (state.Inventory[1] == 0)
             {
-                state.carryGold = false;
+                if(entity.IsOwner)
+                {
+                    state.carryGold = false;
+                }
                 gold_R.SetActive(false);
                 gold_L.SetActive(false);
             }
