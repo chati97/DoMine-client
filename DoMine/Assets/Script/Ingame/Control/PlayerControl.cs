@@ -250,7 +250,7 @@ namespace DoMine
             {
                 if(state.Inventory[3]>0 && targetPlayer != null /*&& GameController.time < 600 */) //현재는 시간대별로 사용하는거 막아놓음
                 {
-                    uiCtrl.MessagePrint(("플레이어를 공격 : " + targetPlayer.GetState<IPlayerState>().PlayerName).ToString());
+                    uiCtrl.MessagePrint((targetPlayer.GetState<IPlayerState>().PlayerName + "를 <color=red>공격</color>").ToString());
                     var evnt = PlayerInteraction.Create();
                     evnt.AttakingPlayer = GameController.playerCode;
                     evnt.TargetPlayer = targetPlayer.GetState<IPlayerState>().PlayerCode;
@@ -301,7 +301,7 @@ namespace DoMine
                 {
                     if(targetPlayer.GetState<IPlayerState>().Blinded == true) // 대상이 시야가 축소된상태라면
                     {
-                        uiCtrl.MessagePrint(("치료 : " + targetPlayer.GetState<IPlayerState>().PlayerName).ToString());
+                        uiCtrl.MessagePrint(("<color=green>치료</color> : " + targetPlayer.GetState<IPlayerState>().PlayerName).ToString());
                         var evnt = PlayerInteraction.Create();
                         evnt.AttakingPlayer = GameController.playerCode;
                         evnt.TargetPlayer = targetPlayer.GetState<IPlayerState>().PlayerCode;

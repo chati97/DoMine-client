@@ -66,7 +66,7 @@ namespace DoMine
         {
             if (evnt.isSabotage == true)
             {
-                MessageCreate((playerNameList[evnt.Player] + " 는 사보타지였습니다.").ToString());//본인이 사보타지임을 알리는 메시지 발송
+                MessageCreate((playerNameList[evnt.Player] + " 는 <color=red>사보타지</color>였습니다.").ToString());//본인이 사보타지임을 알리는 메시지 발송
                 UC.MessagePrint("<color=red>당신은 발각되었습니다!</color>");
                 myPlayer.transform.position = new Vector2(49.5f, 49.5f); // 시작위치로 보내버리기
                 mystate.Blinded = true;
@@ -76,7 +76,7 @@ namespace DoMine
             }
             else
             {
-                MessageCreate((playerNameList[evnt.Player] + " 는 광부였습니다.").ToString());
+                MessageCreate((playerNameList[evnt.Player] + " 는 <color=green>광부</color>였습니다.").ToString());
             }
         }
         public override void OnEvent(PlayerInteraction evnt)
@@ -141,7 +141,7 @@ namespace DoMine
         {
             playerList[evnt.Player] = 2;
             goldSaved++;
-            MessageCreate((playerNameList[evnt.Player] + "가 코인을 입금했습니다.").ToString());
+            MessageCreate((playerNameList[evnt.Player] + "가 <color=yellow>코인</color>을 입금했습니다.").ToString());
         }//금 입금 콜백
         public override void OnEvent(WallDestoryed evnt)
         {
@@ -204,7 +204,7 @@ namespace DoMine
             if (playerList[playerCode] == 1)//본인이 사보타지인지 확인하고 반영 기능
             {
                 isSabotage = true;
-                UC.MessagePrint("당신은 <color=red>사보타지</color>입니다");
+                UC.MessagePrint("당신은 <color=red>사보타지</color>입니다"); 
             }
             else
             {
@@ -495,8 +495,8 @@ namespace DoMine
             {
                 MC.CreateWall(3, item / 100, item % 100, false);
             }
-            UC.MessagePrint("금과 아이템들이 생성되었습니다.");
-            UC.MessagePrint(("금은 총 " + goldAmount + "개 입니다").ToString());
+            UC.MessagePrint("코인과 아이템들이 생성되었습니다.");
+            UC.MessagePrint(("코인은 총 " + goldAmount + "개 입니다").ToString());
         }
 
 

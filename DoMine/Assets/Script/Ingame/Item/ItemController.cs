@@ -53,7 +53,7 @@ namespace DoMine
                         if (player.Inventory[1] == 0 && GameController.isSabotage == false)
                         {
                             player.Inventory[1] = 1;
-                            output = "금을 획득했습니다.";
+                            output = "< color = yellow >코인</ color >을 획득했습니다.";
                         }
                         else
                         {
@@ -63,11 +63,11 @@ namespace DoMine
                         break;
                     case 3:
                         player.Inventory[3]++;
-                        output = "무기를 획득했습니다.";
+                        output = " < color = red >무기</ color >를 획득했습니다.";
                         break;
                     case 4:
                         player.Inventory[4]++;
-                        output = "구급상자를 획득했습니다.";
+                        output = "< color = green >구급상자</ color >를 획득했습니다.";
                         break;
                     case 5:
                         player.Inventory[5] = 1;
