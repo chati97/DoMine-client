@@ -106,6 +106,10 @@ namespace DoMine
                         {
                             UC.MessagePrint("<color=red>공격당했습니다!</color>");
                             mystate.Inventory[0] = 0;
+                            if(playerList[evnt.AttakingPlayer] == 0)//공격자가 광부이면
+                            {
+                                mystate.Inventory[1] = 0;//금도 뺏김
+                            }
                             mystate.Blinded = true;
                             PlayerControl.blindCool = PlayerControl.blindCoolBase;
                             mystate.Paralyzed = true;
@@ -116,6 +120,7 @@ namespace DoMine
                 case 1://사보타지 색출
                     if (playerCode == evnt.TargetPlayer)
                     {
+                        MessageCreate((playerNameList[evnt.AttakingPlayer] + "가 사보타지를 찾습니다").ToString());
                         var evnt2 = SabotageCaptured.Create();
                         evnt2.Player = playerCode;
                         if (isSabotage == true)

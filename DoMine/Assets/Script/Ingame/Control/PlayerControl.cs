@@ -186,11 +186,11 @@ namespace DoMine
                     {
                         if(state.Inventory[1] == 1)
                         {
-                            itemCtrl.CreateItem((int)player.transform.position.x, (int)player.transform.position.y, 1, false);
+                            itemCtrl.CreateItem((int)Math.Round(state.Location.Position.x), (int)Math.Round(state.Location.Position.y), 1, false);
                             state.Inventory[1] = 0;
                             state.isMoving = true;
                         }
-                        MovePlayer(player, new Vector2(50, 50));
+                        MovePlayer(player, new Vector2(49.5f, 49.5f));
                         returnCool = returnCoolBase;
                         state.Paralyzed = true;
                         paralyzeCool = paralyzeCoolBase/5; //귀환시 5초간 정지
@@ -248,10 +248,41 @@ namespace DoMine
                     }
                     JoystickControl.btnNum = 0;
                 }
-                // 플레이어에게 스킬을 사용하는 파트
-                if (Input.GetKeyUp(KeyCode.Q) == true || JoystickControl.btnNum == 4) // 방해
+                else
                 {
-                    if (state.Inventory[3] > 0 && targetPlayer != null /*&& GameController.time < 600 */) //현재는 시간대별로 사용하는거 막아놓음
+                    uiCtrl.MessagePrint("해당위치에 만들 수 없습니다");
+                }
+                JoystickControl.btnNum = 0;
+            }
+            
+            // 플레이어에게 스킬을 사용하는 파트
+            if (Input.GetKeyUp(KeyCode.Q) == true || JoystickControl.btnNum == 4) // 방해
+            {
+                if(state.Inventory[3]>0 && targetPlayer != null /*&& GameController.time < 600 */) //현재는 시간대별로 사용하는거 막아놓음
+                {
+                    uiCtrl.MessagePrint((targetPlayer.GetState<IPlayerState>().PlayerName + "를 <color=red>공격</color>").ToString());
+                    var evnt = PlayerInteraction.Create();
+                    evnt.AttakingPlayer = GameController.playerCode;
+                    evnt.TargetPlayer = targetPlayer.GetState<IPlayerState>().PlayerCode;
+                    evnt.Action = 0;
+                    evnt.Send();
+                    if(targetPlayer.GetState<IPlayerState>().Inventory[1] == 1 && gameCtrl.playerList[GameController.playerCode] == 0)//만약 내가 입금안한 광부고 상대가 금을 가지고 있으면
+                    {
+                        state.Inventory[1] = 1;//금내꺼
+                    }
+                    --state.Inventory[3];
+                }
+                else
+                {
+                    uiCtrl.MessagePrint("사용 할 수 없습니다.");
+                }
+                JoystickControl.btnNum = 0;
+            }
+            if (Input.GetKeyUp(KeyCode.D) == true || JoystickControl.btnNum == 6 || JoystickControl.btnNum == 7) // 사보타지 색출,  윈드웤(은신)
+            {
+                if (!GameController.isSabotage || JoystickControl.btnNum == 7)
+                {
+                    if (targetPlayer != null && canFindSabotage == true)
                     {
                         uiCtrl.MessagePrint((targetPlayer.GetState<IPlayerState>().PlayerName + "를 <color=red>공격</color>").ToString());
                         var evnt = PlayerInteraction.Create();
@@ -585,7 +616,7 @@ namespace DoMine
             BoltEntity nearestPlayer = null;
             foreach (BoltEntity target in gameCtrl.players)
             {
-                if (Vector2.Distance(target.GetState<IPlayerState>().Location.Transform.position, player.transform.position) < 0.5)//유저가 가까이있을시 유저를 조준하도록
+                if (Vector2.Distance(target.GetState<IPlayerState>().Location.Transform.position, player.transform.position) < 0.75)//유저가 가까이있을시 유저를 조준하도록
                 {
                     if (target == gameCtrl.myPlayer)
                     {
@@ -602,7 +633,7 @@ namespace DoMine
             }
             foreach (BoltEntity target in gameCtrl.players)
             {
-                if (Vector2.Distance(target.GetState<IPlayerState>().Location.Transform.position, aim) < 0.5)//유저가 가까이있을시 유저를 조준하도록
+                if (Vector2.Distance(target.GetState<IPlayerState>().Location.Transform.position, aim) < 0.5)//에임위치에 유저있으면 벽 못세우도록
                 {
                 }
                 else
