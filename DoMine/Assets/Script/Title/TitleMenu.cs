@@ -145,5 +145,11 @@ namespace Photon.Bolt
         {
             BoltLauncher.Shutdown();
         }
+        public override void BoltShutdownBegin(AddCallback registerDoneCallback, UdpConnectionDisconnectReason disconnectReason)
+        {
+            loadingPanel.gameObject.SetActive(false);
+            // 게임 이미 시작했다고 메시지 날리기
+            SceneManager.LoadScene("Title");
+        }
     }
 }
