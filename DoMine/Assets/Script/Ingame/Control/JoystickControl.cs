@@ -28,6 +28,7 @@ namespace DoMine
         public Text healNum;
         public Text attackNum;
         public Text barricadeNum;
+        public Text Position;
         public float movedistance = 0;
 
 

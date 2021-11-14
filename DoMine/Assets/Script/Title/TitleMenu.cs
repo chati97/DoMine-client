@@ -21,6 +21,7 @@ namespace Photon.Bolt
         public GameObject namePanel;
         public GameObject roomNameError;
         public GameObject nicknameError;
+        public GameObject EnterRoomError;
         public Button NoRoomName;
         public Button NoNickName;
         public Button Apply;
@@ -148,8 +149,9 @@ namespace Photon.Bolt
         public override void BoltShutdownBegin(AddCallback registerDoneCallback, UdpConnectionDisconnectReason disconnectReason)
         {
             loadingPanel.gameObject.SetActive(false);
+            EnterRoomError.gameObject.SetActive(true);
             // 게임 이미 시작했다고 메시지 날리기
-            SceneManager.LoadScene("Title");
+            //SceneManager.LoadScene("Title");
         }
     }
 }

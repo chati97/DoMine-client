@@ -382,6 +382,8 @@ namespace DoMine
             joystick.NumOfItem(0, state.Inventory[2]);
             joystick.NumOfItem(1, state.Inventory[3]);
             joystick.NumOfItem(2, state.Inventory[4]);
+
+            joystick.Position.text = string.Format("({0}, {1})", (int)player.transform.position.x, (int)player.transform.position.y);
         }
         void Update()
         {
