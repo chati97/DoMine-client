@@ -224,6 +224,9 @@ namespace DoMine
             if(BoltNetwork.IsClient)
             {
                 gameStarted = true;
+                playerNum = evnt.PlayerNum;
+                PlayerControl.barricadeBase = (int)Math.Round((double)(10 / playerNum));
+                PlayerControl.pickaxeAmountBase = (int)Math.Round((double)(150 / playerNum));
             }
             UC.MessagePrint("게임이 시작되었습니다.");
             if (_sabotage != -1)

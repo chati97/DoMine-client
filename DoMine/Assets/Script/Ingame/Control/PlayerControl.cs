@@ -44,8 +44,8 @@ namespace DoMine
         public Animator playerAnimator;
         public Animator hammerAnimator;
         public JoystickControl joystick;
-        int pickaxeAmountBase = 20;
-        int barricadeBase = 5;
+        public static int pickaxeAmountBase = 0;
+        public static int barricadeBase = 0;
         public void MovePlayer(GameObject player, Vector2 location)
         {
             player.transform.position = location;
