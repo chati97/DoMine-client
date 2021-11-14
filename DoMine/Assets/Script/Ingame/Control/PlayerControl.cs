@@ -248,11 +248,6 @@ namespace DoMine
                     }
                     JoystickControl.btnNum = 0;
                 }
-                else
-                {
-                    uiCtrl.MessagePrint("해당위치에 만들 수 없습니다");
-                }
-                JoystickControl.btnNum = 0;
             }
             
             // 플레이어에게 스킬을 사용하는 파트
