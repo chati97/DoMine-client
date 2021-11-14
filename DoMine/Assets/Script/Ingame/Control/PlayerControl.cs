@@ -349,6 +349,7 @@ namespace DoMine
         {
             if (state.Paralyzed)
             {
+                hammer.SetActive(false);
                 state.Animator.Play("hit1_down");
             }
             else if(state.isMining)
