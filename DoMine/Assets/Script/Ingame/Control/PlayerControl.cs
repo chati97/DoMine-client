@@ -13,7 +13,8 @@ namespace DoMine
         [SerializeField] GameObject aimIndicator = null;
         [SerializeField] GameObject playerName = null;
         [SerializeField] GameObject hammer = null;
-        [SerializeField] GameObject gold = null;
+        [SerializeField] GameObject gold_L = null;
+        [SerializeField] GameObject gold_R = null;
         public MapController mapCtrl;
         public ItemController itemCtrl;
         public GameController gameCtrl;
@@ -40,7 +41,6 @@ namespace DoMine
         int lookingAt = -1;//왼쪽부터 시계방향으로 0123
         SpriteRenderer spr;
         SpriteRenderer spr_hammer;
-        SpriteRenderer spr_gold;
         public Animator playerAnimator;
         public Animator hammerAnimator;
         public JoystickControl joystick;
@@ -69,7 +69,6 @@ namespace DoMine
             gameCtrl.players.Add(entity);
             spr = player.gameObject.GetComponentInChildren<SpriteRenderer>();
             spr_hammer = hammer.gameObject.GetComponentInChildren<SpriteRenderer>();
-            spr_gold = gold.gameObject.GetComponentInChildren<SpriteRenderer>();
             if(entity.IsOwner)
             {
                 state.headRight = false;
@@ -77,6 +76,7 @@ namespace DoMine
                 state.isMining = false;
                 state.isBreak = true;
                 state.makeWall = false;
+                state.carryGold = false;
             }
             
             if (entity.IsOwner)
@@ -125,10 +125,10 @@ namespace DoMine
             if(!state.Paralyzed)
             {
                 //조이스틱 컨트롤 부분(현재 xy 단순값 입력되어서 lookingAt변수에 오류가있음, 이는 나중에 xy값계산해서 제일 가까운 값으로 배정하는식으로 변경해야할듯.)
-
                 lookingAt = JoystickControl.lookAt; // joystickcontrol의 방향번호랑 그냥 동기화시켜버림 if문 필요없게 바꿈
                 state.headRight = JoystickControl.headRight; // 머리돌리기도 그대로 동기화
-
+                if (state.Inventory[1] == 1)
+                    speed = 1f;
                 //키보드컨트롤 기존방식과 동일 lookingAt제대로 동작
                 if (Input.GetKey(KeyCode.LeftArrow) == true)
                 {
@@ -202,123 +202,127 @@ namespace DoMine
                     JoystickControl.btnNum = 0;
                 }
             }
-            
-            //벽 파괴
-            if (Input.GetKey(KeyCode.A) == true || JoystickControl.btnNum == 1)
+            if(!state.carryGold)
             {
-                if (breakCool == 0 && mapCtrl.nearestWall != null)
+                //벽 파괴
+                if (Input.GetKey(KeyCode.A) == true || JoystickControl.btnNum == 1)
                 {
-                    
-                    if (Vector2.Distance(player.transform.position, mapCtrl.nearestWall.transform.position) < 0.8 && state.Inventory[0] > 0)
+                    if (breakCool == 0 && mapCtrl.nearestWall != null)
                     {
-                        state.isMining = true;
-                        //mapCtrl.DestroyWall(mapCtrl.nearestWallX, mapCtrl.nearestWallY, false, false, -1);
-                        breakCool = breakCoolBase;
-                        state.Inventory[0]--;//곡괭이 갯수 소진
-                        if(state.Inventory[0] == 0)
+
+                        if (Vector2.Distance(player.transform.position, mapCtrl.nearestWall.transform.position) < 0.8 && state.Inventory[0] > 0)
                         {
-                            joystick.pick.GetComponent<Button>().interactable = false; //곡괭이 갯수 전부 소진 시 버튼 비활성화
+                            state.isMining = true;
+                            //mapCtrl.DestroyWall(mapCtrl.nearestWallX, mapCtrl.nearestWallY, false, false, -1);
+                            breakCool = breakCoolBase;
+                            state.Inventory[0]--;//곡괭이 갯수 소진
+                            if (state.Inventory[0] == 0)
+                            {
+                                joystick.pick.GetComponent<Button>().interactable = false; //곡괭이 갯수 전부 소진 시 버튼 비활성화
+                            }
                         }
                     }
-                }
-                else
-                {
-                    //Debug.Log("in Breaking-Cooltime");
-                }
-                JoystickControl.btnNum = 0;
-            }
-
-            //파괴가능 벽 생성(바리케이드)
-            if (Input.GetKey(KeyCode.S) == true || JoystickControl.btnNum == 2)
-            {
-                if (state.Inventory[2] > 0 && canCreateWall)
-                {
-                    state.makeWall = true;
-                    createCool = createCoolBase;
-                    output = mapCtrl.CreateWall(4, (int)aim.x, (int)aim.y, false);
-                    if (output == 0)
-                        --state.Inventory[2];
                     else
-                        uiCtrl.MessagePrint("해당위치에 만들 수 없습니다");
-                }
-                else
-                {
-                    uiCtrl.MessagePrint("해당위치에 만들 수 없습니다");
-                }
-                JoystickControl.btnNum = 0;
-            }
-            
-            // 플레이어에게 스킬을 사용하는 파트
-            if (Input.GetKeyUp(KeyCode.Q) == true || JoystickControl.btnNum == 4) // 방해
-            {
-                if(state.Inventory[3]>0 && targetPlayer != null /*&& GameController.time < 600 */) //현재는 시간대별로 사용하는거 막아놓음
-                {
-                    uiCtrl.MessagePrint((targetPlayer.GetState<IPlayerState>().PlayerName + "를 <color=red>공격</color>").ToString());
-                    var evnt = PlayerInteraction.Create();
-                    evnt.AttakingPlayer = GameController.playerCode;
-                    evnt.TargetPlayer = targetPlayer.GetState<IPlayerState>().PlayerCode;
-                    evnt.Action = 0;
-                    evnt.Send();
-                    --state.Inventory[3];
-                }
-                else
-                {
-                    uiCtrl.MessagePrint("사용 할 수 없습니다.");
-                }
-                JoystickControl.btnNum = 0;
-            }
-            if (Input.GetKeyUp(KeyCode.D) == true || JoystickControl.btnNum == 6 || JoystickControl.btnNum == 7) // 사보타지 색출,  윈드웤(은신)
-            {
-                if (!GameController.isSabotage || JoystickControl.btnNum == 7)
-                {
-                    if (targetPlayer != null && canFindSabotage == true/* && GameController.time < 600*/)
                     {
-                        uiCtrl.MessagePrint(("사보타지인지 확인합니다 : " + targetPlayer.GetState<IPlayerState>().PlayerName).ToString());
+                        //Debug.Log("in Breaking-Cooltime");
+                    }
+                    JoystickControl.btnNum = 0;
+                }
+
+                //파괴가능 벽 생성(바리케이드)
+                if (Input.GetKey(KeyCode.S) == true || JoystickControl.btnNum == 2)
+                {
+                    if (state.Inventory[2] > 0 && canCreateWall)
+                    {
+                        state.makeWall = true;
+                        createCool = createCoolBase;
+                        output = mapCtrl.CreateWall(4, (int)aim.x, (int)aim.y, false);
+                        if (output == 0)
+                            --state.Inventory[2];
+                        else
+                            uiCtrl.MessagePrint("해당위치에 만들 수 없습니다");
+                    }
+                    else
+                    {
+                        uiCtrl.MessagePrint("해당위치에 만들 수 없습니다");
+                    }
+                    JoystickControl.btnNum = 0;
+                }
+                // 플레이어에게 스킬을 사용하는 파트
+                if (Input.GetKeyUp(KeyCode.Q) == true || JoystickControl.btnNum == 4) // 방해
+                {
+                    if (state.Inventory[3] > 0 && targetPlayer != null /*&& GameController.time < 600 */) //현재는 시간대별로 사용하는거 막아놓음
+                    {
+                        uiCtrl.MessagePrint((targetPlayer.GetState<IPlayerState>().PlayerName + "를 <color=red>공격</color>").ToString());
                         var evnt = PlayerInteraction.Create();
                         evnt.AttakingPlayer = GameController.playerCode;
                         evnt.TargetPlayer = targetPlayer.GetState<IPlayerState>().PlayerCode;
-                        evnt.Action = 1;
+                        evnt.Action = 0;
                         evnt.Send();
-                        canFindSabotage = false;
-                        joystick.minerSkill.GetComponent<Button>().interactable = false;
+                        --state.Inventory[3];
                     }
                     else
                     {
                         uiCtrl.MessagePrint("사용 할 수 없습니다.");
                     }
+                    JoystickControl.btnNum = 0;
                 }
-                else
+                if (Input.GetKeyUp(KeyCode.D) == true || JoystickControl.btnNum == 6 || JoystickControl.btnNum == 7) // 사보타지 색출,  윈드웤(은신)
                 {
-                    if (windWalkCool == 0)
+                    if (!GameController.isSabotage || JoystickControl.btnNum == 7)
                     {
-                        windWalkDuration = windWalkDurationBase;
-                        windWalkCool = windWalkCoolBase;
-                        state.WindWalking = true;
+                        if (targetPlayer != null && canFindSabotage == true/* && GameController.time < 600*/)
+                        {
+                            uiCtrl.MessagePrint(("사보타지인지 확인합니다 : " + targetPlayer.GetState<IPlayerState>().PlayerName).ToString());
+                            var evnt = PlayerInteraction.Create();
+                            evnt.AttakingPlayer = GameController.playerCode;
+                            evnt.TargetPlayer = targetPlayer.GetState<IPlayerState>().PlayerCode;
+                            evnt.Action = 1;
+                            evnt.Send();
+                            canFindSabotage = false;
+                            joystick.minerSkill.GetComponent<Button>().interactable = false;
+                        }
+                        else
+                        {
+                            uiCtrl.MessagePrint("사용 할 수 없습니다.");
+                        }
                     }
-                }
-                JoystickControl.btnNum = 0;
-            }
-            if (Input.GetKeyUp(KeyCode.E) == true || JoystickControl.btnNum == 3) // 회복
-            {
-                if (state.Inventory[4] > 0 && targetPlayer != null)
-                {
-                    if(targetPlayer.GetState<IPlayerState>().Blinded == true) // 대상이 시야가 축소된상태라면
+                    else
                     {
-                        uiCtrl.MessagePrint(("<color=green>치료</color> : " + targetPlayer.GetState<IPlayerState>().PlayerName).ToString());
-                        var evnt = PlayerInteraction.Create();
-                        evnt.AttakingPlayer = GameController.playerCode;
-                        evnt.TargetPlayer = targetPlayer.GetState<IPlayerState>().PlayerCode;
-                        evnt.Action = 2;
-                        evnt.Send();
-                        --state.Inventory[4];
+                        if (windWalkCool == 0)
+                        {
+                            windWalkDuration = windWalkDurationBase;
+                            windWalkCool = windWalkCoolBase;
+                            state.WindWalking = true;
+                        }
                     }
+                    JoystickControl.btnNum = 0;
                 }
-                else
+                if (Input.GetKeyUp(KeyCode.E) == true || JoystickControl.btnNum == 3) // 회복
                 {
-                    uiCtrl.MessagePrint("사용 할 수 없습니다.");
+                    if (state.Inventory[4] > 0 && targetPlayer != null)
+                    {
+                        if (targetPlayer.GetState<IPlayerState>().Blinded == true) // 대상이 시야가 축소된상태라면
+                        {
+                            uiCtrl.MessagePrint(("<color=green>치료</color> : " + targetPlayer.GetState<IPlayerState>().PlayerName).ToString());
+                            var evnt = PlayerInteraction.Create();
+                            evnt.AttakingPlayer = GameController.playerCode;
+                            evnt.TargetPlayer = targetPlayer.GetState<IPlayerState>().PlayerCode;
+                            evnt.Action = 2;
+                            evnt.Send();
+                            --state.Inventory[4];
+                        }
+                    }
+                    else
+                    {
+                        uiCtrl.MessagePrint("사용 할 수 없습니다.");
+                    }
+                    JoystickControl.btnNum = 0;
                 }
-                JoystickControl.btnNum = 0;
             }
+            
+            
+            
                 //아이템 획득 코드
             if (itemCtrl.nearestItem != null)
             {
@@ -333,7 +337,10 @@ namespace DoMine
 
                 }
                 if (state.Inventory[1] == 1)
+                {
                     state.isMoving = false;
+                    state.carryGold = true;
+                }
             }
             joystick.compasscontrol(player, new Vector2(49, 49), 4f); //나침반 돌아가는 함수(JoystickControl에 구현)
            
@@ -347,6 +354,12 @@ namespace DoMine
         }
         void Update()
         {
+            if (state.Inventory[1] == 0)
+            {
+                state.carryGold = false;
+                gold_R.SetActive(false);
+                gold_L.SetActive(false);
+            }
             if (state.Paralyzed)
             {
                 hammer.SetActive(false);
@@ -365,24 +378,40 @@ namespace DoMine
             else
             {
                 hammer.SetActive(false);
-                switch (state.Act)
+                if(!state.carryGold)
                 {
-                    case 0:
-                        state.Animator.Play("Idle");
-                        break;
-                    case 1:
-                        if (state.isMoving)
-                        {
-                            state.Animator.Play("walk_side");
-                        }
-                        else
-                        {
-                            gold.SetActive(true);
-                            state.Animator.Play("carry_side");
-                        }
-                        break;
-                    default:
-                        break;
+                    switch (state.Act)
+                    {
+                        case 0:
+                            state.Animator.Play("Idle");
+                            break;
+                        case 1:
+                            if (state.isMoving)
+                            {
+                                state.Animator.Play("walk_side");
+                            }
+                            else
+                            {
+                                
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else
+                {
+                    if(state.headRight)
+                    {
+                        gold_R.SetActive(true);
+                        gold_L.SetActive(false);
+                    }
+                    else
+                    {
+                        gold_L.SetActive(true);
+                        gold_R.SetActive(false);
+                    }
+                    state.Animator.Play("carry_side");
                 }
             }
             
@@ -390,13 +419,11 @@ namespace DoMine
             {
                 spr.flipX = true;
                 spr_hammer.flipX = true;
-                spr_gold.flipX = true;
             }
             else
             {
                 spr.flipX = false;
                 spr_hammer.flipX = false;
-                spr_gold.flipX = false;
             }
         }
         // Update is called once per frame
