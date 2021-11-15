@@ -32,6 +32,7 @@ namespace Photon.Bolt
         public Text loading;
         public Text playerName;
         bool isNormal;
+        public static bool isGameEnd;
         [SerializeField] GameObject joinPanel;
         [SerializeField] GameObject mainPanel;
 
@@ -45,6 +46,7 @@ namespace Photon.Bolt
             NoRoomName.onClick.AddListener(onClickNoRoom);
             NoNickName.onClick.AddListener(onClickNoNick);
             isNormal = false;
+            isGameEnd = false;
         }
 
         private void onClickNoNick()
@@ -153,12 +155,15 @@ namespace Photon.Bolt
         }
         public override void BoltShutdownBegin(AddCallback registerDoneCallback, UdpConnectionDisconnectReason disconnectReason)
         {
-            if(isNormal==false)
+            if (isNormal == false)
             {
-                mainPanel.SetActive(true);
-                joinPanel.SetActive(false);
-                loadingPanel.gameObject.SetActive(false);
-                EnterRoomError.gameObject.SetActive(true);
+                if (isGameEnd == false)
+                {
+                    mainPanel.SetActive(true);
+                    joinPanel.SetActive(false);
+                    loadingPanel.gameObject.SetActive(false);
+                    EnterRoomError.gameObject.SetActive(true);
+                }
             }
             // 게임 이미 시작했다고 메시지 날리기
             //SceneManager.LoadScene("Title");

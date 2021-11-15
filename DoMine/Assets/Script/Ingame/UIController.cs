@@ -112,6 +112,7 @@ namespace DoMine
         }
         public void GameExit()
         {
+            TitleMenu.isGameEnd = true;
             BoltLauncher.Shutdown();
             SceneManager.LoadScene("Title");
         }
