@@ -46,6 +46,9 @@ namespace DoMine
         public JoystickControl joystick;
         public static int pickaxeAmountBase = 0;
         public static int barricadeBase = 0;
+        public GameObject soundhammer;
+        AudioSource hammersound;
+        bool soundcheck = false;
         public void MovePlayer(GameObject player, Vector2 location)
         {
             player.transform.position = location;
@@ -69,6 +72,7 @@ namespace DoMine
             gameCtrl.players.Add(entity);
             spr = player.gameObject.GetComponentInChildren<SpriteRenderer>();
             spr_hammer = hammer.gameObject.GetComponentInChildren<SpriteRenderer>();
+            hammersound = soundhammer.gameObject.GetComponent<AudioSource>();
             if(entity.IsOwner)
             {
                 state.headRight = false;
@@ -210,6 +214,7 @@ namespace DoMine
                         if (Vector2.Distance(player.transform.position, mapCtrl.nearestWall.transform.position) < 0.8 && state.Inventory[0] > 0)
                         {
                             state.isMining = true;
+                            soundcheck = true;
                             //mapCtrl.DestroyWall(mapCtrl.nearestWallX, mapCtrl.nearestWallY, false, false, -1);
                             breakCool = breakCoolBase;
                             state.Inventory[0]--;//곡괭이 갯수 소진
@@ -378,6 +383,7 @@ namespace DoMine
             else if(state.isMining)
             {
                 hammer.SetActive(true);
+                
                 state.Animator.Play("hammring_ham");
             }
             else if(state.makeWall)
@@ -446,6 +452,11 @@ namespace DoMine
                         state.isBreak = false;
                         mapCtrl.DestroyWall(mapCtrl.nearestWallX, mapCtrl.nearestWallY, false, false, -1);
 
+                    }
+                    if(breakCool < 0.2f && soundcheck)
+                    {
+                        soundcheck = false;
+                        hammersound.Play();
                     }
 
                 }
