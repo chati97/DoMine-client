@@ -98,7 +98,12 @@ namespace DoMine
                 }
             }
             playerName.GetComponent<TextMeshPro>().text = state.PlayerName;
-
+            pickaxeAmountBase = 0;
+            barricadeBase = 0;
+            for (int i = 0; i < 5; i++) //인벤초기화
+            {
+                state.Inventory[i] = 0;
+            }
         }
         void OnDestroy()
         {
@@ -169,7 +174,7 @@ namespace DoMine
                 {
                     Vector3 upMovement = Vector3.up * joystick.Vertical;
                     Vector3 rightMovement = Vector3.right * joystick.Horizontal;
-                    playerRB.position += ((Vector2)upMovement + (Vector2)rightMovement) * speed * JoystickControl.distance * BoltNetwork.FrameDeltaTime;
+                    playerRB.position += ((Vector2)upMovement + (Vector2)rightMovement) * 1.5f * speed * JoystickControl.distance * BoltNetwork.FrameDeltaTime;
                     //state.isMoving = true;
                     state.isMoving = true; //플레이어 이동시 애니메이션
                 }
@@ -189,12 +194,12 @@ namespace DoMine
                             itemCtrl.CreateItem((int)Math.Round(state.Location.Position.x), (int)Math.Round(state.Location.Position.y), 1, false);
                             state.Inventory[1] = 0;
                             state.isMoving = true;
-                            gameCtrl.MessageCreate(("(" + (int)Math.Round(state.Location.Position.x)+ ","+ (int)Math.Round(state.Location.Position.y)+ ") 에서 <color=yellow>코인</color>이 떨어졌습니다").ToString());
+                            GameController.MessageCreate(("(" + (int)Math.Round(state.Location.Position.x)+ ","+ (int)Math.Round(state.Location.Position.y)+ ") 에서 <color=yellow>코인</color>이 떨어졌습니다").ToString());
                         }
                         MovePlayer(player, new Vector2(49.5f, 49.5f));
                         returnCool = returnCoolBase;
                         state.Paralyzed = true;
-                        paralyzeCool = paralyzeCoolBase/5; //귀환시 5초간 정지
+                        paralyzeCool = paralyzeCoolBase/2; //귀환시 5초간 정지
                     }
                     else
                     {
@@ -202,129 +207,138 @@ namespace DoMine
                     }
                     JoystickControl.btnNum = 0;
                 }
-            }
-            if(!state.carryGold)
-            {
-                //벽 파괴
-                if (Input.GetKey(KeyCode.A) == true || JoystickControl.btnNum == 1)
+                if (!state.carryGold)
                 {
-                    if (breakCool == 0 && mapCtrl.nearestWall != null)
+                    //벽 파괴
+                    if (Input.GetKey(KeyCode.A) == true || JoystickControl.btnNum == 1)
                     {
-
-                        if (Vector2.Distance(player.transform.position, mapCtrl.nearestWall.transform.position) < 0.8 && state.Inventory[0] > 0)
+                        if (breakCool == 0 && mapCtrl.nearestWall != null)
                         {
-                            state.isMining = true;
-                            soundcheck = true;
-                            //mapCtrl.DestroyWall(mapCtrl.nearestWallX, mapCtrl.nearestWallY, false, false, -1);
-                            breakCool = breakCoolBase;
-                            state.Inventory[0]--;//곡괭이 갯수 소진
-                        }
-                    }
-                    else
-                    {
-                        //Debug.Log("in Breaking-Cooltime");
-                    }
-                    JoystickControl.btnNum = 0;
-                }
 
-                //파괴가능 벽 생성(바리케이드)
-                if (Input.GetKey(KeyCode.S) == true || JoystickControl.btnNum == 2)
-                {
-                    if (state.Inventory[2] > 0 && canCreateWall)
-                    {
-                        state.makeWall = true;
-                        createCool = createCoolBase;
-                        output = mapCtrl.CreateWall(4, (int)aim.x, (int)aim.y, false);
-                        if (output == 0)
-                            --state.Inventory[2];
+                            if (Vector2.Distance(player.transform.position, mapCtrl.nearestWall.transform.position) < 0.8 && state.Inventory[0] > 0)
+                            {
+                                state.isMining = true;
+                                soundcheck = true;
+                                //mapCtrl.DestroyWall(mapCtrl.nearestWallX, mapCtrl.nearestWallY, false, false, -1);
+                                breakCool = breakCoolBase;
+                                state.Inventory[0]--;//곡괭이 갯수 소진
+                            }
+                        }
                         else
-                            uiCtrl.MessagePrint("해당위치에 만들 수 없습니다");
-                    }
-                    else
-                    {
-                        uiCtrl.MessagePrint("해당위치에 만들 수 없습니다");
-                    }
-                    JoystickControl.btnNum = 0;
-                }
-
-
-                // 플레이어에게 스킬을 사용하는 파트
-                if (Input.GetKeyUp(KeyCode.Q) == true || JoystickControl.btnNum == 4) // 방해
-                {
-                    if (state.Inventory[3] > 0 && targetPlayer != null /*&& GameController.time < 600 */) //현재는 시간대별로 사용하는거 막아놓음
-                    {
-                        if (targetPlayer.GetState<IPlayerState>().Inventory[1] == 1 && gameCtrl.playerList[GameController.playerCode] == 0)//만약 내가 입금안한 광부고 상대가 금을 가지고 있으면
                         {
-                            state.Inventory[1] = 1;//금내꺼
-                            gameCtrl.MessageCreate((gameCtrl.playerNameList[GameController.playerCode] + "가 " + (int)Math.Round(state.Location.Position.x) + "," + (int)Math.Round(state.Location.Position.y) + ") 에서 <color=yellow>코인</color>을 획득했습니다.").ToString());
+                            //Debug.Log("in Breaking-Cooltime");
                         }
-                        uiCtrl.MessagePrint((targetPlayer.GetState<IPlayerState>().PlayerName + "를 <color=red>공격</color>").ToString());
-                        var evnt = PlayerInteraction.Create();
-                        evnt.AttakingPlayer = GameController.playerCode;
-                        evnt.TargetPlayer = targetPlayer.GetState<IPlayerState>().PlayerCode;
-                        evnt.Action = 0;
-                        evnt.Send();
-                        --state.Inventory[3];
+                        JoystickControl.btnNum = 0;
                     }
-                    else
+
+                    //파괴가능 벽 생성(바리케이드)
+                    if (Input.GetKey(KeyCode.S) == true || JoystickControl.btnNum == 2)
                     {
-                        uiCtrl.MessagePrint("사용 할 수 없습니다.");
-                    }
-                    JoystickControl.btnNum = 0;
-                }
-                if (Input.GetKeyUp(KeyCode.D) == true || JoystickControl.btnNum == 6 || JoystickControl.btnNum == 7) // 사보타지 색출,  윈드웤(은신)
-                {
-                    if (!GameController.isSabotage || JoystickControl.btnNum == 7)
-                    {
-                        if (targetPlayer != null && canFindSabotage == true/* && GameController.time < 600*/)
+                        if (state.Inventory[2] > 0 && canCreateWall)
                         {
-                            uiCtrl.MessagePrint(("사보타지인지 확인합니다 : " + targetPlayer.GetState<IPlayerState>().PlayerName).ToString());
+                            state.makeWall = true;
+                            createCool = createCoolBase;
+                            output = mapCtrl.CreateWall(4, (int)aim.x, (int)aim.y, false);
+                            if (output == 0)
+                                --state.Inventory[2];
+                            else
+                                uiCtrl.MessagePrint("해당위치에 만들 수 없습니다");
+                        }
+                        else
+                        {
+                            uiCtrl.MessagePrint("해당위치에 만들 수 없습니다");
+                        }
+                        JoystickControl.btnNum = 0;
+                    }
+
+
+                    // 플레이어에게 스킬을 사용하는 파트
+                    if (Input.GetKeyUp(KeyCode.Q) == true || JoystickControl.btnNum == 4) // 방해
+                    {
+                        if (state.Inventory[3] > 0 && targetPlayer != null && targetPlayer.GetState<IPlayerState>().Paralyzed == false /*&& GameController.time < 600 */) //상대가 cc안걸리고 내가 공격템이 있고 타겟플레이어가 있으면
+                        {
+                            if (targetPlayer.GetState<IPlayerState>().Inventory[1] == 1 && gameCtrl.playerList[GameController.playerCode] == 0 && targetPlayer.GetState<IPlayerState>().Inventory[4] > 0)//만약 내가 입금안한 광부고 상대가 힐템없이 금을 가지고 있으면
+                            {
+                                state.Inventory[1] = 1;//금내꺼
+                                GameController.MessageCreate((gameCtrl.playerNameList[GameController.playerCode] + "가 " + (int)Math.Round(state.Location.Position.x) + "," + (int)Math.Round(state.Location.Position.y) + ") 에서 <color=yellow>코인</color>을 획득했습니다.").ToString());
+                            }
+                            uiCtrl.MessagePrint((targetPlayer.GetState<IPlayerState>().PlayerName + "를 <color=red>공격</color>").ToString());
                             var evnt = PlayerInteraction.Create();
                             evnt.AttakingPlayer = GameController.playerCode;
                             evnt.TargetPlayer = targetPlayer.GetState<IPlayerState>().PlayerCode;
-                            evnt.Action = 1;
+                            evnt.Action = 0;
                             evnt.Send();
-                            canFindSabotage = false;
-                            joystick.minerSkill.GetComponent<Button>().interactable = false;
+                            --state.Inventory[3];
                         }
                         else
                         {
                             uiCtrl.MessagePrint("사용 할 수 없습니다.");
                         }
+                        JoystickControl.btnNum = 0;
                     }
-                    else
+                    if (Input.GetKeyUp(KeyCode.D) == true || JoystickControl.btnNum == 6 || JoystickControl.btnNum == 7) // 사보타지 색출,  윈드웤(은신)
                     {
-                        if (windWalkCool == 0)
+                        if (!GameController.isSabotage || JoystickControl.btnNum == 7)
                         {
-                            windWalkDuration = windWalkDurationBase;
-                            windWalkCool = windWalkCoolBase;
-                            state.WindWalking = true;
+                            if (targetPlayer != null && canFindSabotage == true && GameController.time < 300)
+                            {
+                                uiCtrl.MessagePrint(("사보타지인지 확인합니다 : " + targetPlayer.GetState<IPlayerState>().PlayerName).ToString());
+                                var evnt = PlayerInteraction.Create();
+                                evnt.AttakingPlayer = GameController.playerCode;
+                                evnt.TargetPlayer = targetPlayer.GetState<IPlayerState>().PlayerCode;
+                                evnt.Action = 1;
+                                evnt.Send();
+                                canFindSabotage = false;
+                                joystick.minerSkill.GetComponent<Button>().interactable = false;
+                            }
+                            else if(GameController.time > 300)
+                            {
+                                uiCtrl.MessagePrint("5분뒤부터 사용 할 수 없습니다.");
+                            }
+                            else
+                            {
+                                uiCtrl.MessagePrint("사용 할 수 없습니다.");
+                            }
                         }
-                    }
-                    JoystickControl.btnNum = 0;
-                }
-                if (Input.GetKeyUp(KeyCode.E) == true || JoystickControl.btnNum == 3) // 회복
-                {
-                    if (state.Inventory[4] > 0 && targetPlayer != null)
-                    {
-                        if (targetPlayer.GetState<IPlayerState>().Blinded == true) // 대상이 시야가 축소된상태라면
+                        else
                         {
-                            uiCtrl.MessagePrint(("<color=green>치료</color> : " + targetPlayer.GetState<IPlayerState>().PlayerName).ToString());
-                            var evnt = PlayerInteraction.Create();
-                            evnt.AttakingPlayer = GameController.playerCode;
-                            evnt.TargetPlayer = targetPlayer.GetState<IPlayerState>().PlayerCode;
-                            evnt.Action = 2;
-                            evnt.Send();
-                            --state.Inventory[4];
+                            if (windWalkCool == 0)
+                            {
+                                windWalkDuration = windWalkDurationBase;
+                                windWalkCool = windWalkCoolBase;
+                                state.WindWalking = true;
+                            }
+                           else
+                            {
+                                uiCtrl.MessagePrint("사용 할 수 없습니다.");
+                            }
                         }
+                        JoystickControl.btnNum = 0;
                     }
-                    else
+                    if (Input.GetKeyUp(KeyCode.E) == true || JoystickControl.btnNum == 3) // 회복
                     {
-                        uiCtrl.MessagePrint("사용 할 수 없습니다.");
+                        if (state.Inventory[4] > 0 && targetPlayer != null)
+                        {
+                            if (targetPlayer.GetState<IPlayerState>().Blinded == true) // 대상이 시야가 축소된상태라면
+                            {
+                                uiCtrl.MessagePrint(("<color=green>치료</color> : " + targetPlayer.GetState<IPlayerState>().PlayerName).ToString());
+                                var evnt = PlayerInteraction.Create();
+                                evnt.AttakingPlayer = GameController.playerCode;
+                                evnt.TargetPlayer = targetPlayer.GetState<IPlayerState>().PlayerCode;
+                                evnt.Action = 2;
+                                evnt.Send();
+                                --state.Inventory[4];
+                            }
+                        }
+                        else
+                        {
+                            uiCtrl.MessagePrint("사용 할 수 없습니다.");
+                        }
+                        JoystickControl.btnNum = 0;
                     }
-                    JoystickControl.btnNum = 0;
                 }
             }
+            
                 //아이템 획득 코드
             if (itemCtrl.nearestItem != null)
             {

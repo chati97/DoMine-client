@@ -8,6 +8,7 @@ namespace DoMine
     public class ItemController : MonoBehaviour
     {
         public int[] itemArray = new int[10000];
+        [SerializeField] MapController MC = null;
         public GameObject player = null;
         public GameObject[] itemObject = new GameObject[10000];
         [SerializeField] GameObject gold = null;
@@ -98,6 +99,7 @@ namespace DoMine
                 case 1:
                     _targetItem = gold;
                     itemArray[x * 100 + y] = 1;
+                    MC.goldChest.Add(x * 100 + y);
                     break;
                 case 2:
                     break;

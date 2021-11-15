@@ -11,6 +11,7 @@ namespace DoMine
         public int[] mapArray = new int[10000];
         public GameObject[] mapObject = new GameObject[10000];
         public GameObject player = null;
+        [SerializeField] UIController UC;
         [SerializeField] GameObject breakable = null;
         [SerializeField] GameObject unbreakable = null;
         [SerializeField] GameObject chest = null;
@@ -19,6 +20,7 @@ namespace DoMine
         [SerializeField] Transform chestParent = null;
         [SerializeField] GameObject wallIndicator = null;
         [SerializeField] GameObject chestSensor = null;
+        public List<int> goldChest = new List<int>();
         public GameObject nearestWall = null;
         public int nearestWallX = -1;
         public int nearestWallY = -1;
@@ -155,7 +157,6 @@ namespace DoMine
                 {
                     Destroy(mapObject[x * 100 + y]);
                     mapObject[x * 100 + y] = null;
-                    mapArray[x * 100 + y] = 0;
                     if (callback == false) //콜백이 false일시(본인이 처음 보내는거면)
                     {
                         //Debug.Log(nearestWallX + "," + nearestWallY);
@@ -164,9 +165,21 @@ namespace DoMine
                         evnt.LocationY = y;
                         evnt.Player = GameController.playerCode;
                         evnt.Send();
+                        if (mapArray[x * 100 + y] == 3)//만약 상자를 부술때
+                        {
+                            foreach (int gold in goldChest)//goldchest에 있는 항목이면
+                            {
+                                if (gold == x * 100 + y)//전체메시지 발송
+                                {
+                                    GameController.MessageCreate("누군가 (" + x + ", " + y + ")에서 <color=yellow>코인</color>을 발견했습니다");
+                                }
+                            }
+                        }
                     }
+                    mapArray[x * 100 + y] = 0;//코인 발견 메시지 때문에 일단 뒤로 빼둠
                 }
             }
+            
             
         }
 
@@ -239,9 +252,13 @@ namespace DoMine
                 chestSensor.transform.position = player.transform.position + new Vector3(0,0.25f,0);
                 if(nearestDistance < 5)//(302010서 20105로 축소)
                 {
-                    chestSensor.gameObject.GetComponent<Renderer>().material.color = Color.green;
+                    chestSensor.gameObject.GetComponent<Renderer>().material.color = Color.blue;
                 }
                 else if (nearestDistance < 10)
+                {
+                    chestSensor.gameObject.GetComponent<Renderer>().material.color = Color.green;
+                }
+                else if (nearestDistance < 15)
                 {
                     chestSensor.gameObject.GetComponent<Renderer>().material.color = Color.yellow;
                 }

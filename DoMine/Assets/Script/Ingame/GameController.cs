@@ -26,6 +26,7 @@ namespace DoMine
         public static bool isSabotage;//플레이어가 사보타지인지 확인
         public static bool gameStarted;//게임 시작여부
         public static bool gameLoaded;//게임로딩여부
+        public static bool gameEnded;//게임종료여부
         IPlayerState mystate = null;//본인 상태 수정위해 가지고 있는변수
         float timeBase = 600;
 
@@ -43,11 +44,13 @@ namespace DoMine
         // Start is called before the first frame update
         void Start()
         {
+            TitleMenu.isGameEnd = false;
             playerCode = -1;
             sabotages = 0;
             goldSaved = 0;
             gameStarted = false;//게임 시작여부
             gameLoaded = false;//게임로딩여부
+            gameEnded = false; 
             if (BoltNetwork.IsServer)
             {
                 playerNum = 1;
@@ -70,8 +73,12 @@ namespace DoMine
 
         public override void BoltShutdownBegin(AddCallback registerDoneCallback, UdpConnectionDisconnectReason disconnectReason)//호스트가 튕겼을시
         {
-            time = 1000;//게임 중단
-            UC.GameWinner(-2, false, false, null);//게임종료화면으로 이동
+            if(gameEnded !=true) // 게임 종료시엔 호스트가 나가도 종료화면이 그대로 이어지도록 만약 아닐시엔 팅김
+            {
+                TitleMenu.isNormal = false;
+                time = 1000;//게임 중단
+                UC.GameWinner(-2, false, false, null);//게임종료화면으로 이동
+            }
         }
         public override void OnEvent(SabotageCaptured evnt)
         {
@@ -110,7 +117,8 @@ namespace DoMine
                         {
                             UC.MessagePrint("<color=red>공격당했습니다!</color>");
                             mystate.Inventory[0] = 0;
-                            if(playerList[evnt.AttakingPlayer] == 0)//공격자가 광부이면
+                            mystate.Inventory[2] = 0;
+                            if (playerList[evnt.AttakingPlayer] == 0)//공격자가 광부이면
                             {
                                 mystate.Inventory[1] = 0;//금도 뺏김
                             }
@@ -141,7 +149,8 @@ namespace DoMine
                 case 2:// 도움을 받았을 때
                     if (playerCode == evnt.TargetPlayer)
                     {
-                        mystate.Inventory[0] = 15;
+                        mystate.Inventory[0] = PlayerControl.pickaxeAmountBase;
+                        mystate.Inventory[2] = PlayerControl.barricadeBase;
                         mystate.Blinded = false;
                         PlayerControl.blindCool = 0;
                         mystate.Paralyzed = false;
@@ -210,6 +219,8 @@ namespace DoMine
             playerNum = evnt.PlayerNum;
             PlayerControl.barricadeBase = (int)Math.Round((double)(10 / playerNum));
             PlayerControl.pickaxeAmountBase = (int)Math.Round((double)(150 / playerNum));
+            mystate.Inventory[0] = PlayerControl.pickaxeAmountBase;
+            mystate.Inventory[2] = PlayerControl.barricadeBase;
             if (gameStarted == false || BoltNetwork.IsServer)
             {
                 for (int i = -3; i < 3; i++)
@@ -257,9 +268,6 @@ namespace DoMine
             name.Code = playerCode;
             name.Name = mystate.PlayerName;
             name.Send();
-            mystate.Inventory[3] = 0;
-            mystate.Inventory[4] = 0;
-            mystate.Inventory[5] = 0;
         }
 
         public override void OnEvent(WallCreated evnt)// 최초 생성이후 자잘한 바리케이트나 맵이벤트시 호출
@@ -293,6 +301,9 @@ namespace DoMine
 
         public override void OnEvent(GameEnd evnt)//게임 종료이벤트 수신 함수
         {
+            TitleMenu.isGameEnd = true;
+            TitleMenu.isNormal = true;
+            gameEnded = true;
             bool _amIWin = false;
             int _temp = evnt.WinPlayer;
             if (evnt.WinPlayer != -1)
@@ -342,6 +353,7 @@ namespace DoMine
                 {
                     if (BoltNetwork.IsServer && goldAmount != 0)
                     {
+                        time = 1000;//update문 발동안되는 값
                         GameEnd();
                     }
                 }
@@ -356,7 +368,7 @@ namespace DoMine
             }
         }
 
-        public void MessageCreate(string message)
+        public static void MessageCreate(string message)
         {
             var evnt = MessageToAll.Create();
             evnt.Message = message;
