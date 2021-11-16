@@ -293,6 +293,16 @@ namespace DoMine
                                 evnt.Send();
                                 canFindSabotage = false;
                                 joystick.minerSkill.GetComponent<Button>().interactable = false;
+                                if(gameCtrl.playerList[targetPlayer.GetState<IPlayerState>().PlayerCode] != 1)//만약 사보타지가 아니면
+                                {
+                                    state.Inventory[0] = 0;
+                                    state.Inventory[2] = 0;
+                                    state.Blinded = true;
+                                    blindCool = blindCoolBase;
+                                    blindCool = blindCoolBase;
+                                    state.Paralyzed = true;
+                                    paralyzeCool = paralyzeCoolBase; //자업자득 파산엔딩
+                                }
                             }
                             else if(GameController.time > 300)
                             {
