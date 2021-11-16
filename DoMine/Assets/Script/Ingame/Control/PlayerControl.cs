@@ -81,6 +81,7 @@ namespace DoMine
                 state.isBreak = true;
                 state.makeWall = false;
                 state.carryGold = false;
+                state.nearWall = false;
             }
             
             if (entity.IsOwner)
@@ -215,12 +216,14 @@ namespace DoMine
                         if (breakCool == 0 && mapCtrl.nearestWall != null)
                         {
 
+                            state.isMining = true;
+                            breakCool = breakCoolBase;
                             if (Vector2.Distance(player.transform.position, mapCtrl.nearestWall.transform.position) < 0.8 && state.Inventory[0] > 0)
                             {
-                                state.isMining = true;
+                                state.nearWall = true;
                                 soundcheck = true;
                                 //mapCtrl.DestroyWall(mapCtrl.nearestWallX, mapCtrl.nearestWallY, false, false, -1);
-                                breakCool = breakCoolBase;
+                                
                                 state.Inventory[0]--;//곡괭이 갯수 소진
                             }
                         }
@@ -461,7 +464,7 @@ namespace DoMine
                 if (breakCool > 0)
                 {
                     breakCool -= Time.deltaTime;
-                    if(breakCool < 0.3f && state.isBreak)
+                    if(breakCool < 0.3f && state.isBreak && state.nearWall)
                     {
                         state.isBreak = false;
                         mapCtrl.DestroyWall(mapCtrl.nearestWallX, mapCtrl.nearestWallY, false, false, -1);
@@ -478,6 +481,7 @@ namespace DoMine
                 {
                     state.isMining = false;
                     state.isBreak = true;
+                    state.nearWall = false;
                     breakCool = 0;
                 }
                 if (returnCool > 0)
