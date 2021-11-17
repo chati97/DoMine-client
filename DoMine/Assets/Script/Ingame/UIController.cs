@@ -124,7 +124,7 @@ namespace DoMine
             newMessage.GetComponent<Text>().text = input;
             if (messageParent.GetComponent<RectTransform>().sizeDelta.y > 0)
             {
-                messageParent.GetComponent<RectTransform>().anchoredPosition = messageParent.GetComponent<RectTransform>().sizeDelta - new Vector2(350, -30);//걍 하드코딩때림 제일 메시지 밑으로 옮기는 코드
+                messageParent.GetComponent<RectTransform>().anchoredPosition = messageParent.GetComponent<RectTransform>().sizeDelta - new Vector2(340, -60);//걍 하드코딩때림 제일 메시지 밑으로 옮기는 코드
             }
         }
 

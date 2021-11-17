@@ -44,6 +44,7 @@ namespace DoMine
         // Start is called before the first frame update
         void Start()
         {
+            Application.runInBackground = true;
             TitleMenu.isGameEnd = false;
             playerCode = -1;
             sabotages = 0;

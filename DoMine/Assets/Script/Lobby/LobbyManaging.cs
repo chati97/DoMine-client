@@ -24,6 +24,7 @@ namespace Photon.Bolt
         int playercode;
         void Start()
         {
+            Application.runInBackground = true;
             if (BoltNetwork.IsServer)
             {
                 Startbtn.SetActive(true);
