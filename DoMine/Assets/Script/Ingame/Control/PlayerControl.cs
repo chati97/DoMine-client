@@ -258,7 +258,7 @@ namespace DoMine
                     {
                         if (state.Inventory[3] > 0 && targetPlayer != null && targetPlayer.GetState<IPlayerState>().Paralyzed == false /*&& GameController.time < 600 */) //상대가 cc안걸리고 내가 공격템이 있고 타겟플레이어가 있으면
                         {
-                            if (targetPlayer.GetState<IPlayerState>().Inventory[1] == 1 && gameCtrl.playerList[GameController.playerCode] == 0 && targetPlayer.GetState<IPlayerState>().Inventory[4] > 0)//만약 내가 입금안한 광부고 상대가 힐템없이 금을 가지고 있으면
+                            if (targetPlayer.GetState<IPlayerState>().Inventory[1] == 1 && gameCtrl.playerList[GameController.playerCode] == 0 && targetPlayer.GetState<IPlayerState>().Inventory[4] == 0)//만약 내가 입금안한 광부고 상대가 힐템없이 금을 가지고 있으면
                             {
                                 state.Inventory[1] = 1;//금내꺼
                                 GameController.MessageCreate((gameCtrl.playerNameList[GameController.playerCode] + "가 " + (int)Math.Round(state.Location.Position.x) + "," + (int)Math.Round(state.Location.Position.y) + ") 에서 <color=yellow>코인</color>을 획득했습니다.").ToString());
