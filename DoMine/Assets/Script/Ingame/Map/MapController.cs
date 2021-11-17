@@ -26,9 +26,10 @@ namespace DoMine
         public int nearestWallY = -1;
         public int mapSize = 100;
         bool chestNearby;
+        public Vector2 tempWall;
         private void Start()
         {
-
+            tempWall = new Vector2(-1, -1);
         }
 
         private void Update()
@@ -211,10 +212,23 @@ namespace DoMine
 
                 }
             }
-            if (Vector2.Distance(_nearestVector, player.transform.position) < 0.8)
+            if(tempWall != new Vector2(-1,-1))
+            {
+                wallIndicator.transform.position = tempWall;
+                if(Vector2.Distance(tempWall, player.transform.position) < 0.8)
+                {
+                    wallIndicator.gameObject.GetComponent<Renderer>().material.color = Color.green;
+                }
+                else
+                {
+                    wallIndicator.gameObject.GetComponent<Renderer>().material.color = Color.red;
+                }
+            }
+            else if (Vector2.Distance(_nearestVector, player.transform.position) < 0.85)
             {
                 wallIndicator.gameObject.SetActive(true);
                 wallIndicator.transform.position = _nearestVector;
+                wallIndicator.gameObject.GetComponent<Renderer>().material.color = Color.yellow;
             }
             else
             {
@@ -252,15 +266,15 @@ namespace DoMine
                 chestSensor.transform.position = player.transform.position + new Vector3(0,0.25f,0);
                 if(nearestDistance < 5)//(302010서 20105로 축소)
                 {
-                    chestSensor.gameObject.GetComponent<Renderer>().material.color = Color.blue;
+                    chestSensor.gameObject.GetComponent<Renderer>().material.color = Color.green;
                 }
                 else if (nearestDistance < 10)
                 {
-                    chestSensor.gameObject.GetComponent<Renderer>().material.color = Color.green;
+                    chestSensor.gameObject.GetComponent<Renderer>().material.color = Color.yellow;
                 }
                 else if (nearestDistance < 15)
                 {
-                    chestSensor.gameObject.GetComponent<Renderer>().material.color = Color.yellow;
+                    chestSensor.gameObject.GetComponent<Renderer>().material.color = new Color(1,127/255f,0);
                 }
                 else
                 {

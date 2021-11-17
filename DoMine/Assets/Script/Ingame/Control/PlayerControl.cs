@@ -49,7 +49,6 @@ namespace DoMine
         public GameObject soundhammer;
         AudioSource hammersound;
         bool soundcheck = false;
-        Vector3 tmp;
         public void MovePlayer(GameObject player, Vector2 location)
         {
             player.transform.position = location;
@@ -197,6 +196,7 @@ namespace DoMine
                             state.isMoving = true;
                             GameController.MessageCreate(("(" + (int)Math.Round(state.Location.Position.x)+ ","+ (int)Math.Round(state.Location.Position.y)+ ") 에서 <color=yellow>코인</color>이 떨어졌습니다").ToString());
                         }
+                        uiCtrl.MessagePrint(("(" + (int)Math.Round(state.Location.Position.x) + "," + (int)Math.Round(state.Location.Position.y) + ") 에서 귀환합니다").ToString());
                         MovePlayer(player, new Vector2(49.5f, 49.5f));
                         returnCool = returnCoolBase;
                         state.Paralyzed = true;
@@ -215,10 +215,9 @@ namespace DoMine
                     {
                         if (breakCool == 0 && mapCtrl.nearestWall != null)
                         {
-
                             if (Vector2.Distance(player.transform.position, mapCtrl.nearestWall.transform.position) < 0.8 && state.Inventory[0] > 0)
                             {
-                                tmp = mapCtrl.nearestWall.transform.position;
+                                mapCtrl.tempWall = mapCtrl.nearestWall.transform.position;
                                 state.isMining = true;
                                 soundcheck = true;
                                 //mapCtrl.DestroyWall(mapCtrl.nearestWallX, mapCtrl.nearestWallY, false, false, -1);
@@ -476,11 +475,14 @@ namespace DoMine
                     if(breakCool < 0.2f && state.isBreak)
                     {
                         state.isBreak = false;
-                        if(tmp == mapCtrl.nearestWall.transform.position)
-                            mapCtrl.DestroyWall(mapCtrl.nearestWallX, mapCtrl.nearestWallY, false, false, -1);
-
+                        if (mapCtrl.tempWall == (Vector2)mapCtrl.nearestWall.transform.position)
+                        {
+                            mapCtrl.DestroyWall((int)mapCtrl.nearestWall.transform.position.x, (int)mapCtrl.nearestWall.transform.position.y, false, false, -1);
+                            state.Inventory[0]--;//곡괭이 갯수 소진
+                        }
+                        mapCtrl.tempWall = new Vector2(-1, -1);
                     }
-                    if(breakCool < 0.1f && soundcheck)
+                    if (breakCool < 0.1f && soundcheck)
                     {
                         soundcheck = false;
                         hammersound.Play();
