@@ -18,6 +18,7 @@ namespace DoMine
         [SerializeField] Button endExit = null;
         [SerializeField] GameObject message = null;
         [SerializeField] Transform messageParent = null;
+        [SerializeField] GameObject endPanel = null;
         List<GameObject> messageList = new List<GameObject>();
         private void Start()
         {
@@ -62,6 +63,7 @@ namespace DoMine
         {
             int _temp = winPlayer;
             panel.gameObject.SetActive(true);
+            endPanel.gameObject.SetActive(true);
             endExit.gameObject.SetActive(true);
             winSide.gameObject.SetActive(true);
             winPlayers.gameObject.SetActive(true);

@@ -32,7 +32,7 @@ namespace Photon.Bolt
         public Text loading;
         public Text playerName;
         public static bool isNormal = true;
-        public static bool isGameEnd;
+        public static bool isGameEnd = false;
         [SerializeField] GameObject joinPanel;
         [SerializeField] GameObject mainPanel;
 
@@ -52,7 +52,6 @@ namespace Photon.Bolt
                 loadingPanel.gameObject.SetActive(false);
                 EnterRoomError.gameObject.SetActive(true);
             }
-            isGameEnd = false;
         }
 
         private void onClickNoNick()
