@@ -222,7 +222,7 @@ namespace DoMine
                                 soundcheck = true;
                                 //mapCtrl.DestroyWall(mapCtrl.nearestWallX, mapCtrl.nearestWallY, false, false, -1);
                                 breakCool = breakCoolBase;
-                                state.Inventory[0]--;//곡괭이 갯수 소진
+                                
                             }
                         }
                         else
