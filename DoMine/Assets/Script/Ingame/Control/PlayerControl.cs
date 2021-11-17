@@ -591,6 +591,7 @@ namespace DoMine
                         var evnt = SaveGold.Create();
                         evnt.Player = GameController.playerCode;//금을 들고 중앙으로 이동시 금 입금
                         evnt.Send();
+                        state.Inventory[1] = 0;
                     }
                     
                 }

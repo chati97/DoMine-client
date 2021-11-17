@@ -9,6 +9,7 @@ namespace DoMine
     {
         public int[] itemArray = new int[10000];
         [SerializeField] MapController MC = null;
+        [SerializeField] GameController GC = null;
         public GameObject player = null;
         public GameObject[] itemObject = new GameObject[10000];
         [SerializeField] GameObject gold = null;
@@ -51,7 +52,7 @@ namespace DoMine
                 switch (itemArray[x * 100 + y])
                 {
                     case 1:
-                        if (player.Inventory[1] == 0 && GameController.isSabotage == false)
+                        if (player.Inventory[1] == 0 && GC.playerList[GameController.playerCode] == 0)//입금안한 광부여야만 획득가능
                         {
                             player.Inventory[1] = 1;
                             output = "<color=yellow>코인</color>을 획득했습니다.";
