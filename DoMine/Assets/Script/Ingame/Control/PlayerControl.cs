@@ -31,7 +31,7 @@ namespace DoMine
         float windWalkDurationBase = 10f;
         float windWalkCoolBase = 60f;
         public float breakCool;
-        float breakCoolBase = 0.6f;
+        float breakCoolBase = 0.4f;
         public float returnCool;
         float returnCoolBase = 60f;
         public bool canCreateWall = true;
@@ -49,6 +49,7 @@ namespace DoMine
         public GameObject soundhammer;
         AudioSource hammersound;
         bool soundcheck = false;
+        Vector3 tmp;
         public void MovePlayer(GameObject player, Vector2 location)
         {
             player.transform.position = location;
@@ -217,6 +218,7 @@ namespace DoMine
 
                             if (Vector2.Distance(player.transform.position, mapCtrl.nearestWall.transform.position) < 0.8 && state.Inventory[0] > 0)
                             {
+                                tmp = mapCtrl.nearestWall.transform.position;
                                 state.isMining = true;
                                 soundcheck = true;
                                 //mapCtrl.DestroyWall(mapCtrl.nearestWallX, mapCtrl.nearestWallY, false, false, -1);
@@ -471,13 +473,14 @@ namespace DoMine
                 if (breakCool > 0)
                 {
                     breakCool -= Time.deltaTime;
-                    if(breakCool < 0.3f && state.isBreak)
+                    if(breakCool < 0.2f && state.isBreak)
                     {
                         state.isBreak = false;
-                        mapCtrl.DestroyWall(mapCtrl.nearestWallX, mapCtrl.nearestWallY, false, false, -1);
+                        if(tmp == mapCtrl.nearestWall.transform.position)
+                            mapCtrl.DestroyWall(mapCtrl.nearestWallX, mapCtrl.nearestWallY, false, false, -1);
 
                     }
-                    if(breakCool < 0.2f && soundcheck)
+                    if(breakCool < 0.1f && soundcheck)
                     {
                         soundcheck = false;
                         hammersound.Play();
