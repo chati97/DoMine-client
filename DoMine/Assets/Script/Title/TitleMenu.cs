@@ -45,12 +45,14 @@ namespace Photon.Bolt
             }
             NoRoomName.onClick.AddListener(onClickNoRoom);
             NoNickName.onClick.AddListener(onClickNoNick);
-            if(isNormal==false)
-            {
-                mainPanel.SetActive(true);
-                joinPanel.SetActive(false);
-                loadingPanel.gameObject.SetActive(false);
-                EnterRoomError.gameObject.SetActive(true);
+            if (isNormal == false) {
+                if (isGameEnd == false)
+                {
+                    mainPanel.SetActive(true);
+                    joinPanel.SetActive(false);
+                    loadingPanel.gameObject.SetActive(false);
+                    EnterRoomError.gameObject.SetActive(true);
+                }
             }
         }
 
