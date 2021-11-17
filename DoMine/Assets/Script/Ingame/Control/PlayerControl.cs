@@ -306,7 +306,7 @@ namespace DoMine
                             }
                             else if(GameController.time > 300)
                             {
-                                uiCtrl.MessagePrint("5분뒤부터 사용 할 수 없습니다.");
+                                uiCtrl.MessagePrint("5분뒤부터 사용 할 수 있습니다.");
                             }
                             else
                             {
