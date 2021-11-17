@@ -171,7 +171,7 @@ namespace DoMine
         {
             playerList[evnt.Player] = 2;
             goldSaved++;
-            MessageCreate((playerNameList[evnt.Player] + "가 <color=yellow>코인</color>을 입금했습니다.").ToString());
+            UC.MessagePrint((playerNameList[evnt.Player] + "가 <color=yellow>코인</color>을 입금했습니다.").ToString());
         }//금 입금 콜백
         public override void OnEvent(WallDestoryed evnt)
         {
