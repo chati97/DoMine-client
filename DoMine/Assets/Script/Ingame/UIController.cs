@@ -112,6 +112,7 @@ namespace DoMine
                     winPlayers.text = winPlayers.text + "\n" + nameList[_temp % 10];
                     _temp = _temp / 10;
                 } while (_temp != 0);
+                sabotage.text = "Sabotages";
                 do
                 {
                     sabotage.text = sabotage.text + "\n" + nameList[sabotagenum % 10];
