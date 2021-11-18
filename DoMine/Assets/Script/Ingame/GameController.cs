@@ -27,6 +27,10 @@ namespace DoMine
         public static bool gameStarted;//게임 시작여부
         public static bool gameLoaded;//게임로딩여부
         public static bool gameEnded;//게임종료여부
+        public GameObject mainbgm;
+        public GameObject resultbgm;
+        AudioSource main;
+        AudioSource result;
         IPlayerState mystate = null;//본인 상태 수정위해 가지고 있는변수
         float timeBase = 600;
 
@@ -51,7 +55,9 @@ namespace DoMine
             goldSaved = 0;
             gameStarted = false;//게임 시작여부
             gameLoaded = false;//게임로딩여부
-            gameEnded = false; 
+            gameEnded = false;
+            main = mainbgm.gameObject.GetComponent<AudioSource>();
+            result = resultbgm.gameObject.GetComponent<AudioSource>();
             if (BoltNetwork.IsServer)
             {
                 playerNum = 1;
@@ -302,6 +308,8 @@ namespace DoMine
 
         public override void OnEvent(GameEnd evnt)//게임 종료이벤트 수신 함수
         {
+            main.Stop();
+            result.Play();
             TitleMenu.isGameEnd = true;
             TitleMenu.isNormal = true;
             gameEnded = true;

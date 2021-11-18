@@ -50,6 +50,8 @@ namespace DoMine
         AudioSource hammersound;
         public GameObject para;
         AudioSource paralyzedsound;
+        public GameObject atk;
+        AudioSource attacksound;
         bool soundcheck = false;
         bool soundcheck2 = true;
         public void MovePlayer(GameObject player, Vector2 location)
@@ -77,6 +79,7 @@ namespace DoMine
             spr_hammer = hammer.gameObject.GetComponentInChildren<SpriteRenderer>();
             hammersound = soundhammer.gameObject.GetComponent<AudioSource>();
             paralyzedsound = para.gameObject.GetComponent<AudioSource>();
+            attacksound = atk.gameObject.GetComponent<AudioSource>();
             if(entity.IsOwner)
             {
                 state.headRight = false;
@@ -274,6 +277,7 @@ namespace DoMine
                             evnt.Action = 0;
                             evnt.Send();
                             --state.Inventory[3];
+                            attacksound.Play();
                         }
                         else
                         {
