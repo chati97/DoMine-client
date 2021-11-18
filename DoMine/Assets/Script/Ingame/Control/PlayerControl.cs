@@ -52,6 +52,8 @@ namespace DoMine
         AudioSource paralyzedsound;
         public GameObject atk;
         AudioSource attacksound;
+        public GameObject getit;
+        AudioSource getitemsound;
         bool soundcheck = false;
         bool soundcheck2 = true;
         public void MovePlayer(GameObject player, Vector2 location)
@@ -80,6 +82,7 @@ namespace DoMine
             hammersound = soundhammer.gameObject.GetComponent<AudioSource>();
             paralyzedsound = para.gameObject.GetComponent<AudioSource>();
             attacksound = atk.gameObject.GetComponent<AudioSource>();
+            getitemsound = getit.gameObject.GetComponent<AudioSource>();
             if(entity.IsOwner)
             {
                 state.headRight = false;
@@ -369,7 +372,7 @@ namespace DoMine
                     {
                         uiCtrl.MessagePrint(output2);
                     }
-
+                    getitemsound.Play();
                 }
                 
             }
