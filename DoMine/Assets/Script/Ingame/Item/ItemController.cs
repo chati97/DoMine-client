@@ -10,6 +10,7 @@ namespace DoMine
         public int[] itemArray = new int[10000];
         [SerializeField] MapController MC = null;
         [SerializeField] GameController GC = null;
+        [SerializeField] UIController UC = null;
         public GameObject player = null;
         public GameObject[] itemObject = new GameObject[10000];
         [SerializeField] GameObject gold = null;
@@ -101,6 +102,10 @@ namespace DoMine
                     _targetItem = gold;
                     itemArray[x * 100 + y] = 1;
                     MC.goldChest.Add(x * 100 + y);
+                    if (GameController.isSabotage == true)
+                    {
+                        UC.MessagePrint(("<color=yellow>코인</color>위치는 (" + x + ", " + y + ") 입니다").ToString());
+                    }
                     break;
                 case 2:
                     break;
