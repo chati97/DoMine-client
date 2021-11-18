@@ -54,6 +54,8 @@ namespace DoMine
         AudioSource attacksound;
         public GameObject getit;
         AudioSource getitemsound;
+        public GameObject atkfail;
+        AudioSource failsound;
         bool soundcheck = false;
         bool soundcheck2 = true;
         public void MovePlayer(GameObject player, Vector2 location)
@@ -83,6 +85,7 @@ namespace DoMine
             paralyzedsound = para.gameObject.GetComponent<AudioSource>();
             attacksound = atk.gameObject.GetComponent<AudioSource>();
             getitemsound = getit.gameObject.GetComponent<AudioSource>();
+            failsound = atkfail.gameObject.GetComponent<AudioSource>();
             if(entity.IsOwner)
             {
                 state.headRight = false;
@@ -273,6 +276,10 @@ namespace DoMine
                                 state.Inventory[1] = 1;//금내꺼
                                 GameController.MessageCreate((gameCtrl.playerNameList[GameController.playerCode] + "가 " + (int)Math.Round(state.Location.Position.x) + "," + (int)Math.Round(state.Location.Position.y) + ") 에서 <color=yellow>코인</color>을 획득했습니다.").ToString());
                             }
+                            if (targetPlayer.GetState<IPlayerState>().Inventory[4] == 0)
+                                attacksound.Play();
+                            else
+                                failsound.Play();
                             uiCtrl.MessagePrint((targetPlayer.GetState<IPlayerState>().PlayerName + "를 <color=red>공격</color>").ToString());
                             var evnt = PlayerInteraction.Create();
                             evnt.AttakingPlayer = GameController.playerCode;
@@ -280,7 +287,6 @@ namespace DoMine
                             evnt.Action = 0;
                             evnt.Send();
                             --state.Inventory[3];
-                            attacksound.Play();
                         }
                         else
                         {
