@@ -39,6 +39,10 @@ namespace DoMine
             {
                 goldBoard.SetActive(true);
             }
+            else
+            {
+                goldBoard.SetActive(false);
+            }
             if(GameController.gameLoaded == true)
             {
                 panel.gameObject.SetActive(false);
