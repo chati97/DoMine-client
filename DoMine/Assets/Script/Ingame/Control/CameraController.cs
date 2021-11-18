@@ -20,7 +20,7 @@ namespace DoMine
         {
             //망원경획득시 카메라 원경 변경
             Vector3 temp = entityCamera.transform.position;
-            if (state.Inventory[5] == 1 && state.Blinded == false)
+            if ((state.Inventory[5] == 1 || GameController.isSabotage) && state.Blinded == false)
             {
                 temp.z = -7.5f;
                 entityCamera.transform.position = temp;
