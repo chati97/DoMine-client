@@ -11953,8 +11953,8 @@ MonoBehaviour:
   message: {fileID: 5363975030807507735, guid: 27d80a2108c5f27488066c8f7cf3eadb, type: 3}
   messageParent: {fileID: 1844143386}
   sabotage: {fileID: 1458172350}
-  goldLocation: {fileID: 0}
-  goldBoard: {fileID: 0}
+  goldLocation: {fileID: 2124867910}
+  goldBoard: {fileID: 80393333}
   sabotagenum: 0
 --- !u!114 &809592807
 MonoBehaviour:
