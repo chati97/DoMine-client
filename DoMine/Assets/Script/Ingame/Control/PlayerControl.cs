@@ -48,7 +48,10 @@ namespace DoMine
         public static int barricadeBase = 0;
         public GameObject soundhammer;
         AudioSource hammersound;
+        public GameObject para;
+        AudioSource paralyzedsound;
         bool soundcheck = false;
+        bool soundcheck2 = true;
         public void MovePlayer(GameObject player, Vector2 location)
         {
             player.transform.position = location;
@@ -73,6 +76,7 @@ namespace DoMine
             spr = player.gameObject.GetComponentInChildren<SpriteRenderer>();
             spr_hammer = hammer.gameObject.GetComponentInChildren<SpriteRenderer>();
             hammersound = soundhammer.gameObject.GetComponent<AudioSource>();
+            paralyzedsound = para.gameObject.GetComponent<AudioSource>();
             if(entity.IsOwner)
             {
                 state.headRight = false;
@@ -402,6 +406,7 @@ namespace DoMine
             }
             if (state.Paralyzed)
             {
+                
                 hammer.SetActive(false);
                 state.Animator.Play("hit1_down");
             }
@@ -556,11 +561,17 @@ namespace DoMine
                 }
                 if (paralyzeCool > 0)
                 {
+                    if(soundcheck2)
+                    {
+                        soundcheck2 = false;
+                        paralyzedsound.Play();
+                    }
                     paralyzeCool -= Time.deltaTime;
                 }
                 else
                 {
                     paralyzeCool = 0;
+                    soundcheck2 = true;
                     state.Paralyzed = false;
                 }
                 if (state.Blinded == true)
