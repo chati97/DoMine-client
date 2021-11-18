@@ -102,10 +102,7 @@ namespace DoMine
                     _targetItem = gold;
                     itemArray[x * 100 + y] = 1;
                     MC.goldChest.Add(x * 100 + y);
-                    if (GameController.isSabotage == true)
-                    {
-                        UC.MessagePrint(("<color=yellow>코인</color>위치는 (" + x + ", " + y + ") 입니다").ToString());
-                    }
+                    UC.goldLocation.text = UC.goldLocation.text + "(" + x + "," + y + ") ";
                     break;
                 case 2:
                     break;
