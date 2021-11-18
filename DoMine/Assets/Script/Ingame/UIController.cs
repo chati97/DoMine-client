@@ -15,16 +15,19 @@ namespace DoMine
         [SerializeField] Text gameInfo = null;
         [SerializeField] Text winPlayers = null;
         [SerializeField] Text winSide = null;
+        [SerializeField] Text sabotage = null;
         [SerializeField] Button endExit = null;
         [SerializeField] GameObject message = null;
         [SerializeField] Transform messageParent = null;
         List<GameObject> messageList = new List<GameObject>();
+        public int sabotagenum;
         private void Start()
         {
             panel.gameObject.SetActive(true);
             gameInfo.text = "Loading";
             endExit.gameObject.SetActive(false);
             winSide.gameObject.SetActive(false);
+            sabotage.gameObject.SetActive(false);
             winPlayers.gameObject.SetActive(false);
         }
         void Update()
@@ -35,24 +38,24 @@ namespace DoMine
             }
             if (GameController.time > 0 && GameController.time <= 900 && GameController.gameStarted == false)
             {
-                timeLeft.text = "게임시작까지 " + ((int)Math.Floor(GameController.time+1)).ToString();
+                timeLeft.text = "???????????? " + ((int)Math.Floor(GameController.time+1)).ToString();
             }
-            else if (GameController.gameStarted == false)//여기서 호스트가 게임 시작 요청을 보냄
+            else if (GameController.gameStarted == false)//?????? ???????? ???? ???? ?????? ????
             {
-                timeLeft.text = "게임 준비중";
+                timeLeft.text = "???? ??????";
             }
-            else if (GameController.time > 0 && GameController.time <= 900 && GameController.gameStarted == true)//게임 시작했다는 이벤트를 호스트포함 모두가 받으면 실행
+            else if (GameController.time > 0 && GameController.time <= 900 && GameController.gameStarted == true)//???? ?????????? ???????? ?????????? ?????? ?????? ????
             {
                 if((int)Math.Floor(GameController.time) % 60 / 10 < 1)
                 {
-                    timeLeft.text = "게임종료까지 " + ((int)Math.Floor(GameController.time) / 60).ToString() + " : 0" + ((int)Math.Floor(GameController.time) % 60).ToString();
+                    timeLeft.text = "???????????? " + ((int)Math.Floor(GameController.time) / 60).ToString() + " : 0" + ((int)Math.Floor(GameController.time) % 60).ToString();
                 }
                 else
                 {
-                    timeLeft.text = "게임종료까지 " + ((int)Math.Floor(GameController.time) / 60).ToString() + " : " + ((int)Math.Floor(GameController.time) % 60).ToString();
+                    timeLeft.text = "???????????? " + ((int)Math.Floor(GameController.time) / 60).ToString() + " : " + ((int)Math.Floor(GameController.time) % 60).ToString();
                 }
             }
-            else if (GameController.time <= 0 && GameController.gameStarted == true) // 게임 종료시
+            else if (GameController.time <= 0 && GameController.gameStarted == true) // ???? ??????
             {
                 panel.gameObject.SetActive(true);
             }
@@ -65,6 +68,7 @@ namespace DoMine
             endExit.gameObject.SetActive(true);
             winSide.gameObject.SetActive(true);
             winPlayers.gameObject.SetActive(true);
+            sabotage.gameObject.SetActive(true);
             GameController.gameLoaded = false;
             if (winPlayer == -3)
             {
@@ -108,6 +112,11 @@ namespace DoMine
                     winPlayers.text = winPlayers.text + "\n" + nameList[_temp % 10];
                     _temp = _temp / 10;
                 } while (_temp != 0);
+                do
+                {
+                    sabotage.text = sabotage.text + "\n" + nameList[sabotagenum % 10];
+                    sabotagenum = sabotagenum / 10;
+                } while (sabotagenum != 0);
             }
         }
         public void GameExit()
@@ -122,7 +131,7 @@ namespace DoMine
             newMessage.GetComponent<Text>().text = input;
             if (messageParent.GetComponent<RectTransform>().sizeDelta.y > 0)
             {
-                messageParent.GetComponent<RectTransform>().anchoredPosition = messageParent.GetComponent<RectTransform>().sizeDelta - new Vector2(340, -60);//걍 하드코딩때림 제일 메시지 밑으로 옮기는 코드
+                messageParent.GetComponent<RectTransform>().anchoredPosition = messageParent.GetComponent<RectTransform>().sizeDelta - new Vector2(340, -60);//?? ???????????? ???? ?????? ?????? ?????? ????
             }
         }
 
