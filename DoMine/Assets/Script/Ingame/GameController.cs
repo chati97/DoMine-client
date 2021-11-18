@@ -101,6 +101,7 @@ namespace DoMine
                     PlayerControl.blindCool = PlayerControl.blindCoolBase;
                     mystate.Paralyzed = true;
                     PlayerControl.paralyzeCool = PlayerControl.paralyzeCoolBase; // 그리고 공격받은 상태로 만들기
+                    PlayerControl.barricadeBase = 1;
                 }
                 else
                 {
@@ -224,7 +225,6 @@ namespace DoMine
             time = evnt.TimeLeft;
             int _sabotage = evnt.Sabotage;
             playerNum = evnt.PlayerNum;
-            PlayerControl.barricadeBase = (int)Math.Round((double)(10 / playerNum));
             PlayerControl.pickaxeAmountBase = (int)Math.Round((double)(150 / playerNum));
             mystate.Inventory[0] = PlayerControl.pickaxeAmountBase;
             mystate.Inventory[2] = PlayerControl.barricadeBase;
@@ -264,12 +264,14 @@ namespace DoMine
             }
             if (playerList[playerCode] == 1)//본인이 사보타지인지 확인하고 반영 기능
             {
+                PlayerControl.barricadeBase = 5;
                 isSabotage = true;
                 UC.MessagePrint("당신은 <color=red>사보타지</color>입니다");
                 mystate.Inventory[3] = (int)Math.Floor((double)(playerNum - sabotages) / sabotages);
             }
             else
             {
+                PlayerControl.barricadeBase = 1;
                 UC.MessagePrint("당신은 <color=green>광부</color>입니다");
             }
             var name = PlayerName.Create();
