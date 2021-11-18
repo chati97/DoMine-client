@@ -102,6 +102,8 @@ namespace DoMine
                     mystate.Paralyzed = true;
                     PlayerControl.paralyzeCool = PlayerControl.paralyzeCoolBase; // 그리고 공격받은 상태로 만들기
                     PlayerControl.barricadeBase = 1;
+                    mystate.Inventory[0] = 0;
+                    mystate.Inventory[2] = 0;
                 }
                 else
                 {
@@ -562,8 +564,8 @@ namespace DoMine
             {
                 MC.CreateWall(3, item / 100, item % 100, false);
             }
-            UC.MessagePrint("코인과 아이템들이 생성되었습니다.");
-            UC.MessagePrint(("코인은 총 " + goldAmount + "개 입니다").ToString());
+            MessageCreate("코인과 아이템들이 생성되었습니다.");
+            MessageCreate(("코인은 총 " + goldAmount + "개 입니다").ToString());
         }
 
 
