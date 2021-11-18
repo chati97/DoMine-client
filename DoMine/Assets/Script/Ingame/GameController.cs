@@ -265,7 +265,8 @@ namespace DoMine
             if (playerList[playerCode] == 1)//본인이 사보타지인지 확인하고 반영 기능
             {
                 isSabotage = true;
-                UC.MessagePrint("당신은 <color=red>사보타지</color>입니다"); 
+                UC.MessagePrint("당신은 <color=red>사보타지</color>입니다");
+                mystate.Inventory[3] = (int)Math.Floor((double)(playerNum - sabotages) / sabotages);
             }
             else
             {
