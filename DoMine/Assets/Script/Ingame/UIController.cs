@@ -19,6 +19,8 @@ namespace DoMine
         [SerializeField] GameObject message = null;
         [SerializeField] Transform messageParent = null;
         List<GameObject> messageList = new List<GameObject>();
+        [SerializeField] Text sabotage = null;
+        public int sabotagenum;
         private void Start()
         {
             panel.gameObject.SetActive(true);
@@ -26,6 +28,7 @@ namespace DoMine
             endExit.gameObject.SetActive(false);
             winSide.gameObject.SetActive(false);
             winPlayers.gameObject.SetActive(false);
+            sabotage.gameObject.SetActive(false);
         }
         void Update()
         {
@@ -65,6 +68,7 @@ namespace DoMine
             endExit.gameObject.SetActive(true);
             winSide.gameObject.SetActive(true);
             winPlayers.gameObject.SetActive(true);
+            sabotage.gameObject.SetActive(true);
             GameController.gameLoaded = false;
             if (winPlayer == -3)
             {
@@ -108,6 +112,11 @@ namespace DoMine
                     winPlayers.text = winPlayers.text + "\n" + nameList[_temp % 10];
                     _temp = _temp / 10;
                 } while (_temp != 0);
+                do
+                {
+                    sabotage.text = sabotage.text + "\n" + nameList[sabotagenum % 10];
+                    sabotagenum = sabotagenum / 10;
+                } while (sabotagenum != 0);
             }
         }
         public void GameExit()
