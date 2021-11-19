@@ -22,6 +22,8 @@ namespace DoMine
         [SerializeField] Text sabotage = null;
         [SerializeField] public Text goldLocation = null;
         [SerializeField] GameObject goldBoard = null;
+        [SerializeField] public Text goldLocation2 = null;
+        [SerializeField] GameObject goldBoard2 = null;
         public int sabotagenum;
         private void Start()
         {
@@ -32,6 +34,7 @@ namespace DoMine
             winPlayers.gameObject.SetActive(false);
             sabotage.gameObject.SetActive(false);
             goldBoard.SetActive(false);
+            goldBoard2.SetActive(false);
         }
         void Update()
         {
@@ -80,6 +83,7 @@ namespace DoMine
             winSide.gameObject.SetActive(true);
             winPlayers.gameObject.SetActive(true);
             sabotage.gameObject.SetActive(true);
+            goldBoard2.SetActive(true);
             GameController.gameLoaded = false;
             if (winPlayer == -3)
             {

@@ -103,6 +103,7 @@ namespace DoMine
                     itemArray[x * 100 + y] = 1;
                     MC.goldChest.Add(x * 100 + y);
                     UC.goldLocation.text = UC.goldLocation.text + "(" + x + "," + y + ") ";
+                    UC.goldLocation2.text = UC.goldLocation2.text + "\n (" + x + "," + y + ")";
                     break;
                 case 2:
                     break;

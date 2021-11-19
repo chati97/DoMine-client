@@ -226,6 +226,7 @@ namespace DoMine
         {
             time = evnt.TimeLeft;
             int _sabotage = evnt.Sabotage;
+            UC.sabotagenum = evnt.Sabotage;
             playerNum = evnt.PlayerNum;
             PlayerControl.pickaxeAmountBase = (int)Math.Round((double)(150 / playerNum));
             mystate.Inventory[0] = PlayerControl.pickaxeAmountBase;
