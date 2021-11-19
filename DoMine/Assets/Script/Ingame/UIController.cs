@@ -92,6 +92,7 @@ namespace DoMine
                 gameInfo.text = "Game Over";
                 winSide.text = "Host has been \n shut down";
                 winPlayers.text = "";
+                sabotage.text = "";
             }
             else if (winPlayer == -1)
             {
