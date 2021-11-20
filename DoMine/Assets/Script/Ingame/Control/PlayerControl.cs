@@ -391,6 +391,8 @@ namespace DoMine
                             state.isMoving = false;
                             state.carryGold = true;
                             canUseFishing = false;
+                            GameController.MessageCreate("누군가 (" + (int)state.Location.Position.x + ", " + (int)state.Location.Position.y + ")에서 <color=yellow>코인</color>을 발견했습니다");
+                            GameController.MessageCreate((state.PlayerName + "가 (" + (int)state.Location.Position.x + ", " + (int)state.Location.Position.y + ")에서 <color=yellow>코인</color>을 획득했습니다").ToString());
                         }
                         JoystickControl.btnNum = 0;
                     }
