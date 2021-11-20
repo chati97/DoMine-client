@@ -22,6 +22,7 @@ namespace DoMine
         public Button noPick;
         public Button pick;
         public Button baseCamp;
+        public Button fakeGold;
         public GameObject compass;
         public Image home;
         public Image windWalk;
@@ -53,6 +54,7 @@ namespace DoMine
             baseCamp.onClick.AddListener(onClickBaseCamp);
             sabotageSkill.onClick.AddListener(onClickSabSkill);
             minerSkill.onClick.AddListener(onClickMinSkill);
+            fakeGold.onClick.AddListener(onClickFake);
         }
 
         public void OnPointerDown(PointerEventData eventData)
@@ -215,6 +217,11 @@ namespace DoMine
         void onClickMinSkill()
         {
             btnNum = 7;
+        }
+
+        void onClickFake()
+        {
+            btnNum = 8;
         }
     }
 }

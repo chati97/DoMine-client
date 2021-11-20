@@ -426,6 +426,7 @@ namespace DoMine
             {
                 joystick.minerSkill.gameObject.SetActive(false);
                 joystick.sabotageSkill.gameObject.SetActive(true);
+                joystick.fakeGold.gameObject.SetActive(true);
             }
 
             if (state.Inventory[1] == 0 && GameController.isSabotage == false)
