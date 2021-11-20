@@ -56,6 +56,7 @@ namespace Photon.Bolt
             }
             if(BoltNetwork.IsClient)
             {
+                playercode = -1;
                 var evnt = PlayerJoined.Create();
                 evnt.PlayerName = PlayerPrefs.GetString("nick");
                 evnt.Send();
@@ -66,17 +67,15 @@ namespace Photon.Bolt
             if(BoltNetwork.IsClient)
             {
                 //int i = 0;
-                playerNameList[evnt.Code] = evnt.Name;
-                /*foreach(string name in playerNameList)
+                if(evnt.Code == playercode && evnt.Code == -1 && evnt.Name == PlayerPrefs.GetString("nick"))
                 {
-                    if(playerNameList[i] != "" && playerNameList[i] == evnt.Name && i < evnt.Code)
-                    {
-                        evnt.Name += "0";
-                        playerNameList[evnt.Code] = evnt.Name;
-                        break;
-                    }
-                    i++;
-                }*/
+                    PlayerPrefs.SetString("nick", PlayerPrefs.GetString("nick") + "0");
+                    var evnt2 = PlayerJoined.Create();
+                    evnt2.PlayerName = PlayerPrefs.GetString("nick");
+                    evnt2.Send();
+                }
+                playerNameList[evnt.Code] = evnt.Name;
+                
                 if(evnt.Name == PlayerPrefs.GetString("nick"))
                 {
                     playercode = evnt.Code;
@@ -91,17 +90,21 @@ namespace Photon.Bolt
             {
                 int i = 0;
                 int j = 0;
-                playerNameList[playercount] = evnt.PlayerName;
                 foreach(string name in playerNameList)
                 {
                     if(playerNameList[j] != "" && playerNameList[j] == evnt.PlayerName && j < playercount)
                     {
-                        evnt.PlayerName += playercount;
-                        playerNameList[playercount] = evnt.PlayerName;
-                        break;
+                        var evnt3 = PlayerName.Create();
+                        evnt3.Name = evnt.PlayerName;
+                        evnt3.Code = -1;
+                        evnt3.Send();
+                        //evnt.PlayerName += playercount;
+                        //playerNameList[playercount] = evnt.PlayerName;
+                        return;
                     }
                     j++;
                 }
+                playerNameList[playercount] = evnt.PlayerName;
                 playercount++;
                 ListOut();
                 foreach(string name in playerNameList)
