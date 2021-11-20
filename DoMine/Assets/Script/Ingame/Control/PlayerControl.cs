@@ -47,15 +47,22 @@ namespace DoMine
         public static int pickaxeAmountBase = 0;
         public static int barricadeBase = 0;
         public GameObject soundhammer;
-        AudioSource hammersound;
         public GameObject para;
-        AudioSource paralyzedsound;
         public GameObject atk;
-        AudioSource attacksound;
         public GameObject getit;
-        AudioSource getitemsound;
         public GameObject atkfail;
+        public GameObject atksuc; //색출 성공 사운드
+        public GameObject crewall;
+        public GameObject hiding;
+        AudioSource hammersound;
+        AudioSource paralyzedsound;
+        AudioSource attacksound;
+        AudioSource getitemsound;
         AudioSource failsound;
+        AudioSource successsound;
+        AudioSource createwallsound;
+        AudioSource hidesound;
+       
         bool soundcheck = false;
         bool soundcheck2 = true;
         public void MovePlayer(GameObject player, Vector2 location)
@@ -86,6 +93,9 @@ namespace DoMine
             attacksound = atk.gameObject.GetComponent<AudioSource>();
             getitemsound = getit.gameObject.GetComponent<AudioSource>();
             failsound = atkfail.gameObject.GetComponent<AudioSource>();
+            successsound = atksuc.gameObject.GetComponent<AudioSource>();
+            createwallsound = crewall.gameObject.GetComponent<AudioSource>();
+            hidesound = hiding.gameObject.GetComponent<AudioSource>();
             if(entity.IsOwner)
             {
                 state.headRight = false;
@@ -254,7 +264,10 @@ namespace DoMine
                             createCool = createCoolBase;
                             output = mapCtrl.CreateWall(4, (int)aim.x, (int)aim.y, false);
                             if (output == 0)
+                            {
+                                createwallsound.Play();
                                 --state.Inventory[2];
+                            }
                             else
                                 uiCtrl.MessagePrint("해당위치에 만들 수 없습니다");
                         }
@@ -301,6 +314,8 @@ namespace DoMine
                             if (targetPlayer != null && canFindSabotage == true && GameController.time < 300)
                             {
                                 uiCtrl.MessagePrint(("사보타지인지 확인합니다 : " + targetPlayer.GetState<IPlayerState>().PlayerName).ToString());
+                                if (gameCtrl.playerList[targetPlayer.GetState<IPlayerState>().PlayerCode] == 1)
+                                    successsound.Play();
                                 var evnt = PlayerInteraction.Create();
                                 evnt.AttakingPlayer = GameController.playerCode;
                                 evnt.TargetPlayer = targetPlayer.GetState<IPlayerState>().PlayerCode;
@@ -332,6 +347,7 @@ namespace DoMine
                         {
                             if (windWalkCool == 0)
                             {
+                                hidesound.Play();
                                 windWalkDuration = windWalkDurationBase;
                                 windWalkCool = windWalkCoolBase;
                                 state.WindWalking = true;
