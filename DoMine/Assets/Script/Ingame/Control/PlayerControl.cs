@@ -451,7 +451,11 @@ namespace DoMine
             if (state.Paralyzed)
             {
                 if(GameController.isSabotage == true)
+                {
                     state.carryGold = false;
+                    gold_R.SetActive(false);
+                    gold_L.SetActive(false);
+                }
                 hammer.SetActive(false);
                 state.Animator.Play("hit1_down");
             }
