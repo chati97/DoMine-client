@@ -33,6 +33,7 @@ namespace DoMine
         AudioSource result;
         IPlayerState mystate = null;//본인 상태 수정위해 가지고 있는변수
         float timeBase = 600;
+        public int lessSabotage = 0;
 
         public override void SceneLoadLocalDone(string scene, IProtocolToken token)
         {
@@ -391,7 +392,8 @@ namespace DoMine
         }
         int DividePlayer()//사보타지 코드를 리턴하는 함수 (ex 사보타지가 9, 4 ,3, 0 이면 9430 리턴, 없을시 -1)
         {
-            int _sabotage = (int)(playerNum * 0.43) - UnityEngine.Random.Range(0,2); //현재 접속인원에 맞춰서 현재인원/ 0.43 에서 랜덤으로 1을 빼거나 더해서 사보타지수를 구함
+            lessSabotage = UnityEngine.Random.Range(0, 2);
+            int _sabotage = (int)(playerNum * 0.43) - lessSabotage; //현재 접속인원에 맞춰서 현재인원/ 0.43 에서 랜덤으로 1을 빼거나 더해서 사보타지수를 구함
             int _code = 0;
             int _temp;
             List<int> _sabolist = new List<int>();
@@ -438,7 +440,7 @@ namespace DoMine
         void GameEnd()//게임 종료이벤트 송신 함수
         {
             
-            int _gold2win = (int)(playerNum*0.43);
+            int _gold2win = (int)(playerNum*0.43) - lessSabotage;
             int _goldSavedPlayer = 0;
             int _winPlayer = 0;
             bool _isSabotageWin;
@@ -491,7 +493,7 @@ namespace DoMine
             List<int> _goldList = new List<int>();
             int _temp;
             bool _crash;
-            int _gold = (int)(playerNum * 0.43) + UnityEngine.Random.Range(0, 2);
+            int _gold = (int)(playerNum * 0.43) + 1;
             if(playerNum<3)
             {
                 _gold = 1;//1,2인 플레이용으로 일단 넣어놓음

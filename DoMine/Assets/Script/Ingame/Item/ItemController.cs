@@ -101,9 +101,12 @@ namespace DoMine
                 case 1:
                     _targetItem = gold;
                     itemArray[x * 100 + y] = 1;
-                    MC.goldChest.Add(x * 100 + y);
-                    UC.goldLocation.text = UC.goldLocation.text + "(" + x + "," + y + ") ";
-                    UC.goldLocation2.text = UC.goldLocation2.text + "\n (" + x + "," + y + ")";
+                    if(GameController.time > 590)
+                    {
+                        MC.goldChest.Add(x * 100 + y);
+                        UC.goldLocation.text = UC.goldLocation.text + "(" + x + "," + y + ") ";
+                        UC.goldLocation2.text = UC.goldLocation2.text + "\n (" + x + "," + y + ")";
+                    }
                     break;
                 case 2:
                     break;
