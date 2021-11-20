@@ -390,6 +390,7 @@ namespace DoMine
                         {
                             state.isMoving = false;
                             state.carryGold = true;
+                            canUseFishing = false;
                         }
                         JoystickControl.btnNum = 0;
                     }
