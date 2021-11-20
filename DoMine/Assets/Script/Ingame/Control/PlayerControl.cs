@@ -388,7 +388,8 @@ namespace DoMine
                     {
                         if(GameController.isSabotage == true && canUseFishing == true)
                         {
-
+                            state.isMoving = false;
+                            state.carryGold = true;
                         }
                         JoystickControl.btnNum = 0;
                     }
@@ -427,16 +428,16 @@ namespace DoMine
                 joystick.sabotageSkill.gameObject.SetActive(true);
             }
 
-            if (state.Inventory[1] == 0)
+            if (state.Inventory[1] == 0 && GameController.isSabotage == false)
             {
-                if(entity.IsOwner)
+                if (entity.IsOwner)
                 {
                     state.carryGold = false;
                 }
                 gold_R.SetActive(false);
                 gold_L.SetActive(false);
             }
-            else if (state.Inventory[1] == 1)
+            else if (state.Inventory[1] == 1 && GameController.isSabotage == false)
             {
                 if(entity.IsOwner)
                 {
@@ -447,7 +448,8 @@ namespace DoMine
             }
             if (state.Paralyzed)
             {
-                
+                if(GameController.isSabotage == true)
+                    state.carryGold = false;
                 hammer.SetActive(false);
                 state.Animator.Play("hit1_down");
             }
