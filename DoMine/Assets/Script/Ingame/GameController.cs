@@ -51,7 +51,9 @@ namespace DoMine
         {
             Application.runInBackground = true;
             TitleMenu.isGameEnd = false;
+            PlayerControl.canFindSabotage = true;
             playerCode = -1;
+            isSabotage = false;
             sabotages = 0;
             goldSaved = 0;
             gameStarted = false;//게임 시작여부
@@ -268,6 +270,7 @@ namespace DoMine
             }
             if (playerList[playerCode] == 1)//본인이 사보타지인지 확인하고 반영 기능
             {
+                PlayerControl.canFindSabotage = false;
                 PlayerControl.barricadeBase = 5;
                 isSabotage = true;
                 UC.MessagePrint("당신은 <color=red>사보타지</color>입니다");
@@ -275,6 +278,7 @@ namespace DoMine
             }
             else
             {
+                PlayerControl.canFindSabotage = true;
                 PlayerControl.barricadeBase = 1;
                 UC.MessagePrint("당신은 <color=green>광부</color>입니다");
             }
@@ -335,6 +339,8 @@ namespace DoMine
                 } while (_temp != 0);
             }
             UC.GameWinner(evnt.WinPlayer, evnt.IsSabotageWin, _amIWin, playerNameList);
+            isSabotage = false;
+            playerCode = -1;
         }
 
         public override void OnEvent(PlayerName evnt) //게임 시작 후 유저 명단을 확정하는 함수
@@ -412,6 +418,7 @@ namespace DoMine
                     {
                         _crash = false;
                         _temp = UnityEngine.Random.Range(0, playerNum);
+                        //Debug.LogWarning("랜덤" + _temp);
                         foreach (int previous in _sabolist)
                         {
                             if (previous == _temp)
@@ -433,7 +440,7 @@ namespace DoMine
             {
                 _code = -1;//사보타지가 0일때
             }
-            //Debug.LogWarning("코드" + _code); 사보타지코드
+            //Debug.LogWarning("코드" + _code); //사보타지코드
             return _code;
         }
 
