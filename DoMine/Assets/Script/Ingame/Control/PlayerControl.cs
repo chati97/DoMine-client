@@ -46,6 +46,7 @@ namespace DoMine
         public JoystickControl joystick;
         public static int pickaxeAmountBase = 0;
         public static int barricadeBase = 0;
+        public static bool canUseFishing;
         public GameObject soundhammer;
         public GameObject para;
         public GameObject atk;
@@ -278,6 +279,7 @@ namespace DoMine
                         JoystickControl.btnNum = 0;
                     }
 
+                    
 
                     // 플레이어에게 스킬을 사용하는 파트
                     if (Input.GetKeyUp(KeyCode.Q) == true || JoystickControl.btnNum == 4) // 방해
@@ -377,6 +379,16 @@ namespace DoMine
                         else
                         {
                             uiCtrl.MessagePrint("사용 할 수 없습니다.");
+                        }
+                        JoystickControl.btnNum = 0;
+                    }
+
+                    //가짜 금 낚시
+                    if (Input.GetKey(KeyCode.F) == true || JoystickControl.btnNum == 8)
+                    {
+                        if(GameController.isSabotage == true && canUseFishing == true)
+                        {
+
                         }
                         JoystickControl.btnNum = 0;
                     }
