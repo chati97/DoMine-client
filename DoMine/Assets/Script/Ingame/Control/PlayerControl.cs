@@ -156,7 +156,7 @@ namespace DoMine
                 //조이스틱 컨트롤 부분(현재 xy 단순값 입력되어서 lookingAt변수에 오류가있음, 이는 나중에 xy값계산해서 제일 가까운 값으로 배정하는식으로 변경해야할듯.)
                 lookingAt = JoystickControl.lookAt; // joystickcontrol의 방향번호랑 그냥 동기화시켜버림 if문 필요없게 바꿈
                 state.headRight = JoystickControl.headRight; // 머리돌리기도 그대로 동기화
-                if (state.Inventory[1] == 1)
+                if (state.Inventory[1] == 1 || (GameController.isSabotage == true && state.carryGold))
                     speed = 1f;
                 //키보드컨트롤 기존방식과 동일 lookingAt제대로 동작
                 if (Input.GetKey(KeyCode.LeftArrow) == true)
