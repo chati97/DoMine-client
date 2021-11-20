@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 2953659476049386532}
   - component: {fileID: 962661760829425654}
   m_Layer: 0
-  m_Name: successound
+  m_Name: successsound
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

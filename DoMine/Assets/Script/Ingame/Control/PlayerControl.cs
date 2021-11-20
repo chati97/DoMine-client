@@ -443,7 +443,7 @@ namespace DoMine
             {
                 hammer.SetActive(true);
                 
-                state.Animator.Play("hammring_ham");
+                state.Animator.Play("hammering_ham");
             }
             else if(state.makeWall)
             {
