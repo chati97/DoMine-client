@@ -65,13 +65,21 @@ namespace Photon.Bolt
         {
             if(BoltNetwork.IsClient)
             {
-                
+                //int i = 0;
                 playerNameList[evnt.Code] = evnt.Name;
+                /*foreach(string name in playerNameList)
+                {
+                    if(playerNameList[i] != "" && playerNameList[i] == evnt.Name && i < evnt.Code)
+                    {
+                        evnt.Name += "0";
+                        playerNameList[evnt.Code] = evnt.Name;
+                        break;
+                    }
+                    i++;
+                }*/
                 if(evnt.Name == PlayerPrefs.GetString("nick"))
                 {
-                    
                     playercode = evnt.Code;
-                    
                 }
                 
             }
@@ -82,7 +90,18 @@ namespace Photon.Bolt
             if(BoltNetwork.IsServer)
             {
                 int i = 0;
+                int j = 0;
                 playerNameList[playercount] = evnt.PlayerName;
+                foreach(string name in playerNameList)
+                {
+                    if(playerNameList[j] != "" && playerNameList[j] == evnt.PlayerName && j < playercount)
+                    {
+                        evnt.PlayerName += playercount;
+                        playerNameList[playercount] = evnt.PlayerName;
+                        break;
+                    }
+                    j++;
+                }
                 playercount++;
                 ListOut();
                 foreach(string name in playerNameList)
