@@ -22498,7 +22498,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Golds
+  m_Text: Coin
 --- !u!224 &1026715656
 RectTransform:
   m_ObjectHideFlags: 0
@@ -123660,7 +123660,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 341225554}
   m_HandleRect: {fileID: 341225553}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -125194,7 +125194,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Gold Location
+  m_Text: 'Coin Location
 
 '
 --- !u!222 &2124867911
