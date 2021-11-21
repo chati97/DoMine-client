@@ -455,7 +455,10 @@ namespace DoMine
             {
                 if(GameController.isSabotage == true)
                 {
-                    state.carryGold = false;
+                    if (entity.IsOwner)
+                    {
+                        state.carryGold = false;
+                    }
                     gold_R.SetActive(false);
                     gold_L.SetActive(false);
                 }
