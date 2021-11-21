@@ -1653,6 +1653,8 @@ MonoBehaviour:
   uiCtrl: {fileID: 0}
   windWalkCool: 0
   windWalkDuration: 0
+  attackCool: 0
+  attackCoolBase: 10
   breakCool: 0
   returnCool: 0
   canCreateWall: 1
@@ -1767,7 +1769,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
+  - {fileID: 9106629044507023198, guid: d9234e60bac1a53489ebd51f1788bce2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1809,10 +1811,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Player 0
+  m_text: "\uD50C\uB808\uC774\uC5B41"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d9234e60bac1a53489ebd51f1788bce2, type: 2}
+  m_sharedMaterial: {fileID: 9106629044507023198, guid: d9234e60bac1a53489ebd51f1788bce2,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
