@@ -231,7 +231,7 @@ namespace DoMine
             int _sabotage = evnt.Sabotage;
             UC.sabotagenum = evnt.Sabotage;
             playerNum = evnt.PlayerNum;
-            PlayerControl.pickaxeAmountBase = (int)Math.Round((double)(150 / playerNum));
+            PlayerControl.pickaxeAmountBase = (int)Math.Round((double)(100 / playerNum));
             mystate.Inventory[0] = PlayerControl.pickaxeAmountBase;
             mystate.Inventory[2] = PlayerControl.barricadeBase;
             if (gameStarted == false || BoltNetwork.IsServer)
