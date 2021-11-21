@@ -286,7 +286,7 @@ namespace DoMine
                     // 플레이어에게 스킬을 사용하는 파트
                     if (Input.GetKeyUp(KeyCode.Q) == true || JoystickControl.btnNum == 4) // 방해
                     {
-                        if (state.Inventory[3] > 0 && targetPlayer != null && targetPlayer.GetState<IPlayerState>().Paralyzed == false /*&& GameController.time < 600 */) //상대가 cc안걸리고 내가 공격템이 있고 타겟플레이어가 있으면
+                        if (state.Inventory[3] > 0 && targetPlayer != null && targetPlayer.GetState<IPlayerState>().Paralyzed == false && attackCool == 0) //상대가 cc안걸리고 내가 공격템이 있고 타겟플레이어가 있으면
                         {
                             attackCool = attackCoolBase;
                             if (targetPlayer.GetState<IPlayerState>().Inventory[1] == 1 && gameCtrl.playerList[GameController.playerCode] == 0 && targetPlayer.GetState<IPlayerState>().Inventory[4] == 0)//만약 내가 입금안한 광부고 상대가 힐템없이 금을 가지고 있으면
