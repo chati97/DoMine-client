@@ -275,7 +275,7 @@ namespace DoMine
                 PlayerControl.barricadeBase = 10;
                 isSabotage = true;
                 UC.MessagePrint("당신은 <color=red>사보타지</color>입니다");
-                mystate.Inventory[3] = (int)Math.Floor((double)(playerNum - sabotages) / sabotages);
+                mystate.Inventory[3] = (int)Math.Floor((double)(playerNum - sabotages) / sabotages) * 2;
             }
             else
             {
