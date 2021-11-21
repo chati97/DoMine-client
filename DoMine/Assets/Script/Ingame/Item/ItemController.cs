@@ -61,7 +61,7 @@ namespace DoMine
                         else
                         {
                             //추후 여기에서 이미 확보해둔상태라고 UI에서 메세지 보내는거로 호출
-                            return "금을 획득할 수 없습니다.";
+                            return "코인을 획득할 수 없습니다.";
                         }
                         break;
                     case 3:
