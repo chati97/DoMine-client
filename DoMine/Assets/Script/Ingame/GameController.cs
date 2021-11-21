@@ -104,7 +104,7 @@ namespace DoMine
                     PlayerControl.blindCool = PlayerControl.blindCoolBase;
                     mystate.Paralyzed = true;
                     PlayerControl.paralyzeCool = PlayerControl.paralyzeCoolBase; // 그리고 공격받은 상태로 만들기
-                    PlayerControl.barricadeBase = 1;
+                    PlayerControl.barricadeBase = 3;
                     mystate.Inventory[0] = 0;
                     mystate.Inventory[2] = 0;
                 }
