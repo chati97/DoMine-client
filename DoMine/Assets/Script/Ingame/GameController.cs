@@ -449,7 +449,7 @@ namespace DoMine
         void GameEnd()//게임 종료이벤트 송신 함수
         {
             
-            int _gold2win = (int)(playerNum*0.43) - lessSabotage;
+            int _gold2win = (int)(playerNum*0.43) + 1 - lessSabotage;
             int _goldSavedPlayer = 0;
             int _winPlayer = 0;
             bool _isSabotageWin;
