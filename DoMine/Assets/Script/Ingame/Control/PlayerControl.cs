@@ -28,8 +28,8 @@ namespace DoMine
         public static float blindCoolBase = 30f;
         public float windWalkCool;
         public float windWalkDuration;
-        float windWalkDurationBase = 10f;
-        float windWalkCoolBase = 60f;
+        float windWalkDurationBase = 5f;
+        float windWalkCoolBase = 15f;
         public float breakCool;
         float breakCoolBase = 0.4f;
         public float returnCool;
@@ -289,7 +289,7 @@ namespace DoMine
                             if (targetPlayer.GetState<IPlayerState>().Inventory[1] == 1 && gameCtrl.playerList[GameController.playerCode] == 0 && targetPlayer.GetState<IPlayerState>().Inventory[4] == 0)//만약 내가 입금안한 광부고 상대가 힐템없이 금을 가지고 있으면
                             {
                                 state.Inventory[1] = 1;//금내꺼
-                                GameController.MessageCreate((gameCtrl.playerNameList[GameController.playerCode] + "가 " + (int)Math.Round(state.Location.Position.x) + "," + (int)Math.Round(state.Location.Position.y) + ") 에서 <color=yellow>코인</color>을 획득했습니다.").ToString());
+                                //GameController.MessageCreate((gameCtrl.playerNameList[GameController.playerCode] + "가 " + (int)Math.Round(state.Location.Position.x) + "," + (int)Math.Round(state.Location.Position.y) + ") 에서 <color=yellow>코인</color>을 획득했습니다.").ToString());
                             }
                             if (targetPlayer.GetState<IPlayerState>().Inventory[4] == 0)
                                 attacksound.Play();
@@ -391,8 +391,8 @@ namespace DoMine
                             state.isMoving = false;
                             state.carryGold = true;
                             canUseFishing = false;
-                            GameController.MessageCreate("누군가 (" + (int)state.Location.Position.x + ", " + (int)state.Location.Position.y + ")에서 <color=yellow>코인</color>을 발견했습니다");
-                            GameController.MessageCreate((state.PlayerName + "가 (" + (int)state.Location.Position.x + ", " + (int)state.Location.Position.y + ")에서 <color=yellow>코인</color>을 획득했습니다").ToString());
+                            //GameController.MessageCreate("누군가 (" + (int)state.Location.Position.x + ", " + (int)state.Location.Position.y + ")에서 <color=yellow>코인</color>을 발견했습니다");
+                            //GameController.MessageCreate((state.PlayerName + "가 (" + (int)state.Location.Position.x + ", " + (int)state.Location.Position.y + ")에서 <color=yellow>코인</color>을 획득했습니다").ToString());
                             joystick.fakeGold.GetComponent<Button>().interactable = false;
                         }
                         JoystickControl.btnNum = 0;

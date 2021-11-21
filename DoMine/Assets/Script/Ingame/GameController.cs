@@ -272,7 +272,7 @@ namespace DoMine
             {
                 PlayerControl.canFindSabotage = false;
                 PlayerControl.canUseFishing = true;
-                PlayerControl.barricadeBase = 5;
+                PlayerControl.barricadeBase = 10;
                 isSabotage = true;
                 UC.MessagePrint("당신은 <color=red>사보타지</color>입니다");
                 mystate.Inventory[3] = (int)Math.Floor((double)(playerNum - sabotages) / sabotages);
@@ -280,7 +280,7 @@ namespace DoMine
             else
             {
                 PlayerControl.canFindSabotage = true;
-                PlayerControl.barricadeBase = 1;
+                PlayerControl.barricadeBase = 3;
                 PlayerControl.canUseFishing = false;
                 UC.MessagePrint("당신은 <color=green>광부</color>입니다");
             }
@@ -310,7 +310,7 @@ namespace DoMine
             IC.GetItem(evnt.LocationX, evnt.LocationY, null , true);
             if(evnt.Type == 1)
             {
-                UC.MessagePrint((playerNameList[evnt.Player] + "가 (" + evnt.LocationX + ", " + evnt.LocationY + ")에서 <color=yellow>코인</color>을 획득했습니다").ToString());
+                //UC.MessagePrint((playerNameList[evnt.Player] + "가 (" + evnt.LocationX + ", " + evnt.LocationY + ")에서 <color=yellow>코인</color>을 획득했습니다").ToString());
             }
         }
 
