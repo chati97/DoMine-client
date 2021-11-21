@@ -292,13 +292,13 @@ namespace DoMine
                             if (targetPlayer.GetState<IPlayerState>().Inventory[1] == 1 && gameCtrl.playerList[GameController.playerCode] == 0 && targetPlayer.GetState<IPlayerState>().Inventory[4] == 0)//만약 내가 입금안한 광부고 상대가 힐템없이 금을 가지고 있으면
                             {
                                 state.Inventory[1] = 1;//금내꺼
-                                //GameController.MessageCreate((gameCtrl.playerNameList[GameController.playerCode] + "가 " + (int)Math.Round(state.Location.Position.x) + "," + (int)Math.Round(state.Location.Position.y) + ") 에서 <color=yellow>코인</color>을 획득했습니다.").ToString());
+                                //GameController.MessageCreate((gameCtrl.playerNameList[GameController.playerCode] + "이(가) " + (int)Math.Round(state.Location.Position.x) + "," + (int)Math.Round(state.Location.Position.y) + ") 에서 <color=yellow>코인</color>을 획득했습니다.").ToString());
                             }
                             if (targetPlayer.GetState<IPlayerState>().Inventory[4] == 0)
                                 attacksound.Play();
                             else
                                 failsound.Play();
-                            uiCtrl.MessagePrint((targetPlayer.GetState<IPlayerState>().PlayerName + "를 <color=red>공격</color>").ToString());
+                            uiCtrl.MessagePrint((targetPlayer.GetState<IPlayerState>().PlayerName + "을(를) <color=red>공격</color>").ToString());
                             var evnt = PlayerInteraction.Create();
                             evnt.AttakingPlayer = GameController.playerCode;
                             evnt.TargetPlayer = targetPlayer.GetState<IPlayerState>().PlayerCode;
@@ -395,7 +395,7 @@ namespace DoMine
                             state.carryGold = true;
                             canUseFishing = false;
                             //GameController.MessageCreate("누군가 (" + (int)state.Location.Position.x + ", " + (int)state.Location.Position.y + ")에서 <color=yellow>코인</color>을 발견했습니다");
-                            //GameController.MessageCreate((state.PlayerName + "가 (" + (int)state.Location.Position.x + ", " + (int)state.Location.Position.y + ")에서 <color=yellow>코인</color>을 획득했습니다").ToString());
+                            //GameController.MessageCreate((state.PlayerName + "이(가) (" + (int)state.Location.Position.x + ", " + (int)state.Location.Position.y + ")에서 <color=yellow>코인</color>을 획득했습니다").ToString());
                             joystick.fakeGold.GetComponent<Button>().interactable = false;
                         }
                         JoystickControl.btnNum = 0;
