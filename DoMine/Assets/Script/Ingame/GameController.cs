@@ -66,7 +66,7 @@ namespace DoMine
                 playerNum = 1;
                 playerCode = 0;
             }
-            time = 10;
+            time = 20;
             MC.CreateMap(MC.mapArray = MC.MakeMapArr(), MC.mapObject);
         }
 
@@ -114,6 +114,15 @@ namespace DoMine
                 }
             }
         }
+
+        public override void OnEvent(GoldSteal evnt)
+        {
+            if(evnt.Attacker == playerCode && mystate.Inventory[1] == 0 && playerList[playerCode] == 0)//금안넣은 광부인데 공격자가 나면
+            {
+                mystate.Inventory[1] = 1;
+            }
+        }
+
         public override void OnEvent(PlayerInteraction evnt)
         {
             switch(evnt.Action)
@@ -134,6 +143,9 @@ namespace DoMine
                             if (playerList[evnt.AttakingPlayer] == 0)//공격자가 광부이면
                             {
                                 mystate.Inventory[1] = 0;//금도 뺏김
+                                var evnt2 = GoldSteal.Create();
+                                evnt2.Attacker = evnt.AttakingPlayer;
+                                evnt2.Send(); //뺏었단 신호보냄(11/24버그픽스)
                             }
                             mystate.Blinded = true;
                             PlayerControl.blindCool = PlayerControl.blindCoolBase;
