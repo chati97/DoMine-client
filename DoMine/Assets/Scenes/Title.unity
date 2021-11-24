@@ -6740,8 +6740,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000015259, y: -0.000011444}
-  m_SizeDelta: {x: 482.052, y: 143.845}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1003.583, y: 143.845}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &608402232
 MonoBehaviour:
@@ -6766,7 +6766,7 @@ MonoBehaviour:
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 50
-    m_FontStyle: 0
+    m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 2
     m_MaxSize: 50
@@ -6776,7 +6776,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Loading...
+  m_Text: "\uD65C\uC131\uD654 \uB41C \uBC29\uC744 \uCC3E\uACE0 \uC788\uC2B5\uB2C8\uB2E4..."
 --- !u!222 &608402233
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -11650,7 +11650,7 @@ RectTransform:
   m_AnchorMin: {x: 0.596, y: 0.614}
   m_AnchorMax: {x: 0.596, y: 0.614}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 650.41, y: 348.01}
+  m_SizeDelta: {x: 650.41, y: 284.473}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &966737626
 MonoBehaviour:
@@ -11686,10 +11686,10 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "\uC544\uC774\uD15C \uC0C1\uC790\uAC00 \uADFC\uCC98\uC5D0 \uC788\uC744
-    \uACBD\uC6B0 \uB098\uD0C0\uB098\uB294 \uC13C\uC11C\uC785\uB2C8\uB2E4.\n\n\uC0AC\uAC70\uB9AC
-    : 0.5\n\n\uC544\uC774\uD15C \uC0C1\uC790\uC640 \uB5A8\uC5B4\uC9C4 \uAC70\uB9AC\uC5D0
-    \uB530\uB77C \uBE68\uAC04\uC0C9(20\uCE78), \uC8FC\uD669\uC0C9(15\uCE78), \uB178\uB780\uC0C9(10\uCE78),
-    \uCD08\uB85D\uC0C9(5\uCE78)\uC73C\uB85C \uBCC0\uD558\uB294 \uC13C\uC11C\uC785\uB2C8\uB2E4.\n\uC0C1\uC790\uC640\uC758
+    \uACBD\uC6B0 \uB098\uD0C0\uB098\uB294 \uC13C\uC11C\uC785\uB2C8\uB2E4.\n\n\uC544\uC774\uD15C
+    \uC0C1\uC790\uC640 \uB5A8\uC5B4\uC9C4 \uAC70\uB9AC\uC5D0 \uB530\uB77C \uBE68\uAC04\uC0C9(20\uCE78),
+    \uC8FC\uD669\uC0C9(15\uCE78), \uB178\uB780\uC0C9(10\uCE78), \uCD08\uB85D\uC0C9(5\uCE78)\uC73C\uB85C
+    \uBCC0\uD558\uB294 \uC13C\uC11C\uC785\uB2C8\uB2E4.\n\uC0C1\uC790\uC640\uC758
     \uAC70\uB9AC\uAC00 \uBA40\uC5B4\uC9C0\uBA74 \uC0AC\uB77C\uC9D1\uB2C8\uB2E4."
 --- !u!222 &966737627
 CanvasRenderer:
@@ -14800,10 +14800,10 @@ RectTransform:
   m_Father: {fileID: 676095595}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.596, y: 0.25214222}
-  m_AnchorMax: {x: 0.596, y: 0.25214222}
-  m_AnchoredPosition: {x: 0, y: -4.772827}
-  m_SizeDelta: {x: 650.41, y: 245.7625}
+  m_AnchorMin: {x: 0.596, y: 0.26943398}
+  m_AnchorMax: {x: 0.596, y: 0.26943398}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 650.41, y: 340.431}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1323897531
 MonoBehaviour:
@@ -14838,11 +14838,12 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uD0C0\uAC8C\uD305\uD55C \uB300\uC0C1\uC744 \uAC00\uB9AC\uD0B5\uB2C8\uB2E4.\n\n\uACE1\uAD2D\uC774\uB85C
-    \uBD80\uC220 \uBCBD\uC774\uB098 \uC544\uC774\uD15C, \uC2A4\uD0AC\uC744 \uC0AC\uC6A9\uD560
-    \uC0C1\uB300\uB97C \uD0C0\uAC8C\uD305 \uD560 \uB54C \uD45C\uC2DC\uB429\uB2C8\uB2E4.\n\uD50C\uB808\uC774\uC5B4\uB97C
-    \uD0C0\uAC8C\uD305\uD560 \uACBD\uC6B0 \uBCF8\uC778\uC744 \uC81C\uC678\uD55C \uAC00\uC7A5
-    \uAC00\uAE4C\uC6B4 \uD50C\uB808\uC774\uC5B4\uB97C \uAC00\uB9AC\uD0B5\uB2C8\uB2E4."
+  m_Text: "\uD0C0\uAC8C\uD305\uD55C \uB300\uC0C1\uC744 \uAC00\uB9AC\uD0B5\uB2C8\uB2E4.\n\n\uC0AC\uAC70\uB9AC
+    : 0.5\n\n\uACE1\uAD2D\uC774\uB85C \uBD80\uC220 \uBCBD\uC774\uB098 \uC544\uC774\uD15C,
+    \uC2A4\uD0AC\uC744 \uC0AC\uC6A9\uD560 \uC0C1\uB300\uB97C \uD0C0\uAC8C\uD305 \uD560
+    \uB54C \uD45C\uC2DC\uB429\uB2C8\uB2E4.\n\uD50C\uB808\uC774\uC5B4\uB97C \uD0C0\uAC8C\uD305\uD560
+    \uACBD\uC6B0 \uBCF8\uC778\uC744 \uC81C\uC678\uD55C \uAC00\uC7A5 \uAC00\uAE4C\uC6B4
+    \uD50C\uB808\uC774\uC5B4\uB97C \uAC00\uB9AC\uD0B5\uB2C8\uB2E4."
 --- !u!222 &1323897532
 CanvasRenderer:
   m_ObjectHideFlags: 0
