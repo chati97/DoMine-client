@@ -1048,6 +1048,13 @@
       "Name": "MessageToAll",
       "Guid": "cdb5a338-d07d-47e3-94b4-19fd1f35fb23",
       "Groups": []
+    },
+    {
+      "$type": "Photon.Bolt.Compiler.EventDefinition, bolt.compiler",
+      "Properties": [],
+      "Name": "GoldSteal",
+      "Guid": "04a506e0-b583-48bc-9034-296607e6b265",
+      "Groups": []
     }
   ],
   "ActiveGroup": "Everything"
