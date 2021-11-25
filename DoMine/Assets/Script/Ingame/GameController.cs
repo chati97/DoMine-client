@@ -140,7 +140,7 @@ namespace DoMine
                             UC.MessagePrint("<color=red>공격당했습니다!</color>");
                             mystate.Inventory[0] = 0;
                             mystate.Inventory[2] = 0;
-                            if (playerList[evnt.AttakingPlayer] == 0)//공격자가 광부이면
+                            if (playerList[evnt.AttakingPlayer] == 0 && mystate.Inventory[1] == 1)//공격자가 광부이면 && 내가 금을 가지고 있으면
                             {
                                 mystate.Inventory[1] = 0;//금도 뺏김
                                 var evnt2 = GoldSteal.Create();
